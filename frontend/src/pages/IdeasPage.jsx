@@ -40,6 +40,7 @@ const IdeasPage = () => {
         // Sort ideas by date
         const sortedIdeas = [...response.data].sort((a, b) => new Date(b.date) - new Date(a.date));
         
+        console.log('Sorted ideas:', sortedIdeas);
         setIdeas(sortedIdeas);
         
         // Extract all unique tags

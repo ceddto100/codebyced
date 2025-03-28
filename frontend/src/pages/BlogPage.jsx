@@ -40,6 +40,7 @@ const BlogPage = () => {
           .filter(post => post.published === true)
           .sort((a, b) => new Date(b.date) - new Date(a.date));
         
+        console.log('Filtered and sorted posts:', filteredPosts);
         setPosts(filteredPosts);
         setError(null);
       } catch (err) {

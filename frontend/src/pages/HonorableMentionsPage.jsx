@@ -40,6 +40,7 @@ const HonorableMentionsPage = () => {
         // Sort honors by year
         const sortedHonors = [...response.data].sort((a, b) => b.year - a.year);
         
+        console.log('Sorted honors:', sortedHonors);
         setHonors(sortedHonors);
         
         // Extract unique years if they exist

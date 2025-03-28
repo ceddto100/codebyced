@@ -30,6 +30,7 @@ const ProjectsPage = () => {
         // Sort projects by featured status
         const sortedProjects = [...response.data].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
         
+        console.log('Sorted projects:', sortedProjects);
         setProjects(sortedProjects);
         
         // Extract unique categories from projects
