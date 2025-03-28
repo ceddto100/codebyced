@@ -1,16 +1,18 @@
-import api from './api';
+import { getApiUrl } from '../utils/api';
 
 // Get all ideas with optional filtering
 export const getIdeas = async (page = 1, limit = 20, tag = null, status = null) => {
   try {
-    const params = { page, limit };
-    if (tag) params.tag = tag;
-    if (status) params.status = status;
+    const params = new URLSearchParams({ page, limit });
+    if (tag) params.append('tag', tag);
+    if (status) params.append('status', status);
     
-    const response = await fetch('http://localhost:5000/api/ideas');
+    const response = await fetch(`${getApiUrl('/ideas')}?${params}`);
+    
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
+    
     const data = await response.json();
     return data;
   } catch (error) {
@@ -22,10 +24,12 @@ export const getIdeas = async (page = 1, limit = 20, tag = null, status = null) 
 // Get a single idea by ID
 export const getIdea = async (id) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/ideas/${id}`);
+    const response = await fetch(`${getApiUrl('/ideas')}/${id}`);
+    
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
+    
     const data = await response.json();
     return data;
   } catch (error) {
@@ -37,16 +41,18 @@ export const getIdea = async (id) => {
 // Create a new idea
 export const createIdea = async (ideaData) => {
   try {
-    const response = await fetch('http://localhost:5000/api/ideas', {
+    const response = await fetch(getApiUrl('/ideas'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(ideaData),
     });
+    
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
+    
     const data = await response.json();
     return data;
   } catch (error) {
@@ -58,16 +64,18 @@ export const createIdea = async (ideaData) => {
 // Update an idea
 export const updateIdea = async (id, ideaData) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/ideas/${id}`, {
+    const response = await fetch(`${getApiUrl('/ideas')}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(ideaData),
     });
+    
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
+    
     const data = await response.json();
     return data;
   } catch (error) {
@@ -79,12 +87,14 @@ export const updateIdea = async (id, ideaData) => {
 // Delete an idea
 export const deleteIdea = async (id) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/ideas/${id}`, {
+    const response = await fetch(`${getApiUrl('/ideas')}/${id}`, {
       method: 'DELETE',
     });
+    
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
+    
     const data = await response.json();
     return data;
   } catch (error) {
