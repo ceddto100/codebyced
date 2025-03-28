@@ -37,11 +37,14 @@ const IdeasPage = () => {
           throw new Error('Invalid response format from API');
         }
         
-        setIdeas(response.data);
+        // Sort ideas by date
+        const sortedIdeas = [...response.data].sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        setIdeas(sortedIdeas);
         
         // Extract all unique tags
         const tags = new Set();
-        response.data.forEach(idea => {
+        sortedIdeas.forEach(idea => {
           if (idea.tags && Array.isArray(idea.tags)) {
             idea.tags.forEach(tag => tags.add(tag));
           }

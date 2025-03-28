@@ -35,7 +35,12 @@ const BlogPage = () => {
           throw new Error('Invalid response format from API');
         }
         
-        setPosts(result.data);
+        // Filter for published posts and sort by date
+        const filteredPosts = result.data
+          .filter(post => post.published === true)
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        setPosts(filteredPosts);
         setError(null);
       } catch (err) {
         console.error('Error fetching blog posts:', err);

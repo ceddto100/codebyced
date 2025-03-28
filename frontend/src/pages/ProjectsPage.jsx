@@ -27,11 +27,14 @@ const ProjectsPage = () => {
           throw new Error('Invalid response format from API');
         }
         
-        setProjects(response.data);
+        // Sort projects by featured status
+        const sortedProjects = [...response.data].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+        
+        setProjects(sortedProjects);
         
         // Extract unique categories from projects
         const uniqueCategories = new Set();
-        response.data.forEach(project => {
+        sortedProjects.forEach(project => {
           if (project.category) {
             uniqueCategories.add(project.category);
           }

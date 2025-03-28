@@ -37,11 +37,14 @@ const HonorableMentionsPage = () => {
           throw new Error('Invalid response format from API');
         }
         
-        setHonors(response.data);
+        // Sort honors by year
+        const sortedHonors = [...response.data].sort((a, b) => b.year - a.year);
+        
+        setHonors(sortedHonors);
         
         // Extract unique years if they exist
-        if (response.data.length > 0 && response.data[0].year) {
-          const uniqueYears = [...new Set(response.data.map(honor => honor.year))].sort((a, b) => b - a); // Sort descending
+        if (sortedHonors.length > 0 && sortedHonors[0].year) {
+          const uniqueYears = [...new Set(sortedHonors.map(honor => honor.year))].sort((a, b) => b - a); // Sort descending
           setYears(uniqueYears);
         }
         
