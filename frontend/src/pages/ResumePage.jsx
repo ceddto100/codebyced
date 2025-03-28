@@ -17,6 +17,7 @@ const ResumePage = () => {
 
   const [workExperience, setWorkExperience] = useState([]);
   const [education, setEducation] = useState([]);
+  const [certifications, setCertifications] = useState([]);
   const [skills, setSkills] = useState({
     technical: [],
     soft: []
@@ -44,6 +45,7 @@ const ResumePage = () => {
         // Process the resume entries
         const workExp = response.data.filter(entry => entry.type === 'work');
         const edu = response.data.filter(entry => entry.type === 'education');
+        const certs = response.data.filter(entry => entry.type === 'certification');
         
         // Extract skills from work experience
         const technicalSkills = new Set();
@@ -63,6 +65,7 @@ const ResumePage = () => {
 
         setWorkExperience(workExp);
         setEducation(edu);
+        setCertifications(certs);
         setSkills({
           technical: Array.from(technicalSkills),
           soft: Array.from(softSkills)
@@ -288,23 +291,28 @@ const ResumePage = () => {
       </section>
 
       {/* Certifications */}
-      <section>
-        <AnimatedSection>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text mb-6 border-b pb-2">Certifications</h2>
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <ul className="space-y-2">
-              {certifications.map((cert, index) => (
-                <li key={index} className="flex items-center">
-                  <svg className="h-5 w-5 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className="text-gray-700">{cert}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </AnimatedSection>
-      </section>
+      {certifications.length > 0 && (
+        <section>
+          <AnimatedSection>
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text mb-6 border-b pb-2">Certifications</h2>
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <ul className="space-y-2">
+                {certifications.map((cert, index) => (
+                  <li key={index} className="flex items-center">
+                    <svg className="h-5 w-5 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="text-gray-700">{cert.title}</span>
+                    {cert.year && (
+                      <span className="text-sm text-gray-500 ml-2">({cert.year})</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </AnimatedSection>
+        </section>
+      )}
     </div>
   );
 };
