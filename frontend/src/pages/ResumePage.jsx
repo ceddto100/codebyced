@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { getResumeEntries } from '../services/resumeService';
 
 const ResumePage = () => {
-  // Mock data - replace with your actual information
-  const personalInfo = {
+  const [personalInfo, setPersonalInfo] = useState({
     name: "Cedrick Carter",
     title: "Software Developer",
     summary: "Versatile software developer adept at documentation comprehension, automation, and seamless code integration using diverse coding tools. Driven by entrepreneurial initiative and enthusiasm for machine learning, I excel at problem-solving, API integrations, AI-powered solutions, and low-code/no-code development.",
@@ -13,61 +13,71 @@ const ResumePage = () => {
     location: "Willing to relocate - U.S. or remote",
     linkedin: "linkedin.com/in/cedrick-carter-5b41b4315/",
     github: "github.com/ceddto100",
-  };
+  });
 
-  const workExperience = [
-    {
-      id: 1,
-      role: "Developer",
-      company: "ChazzTalk Conversational AI",
-      period: "2025 - Ongoing",
-      description: "Developed an AI-powered customer service chatbot leveraging conversational AI technologies.",
-      achievements: [
-        "Developed an AI-powered customer service chatbot leveraging conversational AI technologies",
-        "Integrated APIs and automation workflows to enhance customer interactions and streamline support",
-        "Utilized various AI tools, including GitHub Copilot and Eleven Labs, for debugging and optimizing chatbot functionalities"
-      ]
-    },
-    {
-      id: 2,
-      role: "Developer",
-      company: "K-LooseThreads Embroidery Business",
-      period: "2025 - Ongoing",
-      description: "Developed, managed, and improved software integrations to automate embroidery business operations.",
-      achievements: [
-        "Developed, managed, and improved software integrations to automate embroidery business operations"
-      ]
-    }
-  ];
+  const [workExperience, setWorkExperience] = useState([]);
+  const [education, setEducation] = useState([]);
+  const [skills, setSkills] = useState({
+    technical: [],
+    soft: []
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const education = [
-    {
-      id: 1,
-      degree: "Bachelor of Science in Computer Science",
-      institution: "University of Phoenix",
-      period: "Expected 2026",
-      description: "Relevant Coursework: Data Structures & Algorithms, Object-Oriented Programming (OOP), Machine Learning, Web Development, Database Management, Software Engineering"
-    }
-  ];
+  useEffect(() => {
+    const fetchResumeData = async () => {
+      setIsLoading(true);
+      try {
+        console.log('Fetching resume data...');
+        const response = await getResumeEntries();
+        console.log('Resume API response:', response);
+        
+        if (!response.success) {
+          throw new Error(response.error || 'Failed to fetch resume data');
+        }
+        
+        if (!Array.isArray(response.data)) {
+          console.error('Invalid response format:', response);
+          throw new Error('Invalid response format from API');
+        }
 
-  const skills = {
-    technical: [
-      "Python", "JavaScript", "HTML & CSS", "SQL (Basic)",
-      "Flask", "Pandas", "NumPy", "TensorFlow", "Scikit-learn (Basic)",
-      "MongoDB", "Git", "GitHub", "Eleven Labs", "Runway ML"
-    ],
-    soft: [
-      "Problem Solving", "API Integration", "Business Automation",
-      "AI Solutions", "Low-code/No-code Development"
-    ]
-  };
+        // Process the resume entries
+        const workExp = response.data.filter(entry => entry.type === 'work');
+        const edu = response.data.filter(entry => entry.type === 'education');
+        
+        // Extract skills from work experience
+        const technicalSkills = new Set();
+        const softSkills = new Set();
+        
+        workExp.forEach(job => {
+          if (job.skills) {
+            job.skills.forEach(skill => {
+              if (skill.type === 'technical') {
+                technicalSkills.add(skill.name);
+              } else if (skill.type === 'soft') {
+                softSkills.add(skill.name);
+              }
+            });
+          }
+        });
 
-  const certifications = [
-    "Make.com (Business automation)",
-    "OpenAI GPT-4",
-    "Eleven Labs API",
-    "Stripe API"
-  ];
+        setWorkExperience(workExp);
+        setEducation(edu);
+        setSkills({
+          technical: Array.from(technicalSkills),
+          soft: Array.from(softSkills)
+        });
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching resume data:', err);
+        setError(err.message || 'Failed to load resume data. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchResumeData();
+  }, []);
 
   // Animation controls
   const fadeInUp = {
@@ -114,6 +124,24 @@ const ResumePage = () => {
       </motion.div>
     );
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-5xl mx-auto px-4 py-12">
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md">
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">

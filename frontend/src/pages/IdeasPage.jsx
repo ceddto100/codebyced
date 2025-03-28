@@ -24,26 +24,34 @@ const IdeasPage = () => {
     const fetchIdeas = async () => {
       setIsLoading(true);
       try {
-        const response = await getIdeas();
-        console.log('Ideas response:', response); // For debugging
+        console.log('Fetching ideas...');
+        const response = await getIdeas(1, 100); // Increased limit to show more ideas
+        console.log('Ideas API response:', response);
         
-        if (response.success && response.data) {
-          setIdeas(response.data);
-          
-          // Extract all unique tags
-          const tags = new Set();
-          response.data.forEach(idea => {
-            idea.tags?.forEach(tag => tags.add(tag));
-          });
-          setAllTags(Array.from(tags));
-          
-          setError(null);
-        } else {
-          throw new Error('Invalid response format');
+        if (!response.success) {
+          throw new Error(response.error || 'Failed to fetch ideas');
         }
+        
+        if (!Array.isArray(response.data)) {
+          console.error('Invalid response format:', response);
+          throw new Error('Invalid response format from API');
+        }
+        
+        setIdeas(response.data);
+        
+        // Extract all unique tags
+        const tags = new Set();
+        response.data.forEach(idea => {
+          if (idea.tags && Array.isArray(idea.tags)) {
+            idea.tags.forEach(tag => tags.add(tag));
+          }
+        });
+        setAllTags(Array.from(tags));
+        
+        setError(null);
       } catch (err) {
         console.error('Error fetching ideas:', err);
-        setError('Failed to load ideas. Please try again later.');
+        setError(err.message || 'Failed to load ideas. Please try again later.');
       } finally {
         setIsLoading(false);
       }

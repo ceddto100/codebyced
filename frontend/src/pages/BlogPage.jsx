@@ -22,13 +22,24 @@ const BlogPage = () => {
     const fetchPosts = async () => {
       setIsLoading(true);
       try {
-        const result = await getBlogPosts();
-        console.log('Blog API response:', result); // For debugging
-        setPosts(result.data || []);
+        console.log('Fetching blog posts...');
+        const result = await getBlogPosts(1, 100); // Increased limit to show more posts
+        console.log('Blog API response:', result);
+        
+        if (!result.success) {
+          throw new Error(result.error || 'Failed to fetch blog posts');
+        }
+        
+        if (!Array.isArray(result.data)) {
+          console.error('Invalid response format:', result);
+          throw new Error('Invalid response format from API');
+        }
+        
+        setPosts(result.data);
         setError(null);
       } catch (err) {
         console.error('Error fetching blog posts:', err);
-        setError('Failed to load blog posts. Please try again later.');
+        setError(err.message || 'Failed to load blog posts. Please try again later.');
       } finally {
         setIsLoading(false);
       }
@@ -41,8 +52,13 @@ const BlogPage = () => {
 
   // Format date to a more readable format
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    try {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    } catch (e) {
+      console.error('Error formatting date:', e);
+      return 'Invalid date';
+    }
   };
 
   return (

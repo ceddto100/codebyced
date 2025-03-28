@@ -14,27 +14,34 @@ const ProjectsPage = () => {
     const fetchProjects = async () => {
       setIsLoading(true);
       try {
-        const response = await getProjects();
+        console.log('Fetching projects...');
+        const response = await getProjects(1, 100); // Increased limit to show more projects
+        console.log('Projects API response:', response);
         
-        if (response.success && response.data) {
-          setProjects(response.data);
-          
-          // Extract unique categories from projects
-          const uniqueCategories = new Set();
-          response.data.forEach(project => {
-            if (project.category) {
-              uniqueCategories.add(project.category);
-            }
-          });
-          
-          setCategories(Array.from(uniqueCategories));
-          setError(null);
-        } else {
-          throw new Error('Invalid response format');
+        if (!response.success) {
+          throw new Error(response.error || 'Failed to fetch projects');
         }
+        
+        if (!Array.isArray(response.data)) {
+          console.error('Invalid response format:', response);
+          throw new Error('Invalid response format from API');
+        }
+        
+        setProjects(response.data);
+        
+        // Extract unique categories from projects
+        const uniqueCategories = new Set();
+        response.data.forEach(project => {
+          if (project.category) {
+            uniqueCategories.add(project.category);
+          }
+        });
+        
+        setCategories(Array.from(uniqueCategories));
+        setError(null);
       } catch (err) {
         console.error('Error fetching projects:', err);
-        setError('Failed to load projects. Please try again later.');
+        setError(err.message || 'Failed to load projects. Please try again later.');
       } finally {
         setIsLoading(false);
       }

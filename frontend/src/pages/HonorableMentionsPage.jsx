@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { getMentions } from '../services/mentionsService';
 
 const HonorableMentionsPage = () => {
   const [honors, setHonors] = useState([]);
@@ -23,25 +24,31 @@ const HonorableMentionsPage = () => {
     const fetchHonors = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('/api/honors');
+        console.log('Fetching honorable mentions...');
+        const response = await getMentions();
+        console.log('Mentions API response:', response);
         
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
+        if (!response.success) {
+          throw new Error(response.error || 'Failed to fetch honorable mentions');
         }
         
-        const data = await response.json();
-        setHonors(data);
+        if (!Array.isArray(response.data)) {
+          console.error('Invalid response format:', response);
+          throw new Error('Invalid response format from API');
+        }
+        
+        setHonors(response.data);
         
         // Extract unique years if they exist
-        if (data.length > 0 && data[0].year) {
-          const uniqueYears = [...new Set(data.map(honor => honor.year))].sort((a, b) => b - a); // Sort descending
+        if (response.data.length > 0 && response.data[0].year) {
+          const uniqueYears = [...new Set(response.data.map(honor => honor.year))].sort((a, b) => b - a); // Sort descending
           setYears(uniqueYears);
         }
         
         setError(null);
       } catch (err) {
         console.error('Error fetching honorable mentions:', err);
-        setError('Failed to load honorable mentions. Please try again later.');
+        setError(err.message || 'Failed to load honorable mentions. Please try again later.');
       } finally {
         setIsLoading(false);
       }
