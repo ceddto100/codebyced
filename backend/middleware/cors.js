@@ -8,8 +8,8 @@ const configureCors = () => {
     // Development
     'http://localhost:3000',
     
-    // Production (replace with your actual domain)
-    process.env.CLIENT_URL || 'https://codebycedproduction.com'
+    // Production
+    'https://codebyced.com'
   ];
   
   const corsOptions = {
@@ -23,13 +23,15 @@ const configureCors = () => {
       if (whitelist.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
+        console.warn(`CORS blocked request from origin: ${origin}`);
         callback(new Error('Not allowed by CORS'));
       }
     },
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    maxAge: 86400 // Cache preflight requests for 24 hours
   };
   
   return cors(corsOptions);
