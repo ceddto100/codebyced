@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Use environment variable for API URL with fallback
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// Use environment variable for API URL with production fallback
+const API_URL = process.env.REACT_APP_API_URL || 'https://codebyced-production.up.railway.app/api';
 
 // Create axios instance with default config
 const api = axios.create({

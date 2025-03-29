@@ -24,7 +24,7 @@ const ToolsPage = () => {
     const fetchTools = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('http://localhost:5000/api/tools');
+        const response = await fetch('https://codebyced-production.up.railway.app/api/tools');
         
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`);
