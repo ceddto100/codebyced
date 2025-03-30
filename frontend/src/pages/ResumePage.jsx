@@ -1,23 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 const ResumePage = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    // Add scroll progress tracking
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.body.offsetHeight - window.innerHeight;
-      const scrollPercent = (scrollTop / docHeight) * 100;
-      setScrollProgress(scrollPercent);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   // Mock data - replace with your actual information
   const personalInfo = {
     name: "Cedrick Carter",
@@ -132,17 +117,9 @@ const ResumePage = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12 relative">
-      {/* Scroll Progress Bar */}
-      <div className="fixed top-0 left-0 w-full h-1 z-50">
-        <div 
-          className="h-full bg-blue-600 transition-all duration-200"
-          style={{ width: `${scrollProgress}%` }}
-        ></div>
-      </div>
-      
-      {/* Decorative Background Elements */}
-      <div className="absolute top-20 right-0 w-64 h-64 bg-blue-500/5 rounded-full filter blur-3xl animate-float"></div>
-      <div className="absolute bottom-40 left-10 w-80 h-80 bg-indigo-500/5 rounded-full filter blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+      {/* Static Background Elements */}
+      <div className="absolute top-20 right-0 w-64 h-64 bg-blue-500/5 rounded-full filter blur-3xl"></div>
+      <div className="absolute bottom-40 left-10 w-80 h-80 bg-indigo-500/5 rounded-full filter blur-3xl"></div>
       
       {/* Wave Divider - Top */}
       <div className="w-full h-16 overflow-hidden mb-12">
@@ -150,22 +127,22 @@ const ResumePage = () => {
           <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" className="fill-blue-50"></path>
         </svg>
       </div>
-
+      
       {/* Header / Personal Info */}
       <AnimatedSection>
-        <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 p-8 mb-10 border border-gray-100 relative overflow-hidden">
+        <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md p-8 mb-10 border border-gray-100 relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full"></div>
           <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-indigo-500/5 rounded-full"></div>
           
           <div className="flex flex-col md:flex-row md:justify-between md:items-center relative z-10">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">{personalInfo.name}</h1>
-              <h2 className="text-2xl text-gray-700 mt-1 relative">
-                {personalInfo.title}
-                <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
-              </h2>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">{personalInfo.name}</h1>
+              <div className="relative">
+                <h2 className="text-2xl text-blue-600 mt-1">{personalInfo.title}</h2>
+                <div className="absolute bottom-0 left-0 w-16 h-0.5 bg-blue-500 rounded-full"></div>
+              </div>
             </div>
-            <div className="mt-6 md:mt-0 space-y-1 text-gray-600">
+            <div className="mt-4 md:mt-0 space-y-1 text-gray-600">
               <p className="flex items-center">
                 <svg className="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -185,15 +162,15 @@ const ResumePage = () => {
                 </svg>
                 {personalInfo.location}
               </p>
-              <div className="flex space-x-4 mt-3">
-                <a href={`https://${personalInfo.linkedin}`} className="text-blue-600 hover:text-blue-800 flex items-center group transition-colors duration-300">
+              <div className="flex space-x-4 mt-2">
+                <a href={`https://${personalInfo.linkedin}`} className="text-blue-600 hover:text-blue-800 flex items-center group">
                   <svg className="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                   </svg>
                   LinkedIn
                   <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
                 </a>
-                <a href={`https://${personalInfo.github}`} className="text-blue-600 hover:text-blue-800 flex items-center group transition-colors duration-300">
+                <a href={`https://${personalInfo.github}`} className="text-blue-600 hover:text-blue-800 flex items-center group">
                   <svg className="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                   </svg>
@@ -204,17 +181,24 @@ const ResumePage = () => {
             </div>
           </div>
           <div className="mt-6 relative z-10">
-            <h3 className="text-lg font-semibold text-gray-700 mb-3">Professional Summary</h3>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Professional Summary</h3>
             <p className="text-gray-600">{personalInfo.summary}</p>
           </div>
         </div>
       </AnimatedSection>
 
+      {/* Wave Divider - Middle */}
+      <div className="w-full h-16 overflow-hidden my-12 transform rotate-180">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-full">
+          <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" className="fill-indigo-50"></path>
+        </svg>
+      </div>
+
       {/* Work Experience */}
-      <section className="mb-16">
+      <section className="mb-12">
         <AnimatedSection>
-          <div className="relative pb-3 mb-8">
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">Work Experience</h2>
+          <div className="relative pb-3 mb-6">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Work Experience</h2>
             <div className="absolute bottom-0 left-0 w-24 h-1 bg-blue-500 rounded-full"></div>
           </div>
         </AnimatedSection>
@@ -231,8 +215,8 @@ const ResumePage = () => {
                 <div className="absolute -left-12 mt-1.5 h-7 w-7 rounded-full border-2 border-blue-500 bg-white flex items-center justify-center shadow-md">
                   <div className="h-3 w-3 rounded-full bg-blue-500"></div>
                 </div>
-                <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 transform hover:-translate-y-1">
-                  <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{job.role}</h3>
+                <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-gray-100">
+                  <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">{job.role}</h3>
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-1">
                     <p className="text-blue-600 font-medium">{job.company}</p>
                     <p className="text-gray-500 flex items-center">
@@ -260,18 +244,11 @@ const ResumePage = () => {
         </motion.div>
       </section>
 
-      {/* Wave Divider - Middle */}
-      <div className="w-full h-16 overflow-hidden my-12 transform rotate-180">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-full">
-          <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" className="fill-indigo-50"></path>
-        </svg>
-      </div>
-
       {/* Education */}
-      <section className="mb-16">
+      <section className="mb-12">
         <AnimatedSection>
-          <div className="relative pb-3 mb-8">
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">Education</h2>
+          <div className="relative pb-3 mb-6">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Education</h2>
             <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
           </div>
         </AnimatedSection>
@@ -288,8 +265,8 @@ const ResumePage = () => {
                 <div className="absolute -left-12 mt-1.5 h-7 w-7 rounded-full border-2 border-blue-500 bg-white flex items-center justify-center shadow-md">
                   <div className="h-3 w-3 rounded-full bg-blue-500"></div>
                 </div>
-                <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 transform hover:-translate-y-1">
-                  <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{edu.degree}</h3>
+                <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-gray-100">
+                  <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">{edu.degree}</h3>
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-1">
                     <p className="text-blue-600 font-medium">{edu.institution}</p>
                     <p className="text-gray-500 flex items-center">
@@ -308,16 +285,16 @@ const ResumePage = () => {
       </section>
 
       {/* Skills */}
-      <section className="mb-16">
+      <section className="mb-12">
         <AnimatedSection>
-          <div className="relative pb-3 mb-8">
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">Skills</h2>
+          <div className="relative pb-3 mb-6">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Skills</h2>
             <div className="absolute bottom-0 left-0 w-16 h-1 bg-blue-500 rounded-full"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 relative overflow-hidden">
+            <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-gray-100 relative overflow-hidden">
               <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full"></div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-4 relative z-10">Technical Skills</h3>
+              <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text mb-4 relative z-10">Technical Skills</h3>
               <div className="flex flex-wrap gap-2 relative z-10">
                 {skills.technical.map((skill, index) => (
                   <span
@@ -329,9 +306,9 @@ const ResumePage = () => {
                 ))}
               </div>
             </div>
-            <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 relative overflow-hidden">
+            <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-gray-100 relative overflow-hidden">
               <div className="absolute -top-10 -right-10 w-40 h-40 bg-green-500/5 rounded-full"></div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-4 relative z-10">Soft Skills</h3>
+              <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text mb-4 relative z-10">Soft Skills</h3>
               <div className="flex flex-wrap gap-2 relative z-10">
                 {skills.soft.map((skill, index) => (
                   <span
@@ -348,13 +325,13 @@ const ResumePage = () => {
       </section>
 
       {/* Certifications */}
-      <section className="mb-10">
+      <section>
         <AnimatedSection>
-          <div className="relative pb-3 mb-8">
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">Certifications</h2>
+          <div className="relative pb-3 mb-6">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Certifications</h2>
             <div className="absolute bottom-0 left-0 w-24 h-1 bg-blue-500 rounded-full"></div>
           </div>
-          <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 relative overflow-hidden">
+          <div className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-gray-100 relative overflow-hidden">
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full"></div>
             <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-indigo-500/5 rounded-full"></div>
             
