@@ -257,36 +257,46 @@ const HomePage = () => {
         </svg>
       </div>
 
-      {/* Resume Section */}
-      <section className="mb-20 backdrop-blur-sm bg-white/80 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden">
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/10 rounded-full"></div>
-        <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-indigo-500/5 rounded-full"></div>
-        
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
-          <div className="relative pb-3">
-            <h2 className="text-2xl font-bold text-gray-800 mb-1">Resume at a Glance</h2>
-            <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
-          </div>
-          <a 
-            href="/resume" 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-          >
-            View Full Resume
-          </a>
-        </div>
-        <div className="relative z-10">
-          <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{resumeTeaser.title}</h3>
-          <p className="text-gray-600 mb-2">{resumeTeaser.company} | {resumeTeaser.period}</p>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {resumeTeaser.skills.map((skill, index) => (
-              <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 transition-all duration-200 hover:bg-blue-200">
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
+     {/* Resume Section */}
+<section className="mb-20 backdrop-blur-sm bg-white/40 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden">
+  {/* Background Image */}
+  <div className="absolute inset-0 z-0">
+    <img 
+      src="resumecover.png" 
+      alt="Resume Background" 
+      className="w-full h-full object-cover opacity-75"
+    />
+    {/* Overlay to ensure text readability */}
+    <div className="absolute inset-0 bg-white/60"></div>
+  </div>
+  
+  <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/10 rounded-full"></div>
+  <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-indigo-500/5 rounded-full"></div>
+  
+  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
+    <div className="relative pb-3">
+      <h2 className="text-2xl font-bold text-gray-800 mb-1">Resume at a Glance</h2>
+      <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
+    </div>
+    <a 
+      href="/resume" 
+      className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+    >
+      View Full Resume
+    </a>
+  </div>
+  <div className="relative z-10">
+    <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{resumeTeaser.title}</h3>
+    <p className="text-gray-600 mb-2">{resumeTeaser.company} | {resumeTeaser.period}</p>
+    <div className="flex flex-wrap gap-2 mt-4">
+      {resumeTeaser.skills.map((skill, index) => (
+        <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 transition-all duration-200 hover:bg-blue-200">
+          {skill}
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
       {/* Ideas Section */}
       <section className="mb-20 backdrop-blur-sm bg-white/80 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden">
         <div className="absolute -top-10 -left-10 w-40 h-40 bg-indigo-500/10 rounded-full"></div>
