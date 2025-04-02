@@ -36,6 +36,18 @@ const BlogPage = () => {
           throw new Error('Invalid response format from API');
         }
         
+        // Log all posts before filtering
+        console.log('All posts before filtering:', result.data);
+        
+        // Check if any post has hub1.png as coverImage
+        const hub1Post = result.data.find(post => post.coverImage && post.coverImage.includes('hub1.png'));
+        if (hub1Post) {
+          console.log('Found post with hub1.png:', hub1Post);
+          console.log('Is it published?', hub1Post.published);
+        } else {
+          console.log('No post found with hub1.png as coverImage');
+        }
+        
         // Filter for published posts and sort by date
         const filteredPosts = result.data
           .filter(post => post.published === true)
