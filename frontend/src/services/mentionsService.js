@@ -2,7 +2,7 @@ import { getApiUrl } from '../utils/api';
 
 export const getMentions = async (page = 1, limit = 100) => {
   try {
-    const url = getApiUrl('/mentions');
+    const url = getApiUrl('/honors');
     const response = await fetch(url);
     
     if (!response.ok) {
@@ -22,7 +22,7 @@ export const getMentions = async (page = 1, limit = 100) => {
 
 export const getMention = async (id) => {
   try {
-    const url = getApiUrl(`/mentions/${id}`);
+    const url = getApiUrl(`/honors/${id}`);
     const response = await fetch(url);
     
     if (!response.ok) {
@@ -42,7 +42,7 @@ export const getMention = async (id) => {
 
 export const createMention = async (mentionData) => {
   try {
-    const url = getApiUrl('/mentions');
+    const url = getApiUrl('/honors');
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -68,7 +68,7 @@ export const createMention = async (mentionData) => {
 
 export const updateMention = async (id, mentionData) => {
   try {
-    const url = getApiUrl(`/mentions/${id}`);
+    const url = getApiUrl(`/honors/${id}`);
     const response = await fetch(url, {
       method: 'PUT',
       headers: {
@@ -94,7 +94,7 @@ export const updateMention = async (id, mentionData) => {
 
 export const deleteMention = async (id) => {
   try {
-    const url = getApiUrl(`/mentions/${id}`);
+    const url = getApiUrl(`/honors/${id}`);
     const response = await fetch(url, {
       method: 'DELETE',
     });

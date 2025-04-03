@@ -37,22 +37,161 @@ const HomePage = () => {
 
         if (blogResponse && blogResponse.data) {
           setBlogPosts(blogResponse.data);
+        } else {
+          // Use mock blog data if API fails
+          setBlogPosts([
+            {
+              id: 1,
+              title: "Getting Started with React",
+              excerpt: "Learn the basics of React and start building modern web applications.",
+              date: new Date().toISOString(),
+              coverImage: "blog1.jpg"
+            },
+            {
+              id: 2,
+              title: "Advanced JavaScript Concepts",
+              excerpt: "Deep dive into advanced JavaScript concepts every developer should know.",
+              date: new Date().toISOString(),
+              coverImage: "blog2.jpg"
+            }
+          ]);
         }
         
         if (ideasResponse && ideasResponse.success) {
-          setIdeas(ideasResponse.data.slice(0, 3)); // Take only first 3 ideas
+          setIdeas(ideasResponse.data.slice(0, 3));
+        } else {
+          // Use mock ideas data if API fails
+          setIdeas([
+            {
+              id: 1,
+              title: "AI-Powered Personal Productivity Assistant",
+              summary: "An intelligent assistant that helps manage tasks and boost productivity.",
+              tags: ["AI", "Productivity"]
+            },
+            {
+              id: 2,
+              title: "Blockchain-Based Digital Identity Management",
+              summary: "Secure and decentralized identity management system using blockchain.",
+              tags: ["Blockchain", "Security"]
+            },
+            {
+              id: 3,
+              title: "Sustainable Tech Practices",
+              summary: "Implementing eco-friendly practices in software development.",
+              tags: ["Sustainability", "Development"]
+            }
+          ]);
         }
 
         if (projectsResponse && projectsResponse.success) {
           setProjects(projectsResponse.data);
+        } else {
+          // Use mock projects data if API fails
+          setProjects([
+            {
+              id: 1,
+              title: "E-commerce Platform",
+              description: "A full-featured e-commerce platform with React and Node.js",
+              category: "Web Development",
+              technologies: ["React", "Node.js", "MongoDB"],
+              featured: true,
+              imageUrl: "project1.jpg"
+            }
+          ]);
         }
 
         if (toolsResponse && toolsResponse.success) {
-          setTools(toolsResponse.data.slice(0, 2)); // Take only first 2 tools
+          setTools(toolsResponse.data.slice(0, 2));
+        } else {
+          // Use mock tools data if API fails
+          setTools([
+            {
+              id: 1,
+              name: "Code Companion",
+              description: "AI-powered code review and suggestion tool",
+              category: "Development",
+              link: "https://example.com/code-companion"
+            },
+            {
+              id: 2,
+              name: "Content Generator",
+              description: "Smart content creation assistant for various formats",
+              category: "Content",
+              link: "https://example.com/content-generator"
+            }
+          ]);
         }
       } catch (err) {
         console.error('Error fetching data:', err);
-        setError('Failed to load content');
+        setError('Failed to load content from API, using mock data instead');
+        
+        // Set mock data when API calls fail
+        setBlogPosts([
+          {
+            id: 1,
+            title: "Getting Started with React",
+            excerpt: "Learn the basics of React and start building modern web applications.",
+            date: new Date().toISOString(),
+            coverImage: "blog1.jpg"
+          },
+          {
+            id: 2,
+            title: "Advanced JavaScript Concepts",
+            excerpt: "Deep dive into advanced JavaScript concepts every developer should know.",
+            date: new Date().toISOString(),
+            coverImage: "blog2.jpg"
+          }
+        ]);
+        
+        setIdeas([
+          {
+            id: 1,
+            title: "AI-Powered Personal Productivity Assistant",
+            summary: "An intelligent assistant that helps manage tasks and boost productivity.",
+            tags: ["AI", "Productivity"]
+          },
+          {
+            id: 2,
+            title: "Blockchain-Based Digital Identity Management",
+            summary: "Secure and decentralized identity management system using blockchain.",
+            tags: ["Blockchain", "Security"]
+          },
+          {
+            id: 3,
+            title: "Sustainable Tech Practices",
+            summary: "Implementing eco-friendly practices in software development.",
+            tags: ["Sustainability", "Development"]
+          }
+        ]);
+        
+        setProjects([
+          {
+            id: 1,
+            title: "E-commerce Platform",
+            description: "A full-featured e-commerce platform with React and Node.js",
+            category: "Web Development",
+            technologies: ["React", "Node.js", "MongoDB"],
+            featured: true,
+            imageUrl: "project1.jpg"
+          }
+        ]);
+        
+        setTools([
+          {
+            id: 1,
+            name: "Code Companion",
+            description: "AI-powered code review and suggestion tool",
+            category: "Development",
+            link: "https://example.com/code-companion"
+          },
+          {
+            id: 2,
+            name: "Content Generator",
+            description: "Smart content creation assistant for various formats",
+            category: "Content",
+            link: "https://example.com/content-generator"
+          }
+        ]);
       } finally {
         setIsLoading(false);
       }
