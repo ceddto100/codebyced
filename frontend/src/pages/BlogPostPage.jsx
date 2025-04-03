@@ -208,7 +208,7 @@ const BlogPostPage = () => {
           {post.coverImage && (
             <div className="mb-10 rounded-xl overflow-hidden shadow-lg transform hover:shadow-xl transition-all duration-300">
               <img 
-                src={post.coverImage.startsWith('/') ? post.coverImage : `/images/${post.coverImage}`} 
+                src={post.coverImage} 
                 alt={post.title} 
                 className="w-full h-auto transform hover:scale-105 transition-transform duration-700" 
               />

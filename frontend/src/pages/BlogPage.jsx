@@ -194,7 +194,7 @@ const BlogPage = () => {
                 {post.coverImage && (
                   <div className="h-48 overflow-hidden">
                     <img 
-                      src={post.coverImage.startsWith('/') ? post.coverImage : `/images/${post.coverImage}`} 
+                      src={post.coverImage} 
                       alt={post.title} 
                       className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
                     />

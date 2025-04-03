@@ -270,23 +270,23 @@ const HomePage = () => {
       </div>
     </div>
   </div>
-</section>
+      </section>
 
-        {/* Blog Section */}
+      {/* Blog Section */}
         <section className="mb-20">
           <div className="flex justify-between items-center mb-8">
             <div className="relative pb-3">
-              <h2 className="text-2xl font-bold text-gray-800">Latest from the Blog</h2>
+          <h2 className="text-2xl font-bold text-gray-800">Latest from the Blog</h2>
               <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
             </div>
             <Link 
               to="/blog" 
               className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
-              View All Blog Posts
+          >
+            View All Blog Posts
             </Link>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
+        </div>
+        <div className="grid md:grid-cols-2 gap-6">
             {isLoading ? (
               <div className="col-span-2 flex justify-center items-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -314,7 +314,7 @@ const HomePage = () => {
                   <div className="p-6">
                     <p className="text-sm text-gray-500 mb-2">{formatDate(post.date)}</p>
                     <h3 className="text-xl font-semibold mb-2 text-gray-800 hover:text-blue-600 transition-colors duration-200">{post.title}</h3>
-                    <p className="text-gray-600 mb-4">{post.excerpt}</p>
+              <p className="text-gray-600 mb-4">{post.excerpt}</p>
                     <Link 
                       to={`/blog/${post._id}`} 
                       className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center group"
@@ -323,11 +323,11 @@ const HomePage = () => {
                       <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
                     </Link>
                   </div>
-                </div>
+            </div>
               ))
             )}
-          </div>
-        </section>
+        </div>
+      </section>
 
         {/* Wave Divider */}
         <div className="w-full h-16 overflow-hidden my-8">
@@ -336,7 +336,7 @@ const HomePage = () => {
           </svg>
         </div>
 
-       {/* Resume Section */}
+      {/* Resume Section */}
 <section className="mb-20 backdrop-blur-sm bg-white/40 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden">
   {/* Background Image */}
   <div className="absolute inset-0 z-0">
@@ -357,25 +357,25 @@ const HomePage = () => {
       <h2 className="text-2xl font-bold text-gray-800 mb-1">Resume at a Glance</h2>
       <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
     </div>
-    <a 
-      href="/resume" 
+          <a 
+            href="/resume" 
       className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-    >
-      View Full Resume
-    </a>
-  </div>
+          >
+            View Full Resume
+          </a>
+        </div>
   <div className="relative z-10">
     <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{resumeTeaser.title}</h3>
-    <p className="text-gray-600 mb-2">{resumeTeaser.company} | {resumeTeaser.period}</p>
-    <div className="flex flex-wrap gap-2 mt-4">
-      {resumeTeaser.skills.map((skill, index) => (
+          <p className="text-gray-600 mb-2">{resumeTeaser.company} | {resumeTeaser.period}</p>
+          <div className="flex flex-wrap gap-2 mt-4">
+            {resumeTeaser.skills.map((skill, index) => (
         <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 transition-all duration-200 hover:bg-blue-200">
-          {skill}
-        </span>
-      ))}
-    </div>
-  </div>
-</section>
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
         {/* Ideas Section */}
         <section className="mb-20 backdrop-blur-sm bg-white/80 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden">
           <div className="absolute -top-10 -left-10 w-40 h-40 bg-indigo-500/10 rounded-full"></div>
@@ -389,8 +389,8 @@ const HomePage = () => {
             <Link 
               to="/ideas" 
               className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
-              Explore More Ideas
+          >
+            Explore More Ideas
             </Link>
           </div>
           {isLoading ? (
@@ -404,14 +404,14 @@ const HomePage = () => {
           ) : ideas.length === 0 ? (
             <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4 relative z-10">
               No ideas found. Check back soon for new content!
-            </div>
+        </div>
           ) : (
             <ul className="space-y-4 relative z-10">
               {ideas.map((idea, index) => (
                 <li key={idea._id} className="flex items-start p-4 hover:bg-blue-50/50 rounded-lg transition-colors duration-200">
                   <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mr-4 shadow-md">
-                    {index + 1}
-                  </span>
+                {index + 1}
+              </span>
                   <div>
                     <h3 className="font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200">{idea.title}</h3>
                     <p className="text-gray-600 mt-1">{idea.summary}</p>
@@ -428,11 +428,11 @@ const HomePage = () => {
                       </div>
                     )}
                   </div>
-                </li>
-              ))}
-            </ul>
+            </li>
+          ))}
+        </ul>
           )}
-        </section>
+      </section>
 
         {/* Wave Divider */}
         <div className="w-full h-16 overflow-hidden my-8 transform rotate-180">
@@ -441,7 +441,7 @@ const HomePage = () => {
           </svg>
         </div>
 
-        {/* Projects Section */}
+      {/* Projects Section */}
         <section className="mb-20">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div className="relative pb-3">
@@ -451,8 +451,8 @@ const HomePage = () => {
             <Link 
               to="/projects" 
               className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
-              View All Projects
+          >
+            View All Projects
             </Link>
           </div>
           {isLoading ? (
@@ -489,19 +489,19 @@ const HomePage = () => {
                     </span>
                   </div>
                 )}
-              </div>
+        </div>
               
               {/* Project Content */}
               <div className="p-8">
                 <h3 className="text-2xl font-semibold mb-3 bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{projects[0].title}</h3>
                 <p className="text-gray-600 mb-4">{projects[0].description}</p>
-                <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
                   {projects[0].techStack?.map((tech, index) => (
                     <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 transition-all duration-200 hover:bg-blue-200">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+                {tech}
+              </span>
+            ))}
+          </div>
                 <div className="mt-6">
                   {projects[0].githubLink && (
                     <a 
@@ -526,12 +526,12 @@ const HomePage = () => {
                     </a>
                   )}
                 </div>
-              </div>
-            </div>
+          </div>
+        </div>
           )}
-        </section>
+      </section>
 
-        {/* AI Tools Section */}
+      {/* AI Tools Section */}
         <section className="mb-20">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div className="relative pb-3">
@@ -541,8 +541,8 @@ const HomePage = () => {
             <Link 
               to="/tools" 
               className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
-              Explore All Tools
+          >
+            Explore All Tools
             </Link>
           </div>
           {isLoading ? (
@@ -556,9 +556,9 @@ const HomePage = () => {
           ) : tools.length === 0 ? (
             <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4">
               No tools found. Check back soon for new content!
-            </div>
+        </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
               {tools.map(tool => (
                 <div key={tool._id} className="backdrop-blur-sm bg-white/90 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1 relative overflow-hidden">
                   <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/5 rounded-full"></div>
@@ -608,43 +608,43 @@ const HomePage = () => {
                         d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
                       />
                     </svg>
-                  </a>
-                </div>
-              ))}
+              </a>
             </div>
+          ))}
+        </div>
           )}
-        </section>
+      </section>
 
-        {/* Honorable Mentions Section */}
-        <section className="mb-10">
+      {/* Honorable Mentions Section */}
+      <section className="mb-10">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div className="relative pb-3">
               <h2 className="text-2xl font-bold text-gray-800 mb-1">Honorable Mentions</h2>
               <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
             </div>
-            <a 
-              href="/mentions" 
+          <a 
+            href="/mentions" 
               className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
-              See All Mentions
-            </a>
-          </div>
+          >
+            See All Mentions
+          </a>
+        </div>
           <div className="backdrop-blur-sm bg-white/90 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden">
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full"></div>
             <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-indigo-500/5 rounded-full"></div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-              {honorableMentions.map((mention, index) => (
+            {honorableMentions.map((mention, index) => (
                 <div key={index} className="border-l-4 border-blue-500 pl-4 py-3 bg-blue-50/50 rounded-r-lg hover:bg-blue-50 transition-colors duration-200">
                   <h3 className="font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{mention.name}</h3>
-                  <p className="text-gray-600 text-sm">
-                    {mention.year ? `Year: ${mention.year}` : `Project: ${mention.project}`}
-                  </p>
-                </div>
-              ))}
-            </div>
+                <p className="text-gray-600 text-sm">
+                  {mention.year ? `Year: ${mention.year}` : `Project: ${mention.project}`}
+                </p>
+              </div>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
         
         {/* Footer Wave Divider */}
         <div className="w-full h-16 overflow-hidden mt-12">
@@ -652,7 +652,7 @@ const HomePage = () => {
             <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" className="fill-blue-50"></path>
           </svg>
         </div>
-      </div>
+    </div>
     </>
   );
 };
