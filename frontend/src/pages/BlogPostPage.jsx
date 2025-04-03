@@ -35,6 +35,10 @@ const BlogPostPage = () => {
         // Extract the post data and ensure all fields are the correct type
         const postData = response.data;
         
+        // For debugging
+        console.log("Received post data:", postData);
+        console.log("Cover image:", postData.coverImage);
+        
         const sanitizedPost = {
           _id: String(postData._id || ''),
           title: String(postData.title || ''),
@@ -43,7 +47,7 @@ const BlogPostPage = () => {
           excerpt: String(postData.excerpt || ''),
           date: postData.date || new Date().toISOString(),
           tags: Array.isArray(postData.tags) ? postData.tags.map(tag => String(tag)) : [],
-          coverImage: String(postData.coverImage || '')
+          coverImage: postData.coverImage || '' // Preserve the original value if it exists
         };
         
         setPost(sanitizedPost);
@@ -189,7 +193,7 @@ const BlogPostPage = () => {
                 </svg>
                 {formatDate(post.date)}
               </time>
-              {post.tags.length > 0 && (
+              {post.tags && post.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
                   {post.tags.map((tag, index) => (
                     <span 
@@ -205,12 +209,16 @@ const BlogPostPage = () => {
           </header>
           
           {/* Cover image if available */}
-          {post.coverImage && (
+          {post.coverImage && post.coverImage.trim() !== '' && (
             <div className="mb-10 rounded-xl overflow-hidden shadow-lg transform hover:shadow-xl transition-all duration-300">
               <img 
                 src={post.coverImage} 
                 alt={post.title} 
                 className="w-full h-auto transform hover:scale-105 transition-transform duration-700" 
+                onError={(e) => {
+                  console.error("Image failed to load:", post.coverImage);
+                  e.target.style.display = 'none'; // Hide the image if it fails to load
+                }}
               />
             </div>
           )}
