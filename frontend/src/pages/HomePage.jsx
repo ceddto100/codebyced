@@ -530,10 +530,10 @@ const HomePage = () => {
               <img 
                 src="GeoffreyHinton.png" 
                 alt="Geoffrey Hinton Background" 
-                className="w-full h-full object-cover opacity-30"
+                className="w-full h-full object-cover opacity-50"
               />
               {/* Overlay to ensure text readability */}
-              <div className="absolute inset-0 bg-gray-900/80"></div>
+              <div className="absolute inset-0 bg-gray-900/60"></div>
             </div>
             
             <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-xl animate-float" style={{ animationDuration: '15s' }}></div>
