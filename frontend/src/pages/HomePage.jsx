@@ -482,6 +482,47 @@ const HomePage = () => {
             </div>
           </section>
 
+          {/* Resume Section */}
+          <section className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
+            {/* Background Image */}
+            <div className="absolute inset-0 z-0">
+              <img 
+                src="resumecover.png" 
+                alt="Resume Background" 
+                className="w-full h-full object-cover opacity-30"
+              />
+              {/* Overlay to ensure text readability */}
+              <div className="absolute inset-0 bg-gray-900/80"></div>
+            </div>
+            
+            <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-xl animate-float" style={{ animationDuration: '15s' }}></div>
+            <div className="absolute bottom-1/4 right-1/3 w-72 h-72 bg-indigo-500/10 rounded-full filter blur-xl animate-pulse" style={{ animationDuration: '20s' }}></div>
+            
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
+              <div className="relative pb-3">
+                <h2 className="text-2xl font-bold text-gray-100 mb-1">Resume at a Glance</h2>
+                <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
+              </div>
+              <Link 
+                to="/resume" 
+                className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+              >
+                View Full Resume
+              </Link>
+            </div>
+            <div className="relative z-10">
+              <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">{resumeTeaser.title}</h3>
+              <p className="text-gray-300 mb-2">{resumeTeaser.company} | {resumeTeaser.period}</p>
+              <div className="flex flex-wrap gap-2 mt-4">
+                {resumeTeaser.skills.map((skill, index) => (
+                  <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700 transition-all duration-200 hover:bg-indigo-800/70">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </section>
+
           {/* Ideas Section */}
           <section className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
             {/* Background Image */}
