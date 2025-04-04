@@ -20,9 +20,9 @@ const Layout = ({ children }) => {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen">
       {/* Navigation Bar */}
-      <nav className="bg-gray-800 text-white">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-800/95 backdrop-blur-sm text-white shadow-lg">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0 font-bold text-xl">
@@ -90,7 +90,7 @@ const Layout = ({ children }) => {
         </div>
 
         {/* Mobile Navigation Menu */}
-        <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden`}>
+        <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden absolute w-full bg-gray-800/95 backdrop-blur-sm`}>
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <Link
@@ -106,8 +106,8 @@ const Layout = ({ children }) => {
         </div>
       </nav>
 
-      {/* Main Content */}
-      <main className="flex-grow">
+      {/* Main Content with padding for fixed navbar */}
+      <main className="pt-16">
         {children}
       </main>
 
