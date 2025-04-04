@@ -329,11 +329,11 @@ const HomePage = () => {
         </script>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-b from-black via-black to-black relative">
+      <div className="min-h-screen bg-gradient-to-b from-black via-black to-black relative overflow-x-hidden w-full">
         {/* Animated Gradient Orbs */}
-        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full filter blur-3xl animate-float" style={{ animationDuration: '12s' }}></div>
-        <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-teal-400/10 rounded-full filter blur-2xl animate-pulse" style={{ animationDuration: '20s' }}></div>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full filter blur-3xl animate-float" style={{ animationDuration: '15s' }}></div>
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full filter blur-3xl animate-float" style={{ animationDuration: '12s', transform: 'translateZ(0)' }}></div>
+        <div className="absolute bottom-1/4 right-1/3 w-80 h-80 bg-teal-400/10 rounded-full filter blur-2xl animate-pulse" style={{ animationDuration: '20s', transform: 'translateZ(0)' }}></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full filter blur-3xl animate-float" style={{ animationDuration: '15s', transform: 'translateZ(0)' }}></div>
         <div className="absolute bottom-20 left-20 w-72 h-72 bg-indigo-900/15 rounded-full filter blur-2xl animate-pulse" style={{ animationDuration: '25s' }}></div>
         <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-cyan-400/5 rounded-full filter blur-3xl animate-float" style={{ animationDuration: '18s' }}></div>
         
@@ -347,7 +347,7 @@ const HomePage = () => {
         <div className="absolute top-1/5 left-1/5 w-88 h-88 bg-amber-400/10 rounded-full filter blur-2xl animate-float" style={{ animationDuration: '23s' }}></div>
         <div className="absolute bottom-3/4 right-3/4 w-72 h-72 bg-lime-500/10 rounded-full filter blur-3xl animate-pulse" style={{ animationDuration: '20s' }}></div>
 
-        <div className="max-w-6xl mx-auto px-4 py-8 relative">
+        <div className="max-w-6xl mx-auto px-4 py-8 relative overflow-x-hidden">
           {/* Scroll Progress Bar */}
           <div className="fixed top-0 left-0 w-full h-1 z-50">
             <div 

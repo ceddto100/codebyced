@@ -129,7 +129,7 @@ const BlogPostPage = () => {
         {/* ... existing Helmet content ... */}
       </Helmet>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8 overflow-x-hidden w-full">
         {/* Scroll Progress Bar */}
         <div className="fixed top-0 left-0 w-full h-1 z-50">
           <div 
@@ -151,9 +151,9 @@ const BlogPostPage = () => {
             Blog post not found.
           </div>
         ) : (
-          <article className="animate-fade-in">
+          <article className="animate-fade-in overflow-x-hidden w-full">
             {post.coverImage && (
-              <div className="relative h-96 -mx-4 mb-8 overflow-hidden rounded-lg">
+              <div className="relative h-96 sm:-mx-4 mb-8 overflow-hidden rounded-lg">
                 <img 
                   src={post.coverImage} 
                   alt={post.title}
