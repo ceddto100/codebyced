@@ -45,14 +45,14 @@ const HomePage = () => {
               title: "Getting Started with React",
               excerpt: "Learn the basics of React and start building modern web applications.",
               date: new Date().toISOString(),
-              coverImage: "blog1.jpg"
+              coverImage: "/images/hub1.png"
             },
             {
               id: 2,
               title: "Advanced JavaScript Concepts",
               excerpt: "Deep dive into advanced JavaScript concepts every developer should know.",
               date: new Date().toISOString(),
-              coverImage: "blog2.jpg"
+              coverImage: "/images/therise.png"
             }
           ]);
         }
@@ -132,14 +132,14 @@ const HomePage = () => {
             title: "Getting Started with React",
             excerpt: "Learn the basics of React and start building modern web applications.",
             date: new Date().toISOString(),
-            coverImage: "blog1.jpg"
+            coverImage: "/images/hub1.png"
           },
           {
             id: 2,
             title: "Advanced JavaScript Concepts",
             excerpt: "Deep dive into advanced JavaScript concepts every developer should know.",
             date: new Date().toISOString(),
-            coverImage: "blog2.jpg"
+            coverImage: "/images/therise.png"
           }
         ]);
         
@@ -177,15 +177,15 @@ const HomePage = () => {
         ]);
         
         setTools([
-          {
-            id: 1,
+    {
+      id: 1,
             name: "Code Companion",
             description: "AI-powered code review and suggestion tool",
             category: "Development",
             link: "https://example.com/code-companion"
-          },
-          {
-            id: 2,
+    },
+    {
+      id: 2,
             name: "Content Generator",
             description: "Smart content creation assistant for various formats",
             category: "Content",
@@ -418,14 +418,14 @@ const HomePage = () => {
                     Welcome to My Digital Space
                   </h1>
                   <p className="text-xl text-gray-300">
-                    Explore my projects, ideas, and journey through the world of technology and development.
-                  </p>
+          Explore my projects, ideas, and journey through the world of technology and development.
+        </p>
                 </div>
               </div>
             </div>
-          </section>
+      </section>
 
-          {/* Blog Section */}
+      {/* Blog Section */}
           <section className="mb-20">
             <div className="flex justify-between items-center mb-8">
               <div className="relative pb-3">
@@ -435,11 +435,11 @@ const HomePage = () => {
               <Link 
                 to="/blog" 
                 className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-              >
-                View All Blog Posts
+          >
+            View All Blog Posts
               </Link>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6">
+        </div>
+        <div className="grid md:grid-cols-2 gap-6">
               {isLoading ? (
                 <div className="col-span-2 flex justify-center items-center py-12">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -476,13 +476,13 @@ const HomePage = () => {
                         <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
                       </Link>
                     </div>
-                  </div>
+            </div>
                 ))
               )}
-            </div>
-          </section>
+        </div>
+      </section>
 
-          {/* Resume Section */}
+      {/* Resume Section */}
           <section className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
@@ -506,24 +506,24 @@ const HomePage = () => {
               <Link 
                 to="/resume" 
                 className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-              >
-                View Full Resume
+          >
+            View Full Resume
               </Link>
-            </div>
+        </div>
             <div className="relative z-10">
               <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">{resumeTeaser.title}</h3>
               <p className="text-gray-300 mb-2">{resumeTeaser.company} | {resumeTeaser.period}</p>
-              <div className="flex flex-wrap gap-2 mt-4">
-                {resumeTeaser.skills.map((skill, index) => (
+          <div className="flex flex-wrap gap-2 mt-4">
+            {resumeTeaser.skills.map((skill, index) => (
                   <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700 transition-all duration-200 hover:bg-indigo-800/70">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </section>
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* Ideas Section */}
+      {/* Ideas Section */}
           <section className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
@@ -547,8 +547,8 @@ const HomePage = () => {
               <Link 
                 to="/ideas" 
                 className="bg-indigo-700 hover:bg-indigo-600 hover:shadow-indigo-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-              >
-                Explore More Ideas
+          >
+            Explore More Ideas
               </Link>
             </div>
             {isLoading ? (
@@ -562,14 +562,14 @@ const HomePage = () => {
             ) : ideas.length === 0 ? (
               <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg relative z-10">
                 No ideas found. Check back soon for new content!
-              </div>
+        </div>
             ) : (
               <ul className="space-y-4 relative z-10">
                 {ideas.map((idea, index) => (
                   <li key={idea._id} className="flex items-start p-4 hover:bg-gray-800/50 rounded-lg transition-colors duration-200">
                     <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mr-4 shadow-md">
-                      {index + 1}
-                    </span>
+                {index + 1}
+              </span>
                     <div>
                       <h3 className="font-semibold text-gray-100 hover:text-blue-400 transition-colors duration-200">{idea.title}</h3>
                       <p className="text-gray-300 mt-1">{idea.summary}</p>
@@ -586,13 +586,13 @@ const HomePage = () => {
                         </div>
                       )}
                     </div>
-                  </li>
-                ))}
-              </ul>
+            </li>
+          ))}
+        </ul>
             )}
-          </section>
+      </section>
 
-          {/* Projects Section */}
+      {/* Projects Section */}
           <section className="mb-20">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
               <div className="relative pb-3">
@@ -602,8 +602,8 @@ const HomePage = () => {
               <Link 
                 to="/projects" 
                 className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-              >
-                View All Projects
+          >
+            View All Projects
               </Link>
             </div>
             {isLoading ? (
@@ -640,19 +640,19 @@ const HomePage = () => {
                       </span>
                     </div>
                   )}
-                </div>
+        </div>
                 
                 {/* Project Content */}
                 <div className="p-8">
                   <h3 className="text-2xl font-semibold mb-3 bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{projects[0].title}</h3>
                   <p className="text-gray-600 mb-4">{projects[0].description}</p>
-                  <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
                     {projects[0].techStack?.map((tech, index) => (
                       <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 transition-all duration-200 hover:bg-blue-200">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                {tech}
+              </span>
+            ))}
+          </div>
                   <div className="mt-6">
                     {projects[0].githubLink && (
                       <a 
@@ -677,12 +677,12 @@ const HomePage = () => {
                       </a>
                     )}
                   </div>
-                </div>
-              </div>
+          </div>
+        </div>
             )}
-          </section>
+      </section>
 
-          {/* AI Tools Section */}
+      {/* AI Tools Section */}
           <section className="mb-20">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
               <div className="relative pb-3">
@@ -692,8 +692,8 @@ const HomePage = () => {
               <Link 
                 to="/tools" 
                 className="bg-indigo-700 hover:bg-indigo-600 hover:shadow-indigo-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-              >
-                Explore All Tools
+          >
+            Explore All Tools
               </Link>
             </div>
             {isLoading ? (
@@ -707,9 +707,9 @@ const HomePage = () => {
             ) : tools.length === 0 ? (
               <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4">
                 No tools found. Check back soon for new content!
-              </div>
+        </div>
             ) : (
-              <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
                 {tools.map(tool => (
                   <div key={tool._id} className="backdrop-blur-sm bg-gray-900/80 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-800 transform hover:-translate-y-1 relative overflow-hidden">
                     <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/5 rounded-full"></div>
@@ -759,44 +759,44 @@ const HomePage = () => {
                           d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
                         />
                       </svg>
-                    </a>
-                  </div>
-                ))}
-              </div>
+              </a>
+            </div>
+          ))}
+        </div>
             )}
-          </section>
+      </section>
 
-          {/* Honorable Mentions Section */}
-          <section className="mb-10">
+      {/* Honorable Mentions Section */}
+      <section className="mb-10">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
               <div className="relative pb-3">
                 <h2 className="text-2xl font-bold text-gray-100 mb-1">Honorable Mentions</h2>
                 <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
               </div>
-              <a 
-                href="/mentions" 
+          <a 
+            href="/mentions" 
                 className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-              >
-                See All Mentions
-              </a>
-            </div>
+          >
+            See All Mentions
+          </a>
+        </div>
             <div className="backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-800 relative overflow-hidden">
               <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full"></div>
               <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-indigo-500/5 rounded-full"></div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-                {honorableMentions.map((mention, index) => (
+            {honorableMentions.map((mention, index) => (
                   <div key={index} className="border-l-4 border-blue-500 pl-4 py-3 bg-blue-50/50 rounded-r-lg hover:bg-blue-50 transition-colors duration-200">
                     <h3 className="font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{mention.name}</h3>
-                    <p className="text-gray-600 text-sm">
-                      {mention.year ? `Year: ${mention.year}` : `Project: ${mention.project}`}
-                    </p>
-                  </div>
-                ))}
+                <p className="text-gray-600 text-sm">
+                  {mention.year ? `Year: ${mention.year}` : `Project: ${mention.project}`}
+                </p>
               </div>
-            </div>
-          </section>
+            ))}
+          </div>
         </div>
+      </section>
+    </div>
       </div>
     </>
   );

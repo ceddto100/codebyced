@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import { getIdeas } from '../services/ideasService';
+import PageLayout from '../components/PageLayout';
 
 const IdeasPage = () => {
   const [ideas, setIdeas] = useState([]);
@@ -139,7 +140,7 @@ const IdeasPage = () => {
   };
 
   return (
-    <>
+    <PageLayout>
       <Helmet>
         <title>Ideas & Concepts | Cedrick Carter - Technology Innovation</title>
         <meta name="description" content="Explore my collection of innovative ideas and concepts in software development, business automation, and technology. Discover thought experiments and future possibilities." />
@@ -167,7 +168,7 @@ const IdeasPage = () => {
         </script>
       </Helmet>
 
-      <div className="max-w-6xl mx-auto px-4 py-8 relative">
+      <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Scroll Progress Bar */}
         <div className="fixed top-0 left-0 w-full h-1 z-50">
           <div 
@@ -175,138 +176,101 @@ const IdeasPage = () => {
             style={{ width: `${scrollProgress}%` }}
           ></div>
         </div>
-        
-        {/* Decorative Background Elements */}
-        <div className="absolute top-20 right-0 w-64 h-64 bg-blue-500/5 rounded-full filter blur-3xl animate-float"></div>
-        <div className="absolute bottom-40 left-10 w-80 h-80 bg-indigo-500/5 rounded-full filter blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
-        
-        <header className="mb-12 text-center md:text-left animate-fade-in-down">
-          <div className="relative pb-3 inline-block">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">Ideas & Concepts</h1>
-            <div className="absolute bottom-0 left-0 w-32 h-1 bg-blue-500 rounded-full"></div>
-          </div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto md:mx-0 mt-4">
-            Explore my collection of ideas, concepts, and thought experiments across various domains.
-          </p>
-        </header>
 
-        {/* Wave Divider */}
-        <div className="w-full h-16 overflow-hidden my-8">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-full">
-            <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" className="fill-blue-50"></path>
-          </svg>
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4 text-gray-100">Ideas Lab</h1>
+          <p className="text-xl text-gray-300">A collection of innovative concepts and experimental projects.</p>
         </div>
 
-        {/* Tag filter */}
-        {allTags.length > 0 && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-10 relative z-10"
+        {/* Filter Tags */}
+        <div className="flex flex-wrap gap-2 mb-8 justify-center">
+          <button
+            onClick={() => setSelectedTag(null)}
+            className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+              !selectedTag
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
+                : 'bg-gray-900/80 text-gray-300 hover:bg-gray-800/80'
+            }`}
           >
-            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-              <button
-                onClick={() => setSelectedTag(null)}
-                className={`px-4 py-2 rounded-full text-sm font-medium shadow-sm transition-all duration-300 ${
-                  selectedTag === null
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white transform hover:scale-105'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:-translate-y-1'
-                }`}
-              >
-                All Ideas
-              </button>
-              {allTags.map(tag => (
-                <button
-                  key={tag}
-                  onClick={() => setSelectedTag(tag)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium shadow-sm transition-all duration-300 ${
-                    selectedTag === tag
-                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white transform hover:scale-105'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:-translate-y-1'
-                  }`}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
+            All Ideas
+          </button>
+          {allTags.map(tag => (
+            <button
+              key={tag}
+              onClick={() => setSelectedTag(tag)}
+              className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                selectedTag === tag
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
+                  : 'bg-gray-900/80 text-gray-300 hover:bg-gray-800/80'
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
 
-        {isLoading ? (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
-        ) : error ? (
-          <div className="backdrop-blur-sm bg-white/90 bg-red-100 border-l-4 border-red-500 text-red-700 p-6 rounded-lg shadow-md">
-            <p>{error}</p>
-          </div>
-        ) : filteredIdeas.length === 0 ? (
-          <div className="backdrop-blur-sm bg-white/90 bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-6 rounded-lg shadow-md">
-            <p>No ideas found with the selected filter. Try another tag or check back later!</p>
-          </div>
-        ) : (
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {filteredIdeas.map((idea) => (
-              <motion.div
+        {/* Ideas Grid */}
+        <div className="space-y-6">
+          {isLoading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          ) : error ? (
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-lg">
+              {error}
+            </div>
+          ) : filteredIdeas.length === 0 ? (
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg">
+              No ideas found with the selected tag.
+            </div>
+          ) : (
+            filteredIdeas.map((idea, index) => (
+              <div
                 key={idea._id}
-                className="backdrop-blur-sm bg-white/90 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 transform hover:-translate-y-2 relative"
-                variants={cardVariants}
-                initial="offscreen"
-                whileInView="onscreen"
-                viewport={{ once: true, amount: 0.1 }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 p-6"
               >
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full"></div>
-                <div className="p-6 relative z-10">
-                  <h2 className="text-xl font-semibold mb-3 bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">
-                    {idea.title}
-                  </h2>
-                  <p className="text-gray-600 mb-4">
-                    {idea.summary}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {idea.tags?.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200 transition-all duration-200 hover:bg-blue-200"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-semibold">
+                    {index + 1}
                   </div>
-                  {idea.readMoreLink && (
-                    <div className="mt-4 pt-4 border-t border-gray-100">
-                      <a 
-                        href={idea.readMoreLink} 
-                        className="text-blue-600 font-medium hover:text-blue-800 transition-colors duration-200 inline-flex items-center group"
+                  <div className="flex-grow">
+                    <h2 className="text-xl font-semibold mb-2 text-gray-100">{idea.title}</h2>
+                    <p className="text-gray-300 mb-4">{idea.summary}</p>
+                    
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {idea.tags.map((tag, tagIndex) => (
+                        <button
+                          key={tagIndex}
+                          onClick={() => setSelectedTag(tag)}
+                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700 hover:bg-indigo-800/70 transition-colors duration-200"
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Read More Link */}
+                    {idea.readMoreLink && (
+                      <a
+                        href={idea.readMoreLink}
                         target="_blank"
                         rel="noopener noreferrer"
+                        className="inline-flex items-center mt-4 text-blue-400 hover:text-blue-300 font-medium group"
                       >
-                        Explore this idea 
+                        Read more
                         <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
                       </a>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-        
-        {/* Footer Wave Divider */}
-        <div className="w-full h-16 overflow-hidden mt-16">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-full">
-            <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" className="fill-indigo-50"></path>
-          </svg>
+              </div>
+            ))
+          )}
         </div>
       </div>
-    </>
+    </PageLayout>
   );
 };
 

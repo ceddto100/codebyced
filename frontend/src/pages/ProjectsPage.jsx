@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import { getProjects } from '../services/projectsService';
 import { Link } from 'react-router-dom';
+import PageLayout from '../components/PageLayout';
 
 const ProjectsPage = () => {
   const [projects, setProjects] = useState([]);
@@ -10,8 +11,19 @@ const ProjectsPage = () => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
   const [categories, setCategories] = useState([]);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
+    // Add scroll progress tracking
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.offsetHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      setScrollProgress(scrollPercent);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    
     const fetchProjects = async () => {
       setIsLoading(true);
       try {
@@ -53,6 +65,8 @@ const ProjectsPage = () => {
     };
 
     fetchProjects();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // Filter projects by category
@@ -132,7 +146,7 @@ const ProjectsPage = () => {
   };
 
   return (
-    <>
+    <PageLayout>
       <Helmet>
         <title>Projects | Cedrick Carter - Software Development Portfolio</title>
         <meta name="description" content="Explore my portfolio of software development projects, including web applications, mobile apps, and automation solutions. Specializing in business automation, API integration, and AI." />
@@ -161,162 +175,124 @@ const ProjectsPage = () => {
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <motion.header 
-          className="mb-10 text-center"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h1 className="text-4xl font-bold text-gray-800 mb-3">My Projects</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            A collection of my work across web development, mobile apps, and more.
-          </p>
-        </motion.header>
+        {/* Scroll Progress Bar */}
+        <div className="fixed top-0 left-0 w-full h-1 z-50">
+          <div 
+            className="h-full bg-blue-600 transition-all duration-200"
+            style={{ width: `${scrollProgress}%` }}
+          ></div>
+        </div>
 
-        {/* Filter buttons */}
-        {categories.length > 0 && (
-          <motion.div 
-            className="flex flex-wrap justify-center gap-3 mb-10"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4 text-gray-100">Projects</h1>
+          <p className="text-xl text-gray-300">Exploring innovation through code and creativity.</p>
+        </div>
+
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap gap-2 mb-8 justify-center">
+          <button
+            onClick={() => setFilter('all')}
+            className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+              filter === 'all'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
+                : 'bg-gray-900/80 text-gray-300 hover:bg-gray-800/80'
+            }`}
           >
+            All Projects
+          </button>
+          {categories.map(category => (
             <button
-              onClick={() => setFilter('all')}
-              className={`px-5 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                filter === 'all'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              key={category}
+              onClick={() => setFilter(category)}
+              className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                filter === category
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
+                  : 'bg-gray-900/80 text-gray-300 hover:bg-gray-800/80'
               }`}
             >
-              All Projects
+              {category}
             </button>
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setFilter(category)}
-                className={`px-5 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                  filter === category
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </motion.div>
-        )}
+          ))}
+        </div>
 
-        {isLoading ? (
-          <div className="flex justify-center items-center py-16">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
-        ) : error ? (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md">
-            <p>{error}</p>
-          </div>
-        ) : filteredProjects.length === 0 ? (
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded shadow-md">
-            <p>No projects found in this category. Please try another filter.</p>
-          </div>
-        ) : (
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {filteredProjects.map((project) => (
-              <motion.div
+        {/* Projects Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {isLoading ? (
+            <div className="col-span-full flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          ) : error ? (
+            <div className="col-span-full backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-lg">
+              {error}
+            </div>
+          ) : filteredProjects.length === 0 ? (
+            <div className="col-span-full backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg">
+              No projects found in this category.
+            </div>
+          ) : (
+            filteredProjects.map(project => (
+              <div 
                 key={project._id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden"
-                variants={cardVariants}
-                whileHover={{ 
-                  y: -10, 
-                  transition: { duration: 0.2 } 
-                }}
+                className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 transform hover:-translate-y-1"
               >
-                {/* Project Image */}
-                <div className="h-48 overflow-hidden relative">
-                  {project.image ? (
+                {project.image && (
+                  <div className="h-48 overflow-hidden">
                     <img 
                       src={project.image} 
-                      alt={project.title} 
+                      alt={project.title}
                       className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
                     />
-                  ) : (
-                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                      <span className="text-gray-400">No image available</span>
-                    </div>
-                  )}
-                  {project.category && (
-                    <div className="absolute top-3 right-3">
-                      <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">
-                        {project.category}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                
-                {/* Project Content */}
+                  </div>
+                )}
                 <div className="p-6">
-                  <h2 className="text-xl font-bold text-gray-800 mb-2">{project.title}</h2>
-                  <p className="text-gray-600 mb-4">{project.description}</p>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-100">{project.title}</h3>
+                  <p className="text-gray-300 mb-4">{project.description}</p>
                   
-                  {/* Tech Stack */}
-                  {project.techStack && project.techStack.length > 0 && (
-                    <div className="mb-4">
-                      <h3 className="text-sm font-medium text-gray-700 mb-2">Tech Stack</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {project.techStack.map((tech, index) => (
-                          <span 
-                            key={index} 
-                            className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {(project.technologies || []).map((tech, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                   
                   {/* Links */}
-                  <div className="flex space-x-3 pt-4 border-t border-gray-100">
-                    {project.githubLink && (
-                      <a 
-                        href={project.githubLink} 
-                        target="_blank" 
+                  <div className="flex gap-4 mt-4">
+                    {project.demoLink && (
+                      <a
+                        href={project.demoLink}
+                        target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center text-gray-600 hover:text-blue-600 transition-colors"
+                        className="text-cyan-400 hover:text-cyan-300 font-medium inline-flex items-center group bg-gray-800/50 px-3 py-1.5 rounded-lg hover:bg-gray-800/80 transition-all duration-300"
                       >
-                        <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                        </svg>
-                        GitHub
+                        Live Demo
+                        <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
                       </a>
                     )}
-                    
-                    {project.demoLink && (
-                      <a 
-                        href={project.demoLink} 
-                        target="_blank" 
+                    {project.githubLink && (
+                      <a
+                        href={project.githubLink}
+                        target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center text-gray-600 hover:text-blue-600 transition-colors"
+                        className="text-cyan-400 hover:text-cyan-300 font-medium inline-flex items-center group bg-gray-800/50 px-3 py-1.5 rounded-lg hover:bg-gray-800/80 transition-all duration-300"
                       >
-                        <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                        Live Demo
+                        GitHub
+                        <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
                       </a>
                     )}
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
+              </div>
+            ))
+          )}
+        </div>
       </div>
-    </>
+    </PageLayout>
   );
 };
 
