@@ -5,6 +5,7 @@ import { getBlogPost } from '../services/blogService';
 import ReactMarkdown from 'react-markdown';
 import { Helmet } from 'react-helmet';
 import PageLayout from '../components/PageLayout';
+import ShareButton from '../components/ShareButton';
 
 const BlogPostPage = () => {
   const { id } = useParams();
@@ -163,15 +164,24 @@ const BlogPostPage = () => {
             )}
 
             <header className="mb-8">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-100">{post.title}</h1>
-              <div className="flex items-center text-gray-400">
-                <span className="mr-4">{formatDate(post.date)}</span>
-                {post.readTime && (
-                  <>
-                    <span className="mx-2">•</span>
-                    <span>{post.readTime} min read</span>
-                  </>
-                )}
+              <div className="flex justify-between items-start">
+                <div>
+                  <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-100">{post.title}</h1>
+                  <div className="flex items-center text-gray-400">
+                    <span className="mr-4">{formatDate(post.date)}</span>
+                    {post.readTime && (
+                      <>
+                        <span className="mx-2">•</span>
+                        <span>{post.readTime} min read</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+                <ShareButton 
+                  url={window.location.href}
+                  title={post.title}
+                  description={post.excerpt}
+                />
               </div>
             </header>
 

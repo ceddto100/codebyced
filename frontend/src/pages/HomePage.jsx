@@ -5,6 +5,7 @@ import { getBlogPosts } from '../services/blogService';
 import { getIdeas } from '../services/ideasService';
 import { getProjects } from '../services/projectsService';
 import { getTools } from '../services/toolsService';
+import ShareButton from '../components/ShareButton';
 
 const HomePage = () => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -454,7 +455,15 @@ const HomePage = () => {
                 </div>
               ) : (
                 blogPosts.map(post => (
-                  <div key={post._id} className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 transform hover:-translate-y-1">
+                  <div key={post._id} className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 transform hover:-translate-y-1 relative">
+                    {/* Share Button */}
+                    <div className="absolute top-2 right-2 z-10">
+                      <ShareButton 
+                        url={`${window.location.origin}/blog/${post._id}`}
+                        title={post.title}
+                        description={post.excerpt}
+                      />
+                    </div>
                     {post.coverImage && (
                       <div className="h-48 overflow-hidden">
                         <img 
