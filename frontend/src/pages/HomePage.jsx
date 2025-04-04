@@ -516,62 +516,73 @@ const HomePage = () => {
         </div>
       </section>
         {/* Ideas Section */}
-        <section className="mb-20 backdrop-blur-sm bg-white/80 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden">
-          <div className="absolute -top-10 -left-10 w-40 h-40 bg-indigo-500/10 rounded-full"></div>
-          <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-blue-500/5 rounded-full"></div>
-          
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
-            <div className="relative pb-3">
-              <h2 className="text-2xl font-bold text-gray-800 mb-1">Latest Ideas</h2>
-              <div className="absolute bottom-0 left-0 w-20 h-1 bg-indigo-500 rounded-full"></div>
-            </div>
-            <Link 
-              to="/ideas" 
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-          >
-            Explore More Ideas
-            </Link>
+<section className="mb-20 backdrop-blur-sm bg-white/40 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden">
+  {/* Background Image */}
+  <div className="absolute inset-0 z-0">
+    <img 
+      src="GeoffreyHinton.png" 
+      alt="Geoffrey Hinton Background" 
+      className="w-full h-full object-cover opacity-75"
+    />
+    {/* Overlay to ensure text readability */}
+    <div className="absolute inset-0 bg-white/60"></div>
+  </div>
+  
+  <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/10 rounded-full"></div>
+  <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-blue-500/5 rounded-full"></div>
+  
+  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
+    <div className="relative pb-3">
+      <h2 className="text-2xl font-bold text-gray-800 mb-1">Latest Ideas</h2>
+      <div className="absolute bottom-0 left-0 w-20 h-1 bg-indigo-500 rounded-full"></div>
+    </div>
+    <Link 
+      to="/ideas" 
+      className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+    >
+      Explore More Ideas
+    </Link>
+  </div>
+  {isLoading ? (
+    <div className="flex justify-center items-center py-12 relative z-10">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+    </div>
+  ) : error ? (
+    <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 relative z-10">
+      {error}
+    </div>
+  ) : ideas.length === 0 ? (
+    <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4 relative z-10">
+      No ideas found. Check back soon for new content!
+    </div>
+  ) : (
+    <ul className="space-y-4 relative z-10">
+      {ideas.map((idea, index) => (
+        <li key={idea._id} className="flex items-start p-4 hover:bg-blue-50/50 rounded-lg transition-colors duration-200">
+          <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mr-4 shadow-md">
+            {index + 1}
+          </span>
+          <div>
+            <h3 className="font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200">{idea.title}</h3>
+            <p className="text-gray-600 mt-1">{idea.summary}</p>
+            {idea.tags && idea.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {idea.tags.map((tag, tagIndex) => (
+                  <span
+                    key={tagIndex}
+                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-200"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
-          {isLoading ? (
-            <div className="flex justify-center items-center py-12 relative z-10">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-            </div>
-          ) : error ? (
-            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 relative z-10">
-              {error}
-            </div>
-          ) : ideas.length === 0 ? (
-            <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4 relative z-10">
-              No ideas found. Check back soon for new content!
-        </div>
-          ) : (
-            <ul className="space-y-4 relative z-10">
-              {ideas.map((idea, index) => (
-                <li key={idea._id} className="flex items-start p-4 hover:bg-blue-50/50 rounded-lg transition-colors duration-200">
-                  <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mr-4 shadow-md">
-                {index + 1}
-              </span>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200">{idea.title}</h3>
-                    <p className="text-gray-600 mt-1">{idea.summary}</p>
-                    {idea.tags && idea.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {idea.tags.map((tag, tagIndex) => (
-                          <span
-                            key={tagIndex}
-                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-200"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-            </li>
-          ))}
-        </ul>
-          )}
-      </section>
+        </li>
+      ))}
+    </ul>
+  )}
+</section>
 
         {/* Wave Divider */}
         <div className="w-full h-16 overflow-hidden my-8 transform rotate-180">
