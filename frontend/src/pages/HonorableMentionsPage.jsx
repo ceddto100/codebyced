@@ -203,55 +203,57 @@ const HonorableMentionsPage = () => {
         </div>
 
         {/* Mentions Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-col gap-8">
           {isLoading ? (
-            <div className="col-span-full flex justify-center items-center py-12">
+            <div className="w-full flex justify-center items-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
             </div>
           ) : error ? (
-            <div className="col-span-full backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-lg">
+            <div className="w-full backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-lg">
               {error}
             </div>
           ) : filteredHonors.length === 0 ? (
-            <div className="col-span-full backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg">
+            <div className="w-full backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg">
               No mentions found for the selected year.
             </div>
           ) : (
             filteredHonors.map(honor => (
               <div
                 key={honor.id}
-                className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 overflow-hidden"
+                className="w-full backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 overflow-hidden"
               >
-                {honor.image && (
-                  <div className="h-48 overflow-hidden">
-                    <img 
-                      src={honor.image} 
-                      alt={honor.title}
-                      className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                )}
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-gray-400">{honor.year}</span>
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700">
-                      {honor.organization}
-                    </span>
-                  </div>
-                  <h2 className="text-xl font-semibold mb-2 text-gray-100">{honor.title}</h2>
-                  <p className="text-gray-300 mb-4">{honor.description}</p>
-                  
-                  {honor.link && (
-                    <a
-                      href={honor.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center group"
-                    >
-                      Learn more
-                      <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                    </a>
+                <div className="flex flex-col md:flex-row">
+                  {honor.image && (
+                    <div className="md:w-1/3 h-48 md:h-auto overflow-hidden">
+                      <img 
+                        src={honor.image} 
+                        alt={honor.title}
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
                   )}
+                  <div className="flex-1 p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-gray-400">{honor.year}</span>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700">
+                        {honor.organization}
+                      </span>
+                    </div>
+                    <h2 className="text-xl font-semibold mb-2 text-gray-100">{honor.title}</h2>
+                    <p className="text-gray-300 mb-4">{honor.description}</p>
+                    
+                    {honor.link && (
+                      <a
+                        href={honor.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center group"
+                      >
+                        Learn more
+                        <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             ))
