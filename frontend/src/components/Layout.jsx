@@ -1,5 +1,5 @@
 // components/Layout.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Layout = ({ children }) => {
@@ -8,6 +8,25 @@ const Layout = ({ children }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    // Add ElevenLabs Convai script
+    const script = document.createElement('script');
+    script.src = 'https://elevenlabs.io/convai-widget/index.js';
+    script.async = true;
+    script.type = 'text/javascript';
+    document.body.appendChild(script);
+
+    // Create widget element
+    const widget = document.createElement('div');
+    widget.innerHTML = '<elevenlabs-convai agent-id="klyy8evZGhBfu4B4LDuy"></elevenlabs-convai>';
+    document.body.appendChild(widget);
+
+    return () => {
+      document.body.removeChild(script);
+      document.body.removeChild(widget);
+    };
+  }, []);
 
   const navLinks = [
     { to: '/', label: 'Home' },
