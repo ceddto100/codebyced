@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const searchRoutes = require('./routes/searchRoutes');
 
 // Import middleware
 const configureCors = require('./middleware/cors');
@@ -27,9 +28,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/codebyceddb', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
 app.use('/api/blog', blogRoutes);
@@ -38,6 +42,7 @@ app.use('/api/ideas', ideasRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/tools', toolsRoutes);
 app.use('/api/honors', honorsRoutes);
+app.use('/api', searchRoutes);
 
 // 404 handler for undefined routes
 app.use((req, res, next) => {
