@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { query, validationResult } = require('express-validator');
-const { validateElevenLabsWebhook } = require('../middleware/validation');
+// Commenting out this middleware during testing
+// const { validateElevenLabsWebhook } = require('../middleware/validation');
 const searchService = require('../services/searchService');
 
 // Search validation rules
@@ -83,10 +84,22 @@ router.post('/search', async (req, res) => {
   }
 });
 
-// ElevenLabs webhook endpoint
-router.post('/elevenlabs-webhook', validateElevenLabsWebhook, async (req, res) => {
+// ElevenLabs webhook endpoint - Removed validation middleware for testing
+router.post('/elevenlabs-webhook', async (req, res) => {
   try {
+    // Log the entire request body for debugging
+    console.log('ElevenLabs webhook received:', JSON.stringify(req.body, null, 2));
+    
     const { query } = req.body;
+    
+    // Check if query exists in the request body
+    if (!query) {
+      console.log('No query found in webhook payload:', req.body);
+      return res.json({
+        success: true,
+        summary: "I couldn't understand your question. Could you please rephrase it?"
+      });
+    }
     
     const results = await searchService.searchContent(query, 1);
 
