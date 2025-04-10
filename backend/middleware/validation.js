@@ -119,17 +119,10 @@ const validateHonor = [
   handleValidationErrors
 ];
 
-// ElevenLabs webhook validation schema
-const elevenLabsWebhookSchema = {
-  type: 'object',
-  properties: {
-    query: {
-      type: 'string',
-      description: 'Keyword or phrase the user wants to search for.'
-    }
-  },
-  required: ['query']
-};
+// ElevenLabs webhook validation using Joi
+const elevenLabsWebhookSchema = Joi.object({
+  query: Joi.string().required().description('Keyword or phrase the user wants to search for.')
+});
 
 module.exports = {
   validateBlogPost,
@@ -139,7 +132,7 @@ module.exports = {
   validateTool,
   validateHonor,
   validateElevenLabsWebhook: (req, res, next) => {
-    const { error } = Joi.object(elevenLabsWebhookSchema).validate(req.body);
+    const { error } = elevenLabsWebhookSchema.validate(req.body);
     if (error) {
       return res.status(400).json({
         success: false,
