@@ -102,17 +102,22 @@ router.get('/search', async (req, res) => {
     }
 
     const results = await performSearch(query, {
-      limit: parseInt(req.query.limit) || 5,
-      maxSentences: parseInt(req.query.maxSentences) || 3
+      limit: 1, // Limit to 1 result for webhook responses
+      maxSentences: 3
     });
 
-    // Return results
-    res.json({
-      success: true,
-      query,
-      resultCount: results.length,
-      results
-    });
+    // Return simplified response for webhook
+    if (results.length > 0) {
+      res.json({
+        success: true,
+        summary: results[0].summary || results[0].content.slice(0, 250) + '...'
+      });
+    } else {
+      res.json({
+        success: true,
+        summary: "I couldn't find any information about that topic."
+      });
+    }
 
   } catch (error) {
     console.error('Search error:', error);
@@ -159,6 +164,44 @@ router.post('/search', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'An error occurred while searching. Please try again.'
+    });
+  }
+});
+
+// ElevenLabs webhook endpoint
+router.post('/elevenlabs-webhook', async (req, res) => {
+  try {
+    const { query } = req.body;
+    
+    if (!query) {
+      return res.status(400).json({
+        success: false,
+        error: 'Query is required'
+      });
+    }
+
+    const result = await performSearch(query, {
+      limit: 1,
+      maxSentences: 3
+    });
+
+    if (result.length === 0) {
+      return res.json({
+        success: true,
+        summary: "I couldn't find any relevant information about that topic. Could you please rephrase your question?"
+      });
+    }
+
+    // Return a simplified response format
+    res.json({
+      success: true,
+      summary: result[0].summary
+    });
+  } catch (error) {
+    console.error('Webhook search error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'An error occurred while processing your request'
     });
   }
 });
