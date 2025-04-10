@@ -1,4 +1,5 @@
 const { body, validationResult } = require('express-validator');
+const Joi = require('joi');
 
 // Utility function to process validation results
 const handleValidationErrors = (req, res, next) => {
@@ -118,11 +119,33 @@ const validateHonor = [
   handleValidationErrors
 ];
 
+// ElevenLabs webhook validation schema
+const elevenLabsWebhookSchema = {
+  type: 'object',
+  properties: {
+    query: {
+      type: 'string',
+      description: 'Keyword or phrase the user wants to search for.'
+    }
+  },
+  required: ['query']
+};
+
 module.exports = {
   validateBlogPost,
   validateResumeEntry,
   validateIdea,
   validateProject,
   validateTool,
-  validateHonor
+  validateHonor,
+  validateElevenLabsWebhook: (req, res, next) => {
+    const { error } = Joi.object(elevenLabsWebhookSchema).validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        error: error.details[0].message
+      });
+    }
+    next();
+  }
 };

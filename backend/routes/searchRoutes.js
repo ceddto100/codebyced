@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { SummarizerManager } = require('node-summarizer');
 const Content = require('../models/Content');
+const { validateElevenLabsWebhook } = require('../middleware/validation');
+const searchService = require('../services/searchService');
 
 // Utility function to generate a summary focused on query-relevant content
 const generateQueryFocusedSummary = async (text, query, maxSentences = 3) => {
@@ -169,23 +171,16 @@ router.post('/search', async (req, res) => {
 });
 
 // ElevenLabs webhook endpoint
-router.post('/elevenlabs-webhook', async (req, res) => {
+router.post('/elevenlabs-webhook', validateElevenLabsWebhook, async (req, res) => {
   try {
     const { query } = req.body;
     
-    if (!query) {
-      return res.status(400).json({
-        success: false,
-        error: 'Query is required'
-      });
-    }
-
-    const result = await performSearch(query, {
+    const result = await searchService.search(query, {
       limit: 1,
       maxSentences: 3
     });
 
-    if (result.length === 0) {
+    if (result.data.length === 0) {
       return res.json({
         success: true,
         summary: "I couldn't find any relevant information about that topic. Could you please rephrase your question?"
@@ -195,7 +190,7 @@ router.post('/elevenlabs-webhook', async (req, res) => {
     // Return a simplified response format
     res.json({
       success: true,
-      summary: result[0].summary
+      summary: result.data[0].summary
     });
   } catch (error) {
     console.error('Webhook search error:', error);
