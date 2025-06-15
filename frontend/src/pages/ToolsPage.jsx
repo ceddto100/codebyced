@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import PageLayout from '../components/PageLayout';
+import { getApiUrl } from '../utils/api';
 
 const ToolsPage = () => {
   const [tools, setTools] = useState([]);
@@ -26,7 +27,7 @@ const ToolsPage = () => {
     const fetchTools = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('https://codebyced-production.up.railway.app/api/tools');
+        const response = await fetch(getApiUrl('/tools'));
         
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`);
@@ -240,4 +241,4 @@ const ToolsPage = () => {
   );
 };
 
-export default ToolsPage;
+export default ToolsPage
