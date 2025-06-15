@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Use environment variable for API URL with production fallback
-const API_URL = process.env.REACT_APP_API_URL || 'https://codebyced-production.up.railway.app/api';
+const API_URL = process.env.REACT_APP_API_URL || 'https://codebyced.onrender.com/api';
 
 // Create axios instance with default config
 const api = axios.create({
@@ -21,4 +21,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export default api

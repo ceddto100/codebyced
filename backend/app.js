@@ -21,13 +21,20 @@ dotenv.config();
 const app = express();
 
 // Middleware
+const defaultOrigins = [
+  'http://localhost:3000',
+  'https://codebyced.com',
+  'https://codebyced.onrender.com',
+  'https://*.elevenlabs.io',
+  'https://elevenlabs.io'
+];
+
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  : defaultOrigins;
+
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://codebyced.com',
-    'https://*.elevenlabs.io',
-    'https://elevenlabs.io'
-  ],
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   exposedHeaders: ['Content-Range', 'X-Content-Range'],
@@ -83,4 +90,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = app;
+module.exports = app

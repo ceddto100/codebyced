@@ -1,4 +1,4 @@
-export const apiBaseUrl = "https://codebyced-production.up.railway.app";
+export const apiBaseUrl = "https://codebyced.onrender.com";
 
 // Helper function to get the full API URL
-export const getApiUrl = (path) => `${apiBaseUrl}/api${path}`; 
+export const getApiUrl = (path) => `${apiBaseUrl}/api${path}`;
