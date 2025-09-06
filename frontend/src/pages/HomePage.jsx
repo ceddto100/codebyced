@@ -7,7 +7,7 @@ import { getProjects } from '../services/projectsService';
 import { getTools } from '../services/toolsService';
 import ShareButton from '../components/ShareButton';
 import PageLayout from '../components/PageLayout';
-import ServiceSection from '../components/ServiceSection';
+
 
 const HomePage = () => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -252,55 +252,7 @@ const HomePage = () => {
     }
   ];
 
-  //service//
-const ServiceSection = () => {
-  const services = [
-    {
-      id: 1,
-      title: "Workflow Setup Services",
-      description: "Streamline your operations with custom automated workflow solutions",
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-        </svg>
-      ),
-      path: "/services/workflow-setup"
-    },
-    {
-      id: 2,
-      title: "Conversational AI Setups",
-      description: "Implement cutting-edge AI chatbots and conversational interfaces",
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-        </svg>
-      ),
-      path: "/services/conversational-ai"
-    },
-    {
-      id: 3,
-      title: "Technical & AI Consulting",
-      description: "Expert guidance on technology implementation and AI strategy",
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-        </svg>
-      ),
-      path: "/services/consulting"
-    },
-    {
-      id: 4,
-      title: "Support & Maintenance Plans",
-      description: "Ongoing technical support and system maintenance services",
-      icon: (
-        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
-      path: "/services/support"
-    }
-  ];
-
+ 
   // Structured data for homepage
   const homepageStructuredData = {
     "@context": "https://schema.org",
@@ -437,90 +389,7 @@ const ServiceSection = () => {
           </div>
       </section>
 
-        {/* Services Section */}
-<section className="mb-20">
-  <div className="flex justify-between items-center mb-8">
-    <div className="relative pb-3">
-      <h2 className="text-2xl font-bold text-gray-100">Our Services</h2>
-      <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
-    </div>
-  </div>
-  
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    {/* Workflow Setup Services */}
-    <div className="backdrop-blur-sm bg-gray-900/80 rounded-lg p-6 border border-gray-800 hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 transform hover:-translate-y-1">
-      <div className="h-12 w-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg mb-4 flex items-center justify-center">
-        <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-        </svg>
-      </div>
-      <h3 className="text-xl font-semibold text-gray-100 mb-2">Workflow Setup Services</h3>
-      <p className="text-gray-300 mb-4">Custom workflow automation solutions to streamline your business processes.</p>
-      <Link 
-        to="/services/workflow"
-        className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium group"
-      >
-        Learn More 
-        <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-      </Link>
-    </div>
-
-    {/* Conversational AI Setups */}
-    <div className="backdrop-blur-sm bg-gray-900/80 rounded-lg p-6 border border-gray-800 hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 transform hover:-translate-y-1">
-      <div className="h-12 w-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg mb-4 flex items-center justify-center">
-        <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-        </svg>
-      </div>
-      <h3 className="text-xl font-semibold text-gray-100 mb-2">Conversational AI Setups</h3>
-      <p className="text-gray-300 mb-4">Advanced AI chatbot solutions for enhanced customer engagement.</p>
-      <Link 
-        to="/services/ai-setups"
-        className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium group"
-      >
-        Learn More 
-        <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-      </Link>
-    </div>
-
-    {/* Technical & AI Consulting */}
-    <div className="backdrop-blur-sm bg-gray-900/80 rounded-lg p-6 border border-gray-800 hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 transform hover:-translate-y-1">
-      <div className="h-12 w-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg mb-4 flex items-center justify-center">
-        <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-      </div>
-      <h3 className="text-xl font-semibold text-gray-100 mb-2">Technical & AI Consulting</h3>
-      <p className="text-gray-300 mb-4">Expert guidance on implementing AI and technical solutions.</p>
-      <Link 
-        to="/services/consulting"
-        className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium group"
-      >
-        Learn More 
-        <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-      </Link>
-    </div>
-
-    {/* Support & Maintenance Plans */}
-    <div className="backdrop-blur-sm bg-gray-900/80 rounded-lg p-6 border border-gray-800 hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 transform hover:-translate-y-1">
-      <div className="h-12 w-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg mb-4 flex items-center justify-center">
-        <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      </div>
-      <h3 className="text-xl font-semibold text-gray-100 mb-2">Support & Maintenance Plans</h3>
-      <p className="text-gray-300 mb-4">Comprehensive support and maintenance services for your systems.</p>
-      <Link 
-        to="/services/support"
-        className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium group"
-      >
-        Learn More 
-        <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-      </Link>
-    </div>
-  </div>
-</section>
-
+      
       {/* Blog Section */}
         <section className="mb-20">
           <div className="flex justify-between items-center mb-8">
