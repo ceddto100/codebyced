@@ -1,3 +1,4 @@
+// ...imports unchanged...
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -252,6 +253,7 @@ const HomePage = () => {
   ];
 
   // NEW: Services data (programming generalist offerings)
+  // NOTE: "Data & Analytics" card has been removed per request.
   const servicesData = [
     {
       title: 'Web Development & Maintenance',
@@ -322,17 +324,6 @@ const HomePage = () => {
       ],
       ctaText: 'Polish My UI',
       ctaLink: '/contact?service=ux-ui'
-    },
-    {
-      title: 'Data & Analytics',
-      color: 'from-sky-600 to-indigo-600',
-      items: [
-        'Database Setup & Management (MongoDB, Postgres, MySQL)',
-        'Custom Reports & Dashboards',
-        'Data Visualization (interactive charts & insights)'
-      ],
-      ctaText: 'Build a Dashboard',
-      ctaLink: '/contact?service=data'
     }
   ];
 
@@ -663,264 +654,265 @@ const HomePage = () => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
             <div className="relative pb-3">
               <h2 className="text-2xl font-bold text-gray-100 mb-1">Latest Ideas</h2>
-            <div className="absolute bottom-0 left-0 w-20 h-1 bg-indigo-500 rounded-full"></div>
-          </div>
-          <Link 
-            to="/ideas" 
-            className="bg-indigo-700 hover:bg-indigo-600 hover:shadow-indigo-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-          >
-            Explore More Ideas
-          </Link>
-        </div>
-        {isLoading ? (
-          <div className="flex justify-center items-center py-12 relative z-10">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-          </div>
-        ) : error ? (
-          <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-lg relative z-10">
-            {error}
-          </div>
-        ) : ideas.length === 0 ? (
-          <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg relative z-10">
-            No ideas found. Check back soon for new content!
-          </div>
-        ) : (
-          <ul className="space-y-4 relative z-10">
-            {ideas.map((idea, index) => (
-              <li key={idea._id} className="flex items-start p-4 hover:bg-gray-800/50 rounded-lg transition-colors duration-200">
-                <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mr-4 shadow-md">
-                  {index + 1}
-                </span>
-                <div>
-                  <h3 className="font-semibold text-gray-100 hover:text-blue-400 transition-colors duration-200">{idea.title}</h3>
-                  <p className="text-gray-300 mt-1">{idea.summary}</p>
-                  {idea.tags && idea.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {idea.tags.map((tag, tagIndex) => (
-                        <span
-                          key={tagIndex}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      {/* Projects Section */}
-      <section className="mb-20">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-          <div className="relative pb-3">
-            <h2 className="text-2xl font-bold text-gray-100 mb-1">Featured Project</h2>
-            <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
-          </div>
-          <Link 
-            to="/projects" 
-            className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-          >
-            View All Projects
-          </Link>
-        </div>
-        {isLoading ? (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
-        ) : error ? (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-            {error}
-          </div>
-        ) : projects.length === 0 ? (
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4">
-            No featured projects available at the moment.
-          </div>
-        ) : (
-          <div className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-800 transform hover:-translate-y-1">
-            {/* Project Image */}
-            <div className="h-56 overflow-hidden relative">
-              {projects[0].image ? (
-                <img 
-                  src={projects[0].image} 
-                  alt={projects[0].title} 
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-r from-blue-100 to-indigo-100 flex items-center justify-center">
-                  <span className="text-gray-400">No image available</span>
-                </div>
-              )}
-              {projects[0].category && (
-                <div className="absolute top-4 right-4">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md">
-                    {projects[0].category}
-                  </span>
-                </div>
-              )}
+              <div className="absolute bottom-0 left-0 w-20 h-1 bg-indigo-500 rounded-full"></div>
             </div>
-            
-            {/* Project Content */}
-            <div className="p-8">
-              <h3 className="text-2xl font-semibold mb-3 bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{projects[0].title}</h3>
-              <p className="text-gray-600 mb-4">{projects[0].description}</p>
-              <div className="flex flex-wrap gap-2">
-                {projects[0].techStack?.map((tech, index) => (
-                  <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 transition-all duration-200 hover:bg-blue-200">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-6">
-                {projects[0].githubLink && (
-                  <a 
-                    href={projects[0].githubLink} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800 font-medium mr-6 inline-flex items-center group"
-                  >
-                    GitHub Repository 
-                    <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                  </a>
-                )}
-                {projects[0].demoLink && (
-                  <a 
-                    href={projects[0].demoLink} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center group"
-                  >
-                    Live Demo 
-                    <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                  </a>
-                )}
-              </div>
+            <Link 
+              to="/ideas" 
+              className="bg-indigo-700 hover:bg-indigo-600 hover:shadow-indigo-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+            >
+              Explore More Ideas
+            </Link>
+          </div>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-12 relative z-10">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
             </div>
-          </div>
-        )}
-      </section>
-
-      {/* AI Tools Section */}
-      <section className="mb-20">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-          <div className="relative pb-3">
-            <h2 className="text-2xl font-bold text-gray-100 mb-1">AI Tools</h2>
-            <div className="absolute bottom-0 left-0 w-20 h-1 bg-indigo-500 rounded-full"></div>
-          </div>
-          <Link 
-            to="/tools" 
-            className="bg-indigo-700 hover:bg-indigo-600 hover:shadow-indigo-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-          >
-            Explore All Tools
-          </Link>
-        </div>
-        {isLoading ? (
-          <div className="flex justify-center items-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-          </div>
-        ) : error ? (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
-            {error}
-          </div>
-        ) : tools.length === 0 ? (
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4">
-            No tools found. Check back soon for new content!
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2 gap-6">
-            {tools.map(tool => (
-              <div key={tool._id} className="backdrop-blur-sm bg-gray-900/80 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-800 transform hover:-translate-y-1 relative overflow-hidden">
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/5 rounded-full"></div>
-                <div className="flex items-center mb-4 relative z-10">
-                  {tool.logo ? (
-                    <div className="h-14 w-14 flex-shrink-0 mr-4 rounded-full overflow-hidden shadow-md border-2 border-indigo-100">
-                      <img
-                        src={tool.logo}
-                        alt={`${tool.name} logo`}
-                        className="h-full w-full object-contain"
-                      />
-                    </div>
-                  ) : (
-                    <div className="h-14 w-14 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 mr-4 shadow-md">
-                      <span className="text-white font-semibold text-lg">
-                        {tool.name.charAt(0)}
-                      </span>
-                    </div>
-                  )}
+          ) : error ? (
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-lg relative z-10">
+              {error}
+            </div>
+          ) : ideas.length === 0 ? (
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg relative z-10">
+              No ideas found. Check back soon for new content!
+            </div>
+          ) : (
+            <ul className="space-y-4 relative z-10">
+              {ideas.map((idea, index) => (
+                <li key={idea._id} className="flex items-start p-4 hover:bg-gray-800/50 rounded-lg transition-colors duration-200">
+                  <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mr-4 shadow-md">
+                    {index + 1}
+                  </span>
                   <div>
-                    <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">{tool.name}</h3>
-                    {tool.category && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-200">
-                        {tool.category}
-                      </span>
+                    <h3 className="font-semibold text-gray-100 hover:text-blue-400 transition-colors duration-200">{idea.title}</h3>
+                    <p className="text-gray-300 mt-1">{idea.summary}</p>
+                    {idea.tags && idea.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {idea.tags.map((tag, tagIndex) => (
+                          <span
+                            key={tagIndex}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     )}
                   </div>
-                </div>
-                <p className="text-gray-600 mb-4 relative z-10">{tool.description}</p>
-                <a 
-                  href={tool.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center group relative z-10"
-                >
-                  Try it out
-                  <svg 
-                    className="ml-1 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-200" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
-                    />
-                  </svg>
-                </a>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
 
-      {/* Honorable Mentions Section */}
-      <section className="mb-10">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-          <div className="relative pb-3">
-            <h2 className="text-2xl font-bold text-gray-100 mb-1">Honorable Mentions</h2>
-            <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
+        {/* Projects Section */}
+        <section className="mb-20">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div className="relative pb-3">
+              <h2 className="text-2xl font-bold text-gray-100 mb-1">Featured Project</h2>
+              <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
+            </div>
+            <Link 
+              to="/projects" 
+              className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+            >
+              View All Projects
+            </Link>
           </div>
-          <a 
-            href="/mentions" 
-            className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-          >
-            See All Mentions
-          </a>
-        </div>
-        <div className="backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-800 relative overflow-hidden">
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full"></div>
-          <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-indigo-500/5 rounded-full"></div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-            {honorableMentions.map((mention, index) => (
-              <div key={index} className="border-l-4 border-blue-500 pl-4 py-3 bg-blue-50/50 rounded-r-lg hover:bg-blue-50 transition-colors duration-200">
-                <h3 className="font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{mention.name}</h3>
-                <p className="text-gray-600 text-sm">
-                  {mention.year ? `Year: ${mention.year}` : `Project: ${mention.project}`}
-                </p>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+          ) : error ? (
+            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+              {error}
+            </div>
+          ) : projects.length === 0 ? (
+            <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4">
+              No featured projects available at the moment.
+            </div>
+          ) : (
+            <div className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-800 transform hover:-translate-y-1">
+              {/* Project Image */}
+              <div className="h-56 overflow-hidden relative">
+                {projects[0].image ? (
+                  <img 
+                    src={projects[0].image} 
+                    alt={projects[0].title} 
+                    className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-r from-blue-100 to-indigo-100 flex items-center justify-center">
+                    <span className="text-gray-400">No image available</span>
+                  </div>
+                )}
+                {projects[0].category && (
+                  <div className="absolute top-4 right-4">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md">
+                      {projects[0].category}
+                    </span>
+                  </div>
+                )}
               </div>
-            ))}
+              
+              {/* Project Content */}
+              <div className="p-8">
+                <h3 className="text-2xl font-semibold mb-3 bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{projects[0].title}</h3>
+                <p className="text-gray-600 mb-4">{projects[0].description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {projects[0].techStack?.map((tech, index) => (
+                    <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 transition-all duration-200 hover:bg-blue-200">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-6">
+                  {projects[0].githubLink && (
+                    <a 
+                      href={projects[0].githubLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 font-medium mr-6 inline-flex items-center group"
+                    >
+                      GitHub Repository 
+                      <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+                    </a>
+                  )}
+                  {projects[0].demoLink && (
+                    <a 
+                      href={projects[0].demoLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center group"
+                    >
+                      Live Demo 
+                      <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* AI Tools Section */}
+        <section className="mb-20">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div className="relative pb-3">
+              <h2 className="text-2xl font-bold text-gray-100 mb-1">AI Tools</h2>
+              <div className="absolute bottom-0 left-0 w-20 h-1 bg-indigo-500 rounded-full"></div>
+            </div>
+            <Link 
+              to="/tools" 
+              className="bg-indigo-700 hover:bg-indigo-600 hover:shadow-indigo-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+            >
+              Explore All Tools
+            </Link>
           </div>
-        </div>
-      </section>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+            </div>
+          ) : error ? (
+            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+              {error}
+            </div>
+          ) : tools.length === 0 ? (
+            <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4">
+              No tools found. Check back soon for new content!
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-6">
+              {tools.map(tool => (
+                <div key={tool._id} className="backdrop-blur-sm bg-gray-900/80 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-800 transform hover:-translate-y-1 relative overflow-hidden">
+                  <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/5 rounded-full"></div>
+                  <div className="flex items-center mb-4 relative z-10">
+                    {tool.logo ? (
+                      <div className="h-14 w-14 flex-shrink-0 mr-4 rounded-full overflow-hidden shadow-md border-2 border-indigo-100">
+                        <img
+                          src={tool.logo}
+                          alt={`${tool.name} logo`}
+                          className="h-full w-full object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <div className="h-14 w-14 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center flex-shrink-0 mr-4 shadow-md">
+                        <span className="text-white font-semibold text-lg">
+                          {tool.name.charAt(0)}
+                        </span>
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">{tool.name}</h3>
+                      {tool.category && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-200">
+                          {tool.category}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-gray-600 mb-4 relative z-10">{tool.description}</p>
+                  <a 
+                    href={tool.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center group relative z-10"
+                  >
+                    Try it out
+                    <svg 
+                      className="ml-1 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-200" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={2} 
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+                      />
+                    </svg>
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* Honorable Mentions Section */}
+        <section className="mb-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div className="relative pb-3">
+              <h2 className="text-2xl font-bold text-gray-100 mb-1">Honorable Mentions</h2>
+              <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
+            </div>
+            <a 
+              href="/mentions" 
+              className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+            >
+              See All Mentions
+            </a>
+          </div>
+          <div className="backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-800 relative overflow-hidden">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full"></div>
+            <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-indigo-500/5 rounded-full"></div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+              {honorableMentions.map((mention, index) => (
+                <div key={index} className="border-l-4 border-blue-500 pl-4 py-3 bg-blue-50/50 rounded-r-lg hover:bg-blue-50 transition-colors duration-200">
+                  <h3 className="font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{mention.name}</h3>
+                  <p className="text-gray-600 text-sm">
+                    {mention.year ? `Year: ${mention.year}` : `Project: ${mention.project}`}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </div>
     </PageLayout>
   );
 };
 
 export default HomePage;
+
 
