@@ -8,7 +8,6 @@ import { getTools } from '../services/toolsService';
 import ShareButton from '../components/ShareButton';
 import PageLayout from '../components/PageLayout';
 
-
 const HomePage = () => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [ideas, setIdeas] = useState([]);
@@ -180,15 +179,15 @@ const HomePage = () => {
         ]);
         
         setTools([
-    {
-      id: 1,
+          {
+            id: 1,
             name: "Code Companion",
             description: "AI-powered code review and suggestion tool",
             category: "Development",
             link: "https://example.com/code-companion"
-    },
-    {
-      id: 2,
+          },
+          {
+            id: 2,
             name: "Content Generator",
             description: "Smart content creation assistant for various formats",
             category: "Content",
@@ -252,7 +251,91 @@ const HomePage = () => {
     }
   ];
 
- 
+  // NEW: Services data (programming generalist offerings)
+  const servicesData = [
+    {
+      title: 'Web Development & Maintenance',
+      color: 'from-blue-600 to-indigo-600',
+      items: [
+        'Custom Website Development (React, Node.js, Tailwind)',
+        'Bug Fixes & Performance Optimization',
+        'Website Redesigns / Modernization (responsive upgrades)',
+        'Ongoing Maintenance Plans (security, updates, uptime monitoring)'
+      ],
+      ctaText: 'Start a Website',
+      ctaLink: '/contact?service=web-dev'
+    },
+    {
+      title: 'Workflow & Automation',
+      color: 'from-cyan-600 to-blue-600',
+      items: [
+        'Business Process Automation (Make.com, Zapier, n8n)',
+        'Custom API Development (REST/GraphQL)',
+        'Web Scraping & Data Pipelines (Python)',
+        'CRM Integrations (HubSpot, Salesforce, custom DBs)'
+      ],
+      ctaText: 'Automate My Business',
+      ctaLink: '/contact?service=automation'
+    },
+    {
+      title: 'AI & Conversational Tools',
+      color: 'from-purple-600 to-fuchsia-600',
+      items: [
+        'Conversational AI Setup (chatbots, voice assistants)',
+        'AI-Powered Content Generation (posts, ads, blogs)',
+        'Predictive Models (analytics, forecasting)',
+        'Knowledge Base Bots (PDF ingestion + QA assistant)'
+      ],
+      ctaText: 'Build an AI Assistant',
+      ctaLink: '/contact?service=ai-convo'
+    },
+    {
+      title: 'App & Software Development',
+      color: 'from-emerald-600 to-teal-600',
+      items: [
+        'MVP Builds for startups',
+        'Mobile App Prototypes (React Native / Flutter-style approach)',
+        'Custom Tools & Dashboards (auth, reports)'
+      ],
+      ctaText: 'Ship an MVP',
+      ctaLink: '/contact?service=apps'
+    },
+    {
+      title: 'Technical Consulting',
+      color: 'from-amber-600 to-orange-600',
+      items: [
+        'Code Reviews & Best Practices',
+        'Project Architecture & Scalability',
+        'DevOps Support (Git, Docker, CI/CD)',
+        'Cloud Deployment (Cloud Run, Render, AWS, Cloudflare)'
+      ],
+      ctaText: 'Book a Consult',
+      ctaLink: '/contact?service=consulting'
+    },
+    {
+      title: 'User Experience & Frontend Polish',
+      color: 'from-rose-600 to-pink-600',
+      items: [
+        'UI/UX Refinement & Accessibility',
+        'Custom Components & Animations (React + Tailwind)',
+        'Design-to-Code Conversion (Figma → Production)'
+      ],
+      ctaText: 'Polish My UI',
+      ctaLink: '/contact?service=ux-ui'
+    },
+    {
+      title: 'Data & Analytics',
+      color: 'from-sky-600 to-indigo-600',
+      items: [
+        'Database Setup & Management (MongoDB, Postgres, MySQL)',
+        'Custom Reports & Dashboards',
+        'Data Visualization (interactive charts & insights)'
+      ],
+      ctaText: 'Build a Dashboard',
+      ctaLink: '/contact?service=data'
+    }
+  ];
+
   // Structured data for homepage
   const homepageStructuredData = {
     "@context": "https://schema.org",
@@ -308,6 +391,10 @@ const HomePage = () => {
       <Helmet>
         <title>CodeByCed | Software Development & AI Solutions</title>
         <meta name="description" content="Welcome to my digital space where I share my journey in software development, AI solutions, and innovative tech projects." />
+        {/* Optional: add structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify(homepageStructuredData)}
+        </script>
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-8 relative">
@@ -382,15 +469,76 @@ const HomePage = () => {
                   Welcome to My Digital Space
                 </h1>
                 <p className="text-xl text-gray-300">
-          Explore my projects, ideas, and journey through the world of technology and development.
-        </p>
+                  Explore my projects, ideas, and journey through the world of technology and development.
+                </p>
               </div>
             </div>
           </div>
-      </section>
+        </section>
 
-      
-      {/* Blog Section */}
+        {/* =================== NEW SERVICES SECTION (inserted above Blog) =================== */}
+        <section id="services" className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-xl shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
+          {/* Subtle gradient blobs */}
+          <div className="absolute -top-16 -right-16 w-72 h-72 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-full blur-2xl" />
+          <div className="absolute -bottom-16 -left-16 w-72 h-72 bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 rounded-full blur-2xl" />
+
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 relative z-10">
+            <div className="relative pb-3">
+              <h2 className="text-2xl font-bold text-gray-100 mb-1">Services</h2>
+              <div className="absolute bottom-0 left-0 w-24 h-1 bg-blue-500 rounded-full"></div>
+            </div>
+            <div className="flex gap-3">
+              <Link
+                to="/contact"
+                className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+              >
+                Get a Quote
+              </Link>
+              <Link
+                to="/projects"
+                className="bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
+              >
+                See Past Work
+              </Link>
+            </div>
+          </div>
+
+          {/* Service Cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+            {servicesData.map((svc, idx) => (
+              <div
+                key={idx}
+                className="relative overflow-hidden rounded-lg border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 group"
+              >
+                <div className={`absolute -top-8 -right-8 w-40 h-40 bg-gradient-to-br ${svc.color} opacity-20 rounded-full blur-2xl transition-all duration-300 group-hover:opacity-30`} />
+                <h3 className="text-xl font-semibold text-gray-100 mb-3">{svc.title}</h3>
+                <ul className="space-y-2 mb-4">
+                  {svc.items.map((item, i) => (
+                    <li key={i} className="text-gray-300 flex">
+                      <span className="mr-2 text-blue-400">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to={svc.ctaLink}
+                  className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium group"
+                >
+                  {svc.ctaText}
+                  <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* Package hint */}
+          <div className="mt-8 text-sm text-gray-400">
+            Prefer bundles? Ask about <span className="text-indigo-300 font-medium">Starter</span>, <span className="text-indigo-300 font-medium">Growth</span>, and <span className="text-indigo-300 font-medium">Pro</span> tiers—designed for flexibility as your needs scale.
+          </div>
+        </section>
+        {/* ================= End Services Section ================= */}
+
+        {/* Blog Section */}
         <section className="mb-20">
           <div className="flex justify-between items-center mb-8">
             <div className="relative pb-3">
@@ -400,11 +548,11 @@ const HomePage = () => {
             <Link 
               to="/blog" 
               className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-          >
-            View All Blog Posts
+            >
+              View All Blog Posts
             </Link>
-        </div>
-        <div className="grid md:grid-cols-2 gap-6">
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
             {isLoading ? (
               <div className="col-span-2 flex justify-center items-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -449,13 +597,13 @@ const HomePage = () => {
                       <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
                     </Link>
                   </div>
-            </div>
+                </div>
               ))
             )}
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* Resume Section */}
+        {/* Resume Section */}
         <section className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
@@ -479,42 +627,42 @@ const HomePage = () => {
             <Link 
               to="/resume" 
               className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-          >
-            View Full Resume
+            >
+              View Full Resume
             </Link>
-        </div>
+          </div>
           <div className="relative z-10">
             <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">{resumeTeaser.title}</h3>
             <p className="text-gray-300 mb-2">{resumeTeaser.company} | {resumeTeaser.period}</p>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {resumeTeaser.skills.map((skill, index) => (
-              <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700 transition-all duration-200 hover:bg-indigo-800/70">
-                {skill}
-              </span>
-            ))}
+            <div className="flex flex-wrap gap-2 mt-4">
+              {resumeTeaser.skills.map((skill, index) => (
+                <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700 transition-all duration-200 hover:bg-indigo-800/70">
+                  {skill}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Ideas Section */}
-      <section className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="GeoffreyHinton.png" 
-            alt="Geoffrey Hinton Background" 
-            className="w-full h-full object-cover opacity-50"
-          />
-          {/* Overlay to ensure text readability */}
-          <div className="absolute inset-0 bg-gray-900/60"></div>
-        </div>
-        
-        <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-xl animate-float" style={{ animationDuration: '15s' }}></div>
-        <div className="absolute bottom-1/4 right-1/3 w-72 h-72 bg-indigo-500/10 rounded-full filter blur-xl animate-pulse" style={{ animationDuration: '20s' }}></div>
-        
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
-          <div className="relative pb-3">
-            <h2 className="text-2xl font-bold text-gray-100 mb-1">Latest Ideas</h2>
+        {/* Ideas Section */}
+        <section className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="GeoffreyHinton.png" 
+              alt="Geoffrey Hinton Background" 
+              className="w-full h-full object-cover opacity-50"
+            />
+            {/* Overlay to ensure text readability */}
+            <div className="absolute inset-0 bg-gray-900/60"></div>
+          </div>
+          
+          <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-xl animate-float" style={{ animationDuration: '15s' }}></div>
+          <div className="absolute bottom-1/4 right-1/3 w-72 h-72 bg-indigo-500/10 rounded-full filter blur-xl animate-pulse" style={{ animationDuration: '20s' }}></div>
+          
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
+            <div className="relative pb-3">
+              <h2 className="text-2xl font-bold text-gray-100 mb-1">Latest Ideas</h2>
             <div className="absolute bottom-0 left-0 w-20 h-1 bg-indigo-500 rounded-full"></div>
           </div>
           <Link 
@@ -535,14 +683,14 @@ const HomePage = () => {
         ) : ideas.length === 0 ? (
           <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg relative z-10">
             No ideas found. Check back soon for new content!
-    </div>
+          </div>
         ) : (
           <ul className="space-y-4 relative z-10">
             {ideas.map((idea, index) => (
               <li key={idea._id} className="flex items-start p-4 hover:bg-gray-800/50 rounded-lg transition-colors duration-200">
                 <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mr-4 shadow-md">
-                {index + 1}
-              </span>
+                  {index + 1}
+                </span>
                 <div>
                   <h3 className="font-semibold text-gray-100 hover:text-blue-400 transition-colors duration-200">{idea.title}</h3>
                   <p className="text-gray-300 mt-1">{idea.summary}</p>
@@ -559,9 +707,9 @@ const HomePage = () => {
                     </div>
                   )}
                 </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
 
@@ -613,19 +761,19 @@ const HomePage = () => {
                   </span>
                 </div>
               )}
-    </div>
+            </div>
             
             {/* Project Content */}
             <div className="p-8">
               <h3 className="text-2xl font-semibold mb-3 bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{projects[0].title}</h3>
               <p className="text-gray-600 mb-4">{projects[0].description}</p>
-          <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2">
                 {projects[0].techStack?.map((tech, index) => (
                   <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 transition-all duration-200 hover:bg-blue-200">
-                {tech}
-              </span>
-            ))}
-          </div>
+                    {tech}
+                  </span>
+                ))}
+              </div>
               <div className="mt-6">
                 {projects[0].githubLink && (
                   <a 
@@ -650,8 +798,8 @@ const HomePage = () => {
                   </a>
                 )}
               </div>
+            </div>
           </div>
-        </div>
         )}
       </section>
 
@@ -680,9 +828,9 @@ const HomePage = () => {
         ) : tools.length === 0 ? (
           <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4">
             No tools found. Check back soon for new content!
-    </div>
+          </div>
         ) : (
-    <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6">
             {tools.map(tool => (
               <div key={tool._id} className="backdrop-blur-sm bg-gray-900/80 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-800 transform hover:-translate-y-1 relative overflow-hidden">
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/5 rounded-full"></div>
@@ -732,10 +880,10 @@ const HomePage = () => {
                       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
                     />
                   </svg>
-              </a>
-            </div>
-          ))}
-        </div>
+                </a>
+              </div>
+            ))}
+          </div>
         )}
       </section>
 
@@ -769,9 +917,10 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-    </div>
+      </div>
     </PageLayout>
   );
 };
 
 export default HomePage;
+
