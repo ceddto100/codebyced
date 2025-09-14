@@ -233,20 +233,21 @@ const ResumePage = () => {
                     ))}
                   </div>
 
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <a
-                    href={`${process.env.PUBLIC_URL || ""}/resume.pdf`}
-                    target="_blank"
-                    rel="noopener"
-                    download
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-                  >
-                    Download PDF
-                  </a>
-                  <span className="px-3 py-2 rounded-lg border border-emerald-200 text-emerald-700 bg-emerald-50">
-                    {personalInfo.location}
-                  </span>
-                </div>
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <a
+                        href={`${process.env.PUBLIC_URL}/resume.pdf`}
+                        target="_blank"
+                        rel="noopener"
+                        download
+                        className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+                      >
+                        Download PDF
+                      </a>
+                      <span className="px-3 py-2 rounded-lg border border-emerald-200 text-emerald-700 bg-emerald-50">
+                        {personalInfo.location}
+                      </span>
+                  </div>
+
 
 
                 </header>
