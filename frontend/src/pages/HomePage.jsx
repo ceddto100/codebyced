@@ -289,7 +289,7 @@ const HomePage = () => {
         'Knowledge Base Bots (PDF ingestion + QA assistant)'
       ],
       ctaText: 'Build an AI Assistant',
-      ctaLink: '/contact?service=ai-convo'
+      ctaLink: '/services/ai-conversational-tools'
     },
     {
       title: 'App & Software Development',
