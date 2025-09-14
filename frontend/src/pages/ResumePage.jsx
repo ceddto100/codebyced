@@ -16,7 +16,7 @@ const ResumePage = () => {
     location: "Willing to relocate - U.S. or remote",
     linkedin: "linkedin.com/in/cedrick-carter-5b41b4315/",
     github: "github.com/ceddto100",
-    avatar: "/images/profile.jpg",
+    avatar: "/images/newpic.png",
   };
 
   const workExperience = [
