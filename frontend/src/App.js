@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 
 // Pages
@@ -18,7 +18,8 @@ import AppSoftwareDevPage from './pages/AppSoftwareDevPage';
 
 function App() {
   return (
-    <Router /* basename={import.meta.env.BASE_URL} — if you deploy under a subpath */>
+    // If deploying under a subpath, set basename on Router (Vite: import.meta.env.BASE_URL, CRA: process.env.PUBLIC_URL)
+    <Router>
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -29,19 +30,24 @@ function App() {
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/tools" element={<ToolsPage />} />
           <Route path="/mentions" element={<HonorableMentionsPage />} />
-          <Route
-            path="/services/web-development-maintenance"
-            element={<WebDevMaintenancePage />}
-          />
-          <Route
-            path="/services/workflow-automation"
-            element={<WorkflowAutomationPage />}
-          />
-              <Route path="/services/ai-conversational-tools" element={<AIConversationalToolsPage />} />
-              <Route path="/services/ai" element={<AIConversationalToolsPage />} />
-              <Route path="/services/ai&plan=:plan" element={<AIConversationalToolsPage />} />
-                <Route path="/services/app-development" element={<AppSoftwareDevPage />} />
-              <Route path="/services/apps" element={<Navigate to="/services/app-development" replace />} />
+
+          {/* Services */}
+          {/* Web Dev & Maintenance */}
+          <Route path="/services/web-development-maintenance" element={<WebDevMaintenancePage />} />
+
+          {/* Workflow & Automation */}
+          <Route path="/services/workflow-automation" element={<WorkflowAutomationPage />} />
+
+          {/* AI & Conversational Tools (alias /services/ai redirects to canonical) */}
+          <Route path="/services/ai-conversational-tools" element={<AIConversationalToolsPage />} />
+          <Route path="/services/ai" element={<Navigate to="/services/ai-conversational-tools" replace />} />
+
+          {/* App & Software Development (alias /services/apps redirects to canonical) */}
+          <Route path="/services/app-development" element={<AppSoftwareDevPage />} />
+          <Route path="/services/apps" element={<Navigate to="/services/app-development" replace />} />
+
+          {/* (Optional) 404 */}
+          {/* <Route path="*" element={<NotFoundPage />} /> */}
         </Routes>
       </Layout>
     </Router>
@@ -49,5 +55,6 @@ function App() {
 }
 
 export default App;
+
 
 
