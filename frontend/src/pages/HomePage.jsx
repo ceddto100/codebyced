@@ -265,7 +265,7 @@ const HomePage = () => {
         'Ongoing Maintenance Plans (security, updates, uptime monitoring)'
       ],
       ctaText: 'Start a Website',
-      ctaLink: '/contact?service=web-dev'
+      ctaLink: 'services/web-development-maintenance'
     },
     {
       title: 'Workflow & Automation',
