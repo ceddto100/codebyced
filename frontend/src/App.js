@@ -14,6 +14,7 @@ import HonorableMentionsPage from './pages/HonorableMentionsPage';
 import WebDevMaintenancePage from './pages/WebDevMaintenancePage';
 import WorkflowAutomationPage from './pages/WorkflowAutomationPage';
 import AIConversationalToolsPage from './pages/AIConversationalToolsPage';
+import AppSoftwareDevPage from './pages/AppSoftwareDevPage';
 
 function App() {
   return (
@@ -39,6 +40,10 @@ function App() {
               <Route path="/services/ai-conversational-tools" element={<AIConversationalToolsPage />} />
               <Route path="/services/ai" element={<AIConversationalToolsPage />} />
               <Route path="/services/ai&plan=:plan" element={<AIConversationalToolsPage />} />
+               <Route path="/services/app-development" element={<AppSoftwareDevPage />} />
+              <Route path="/services/apps" element={<AppSoftwareDevPage />} />
+              {/* keeps your CTA pattern like /services/apps&plan=growth */}
+              <Route path="/services/apps&plan=:plan" element={<AppSoftwareDevPage />} />
         </Routes>
       </Layout>
     </Router>
