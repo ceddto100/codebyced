@@ -13,6 +13,7 @@ import ToolsPage from './pages/ToolsPage';
 import HonorableMentionsPage from './pages/HonorableMentionsPage';
 import WebDevMaintenancePage from './pages/WebDevMaintenancePage';
 import WorkflowAutomationPage from './pages/WorkflowAutomationPage';
+import AIConversationalToolsPage from './pages/AIConversationalToolsPage';
 
 function App() {
   return (
@@ -35,6 +36,9 @@ function App() {
             path="/services/workflow-automation"
             element={<WorkflowAutomationPage />}
           />
+              <Route path="/services/ai-conversational-tools" element={<AIConversationalToolsPage />} />
+              <Route path="/services/ai" element={<AIConversationalToolsPage />} />
+              <Route path="/services/ai&plan=:plan" element={<AIConversationalToolsPage />} />
         </Routes>
       </Layout>
     </Router>
