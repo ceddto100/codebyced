@@ -166,11 +166,11 @@ const ResumePage = () => {
         <meta property="og:description" content="Professional resume showcasing expertise in business automation, API integration, AI solutions, and low-code development." />
         <meta property="og:type" content="profile" />
         <meta property="og:url" content="https://codebyced.com/resume" />
-        <meta property="og:image" content="https://codebyced.com/images/profile.jpg" />
+        <meta property="og:image" content="https://codebyced.com/images/newpic.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Cedrick Carter - Software Developer & Business Automation Expert" />
         <meta name="twitter:description" content="Professional resume showcasing expertise in business automation, API integration, AI solutions, and low-code development." />
-        <meta name="twitter:image" content="https://codebyced.com/images/profile.jpg" />
+        <meta name="twitter:image" content="https://codebyced.com/images/newpic.png" />
         <link rel="canonical" href="https://codebyced.com/resume" />
         <script type="application/ld+json">{JSON.stringify(resumeStructuredData)}</script>
       </Helmet>
@@ -233,17 +233,18 @@ const ResumePage = () => {
                     ))}
                   </div>
 
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <button onClick={() => window.print()} className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition">
-                      Print / Save PDF
-                    </button>
-                    <a href="/resume.pdf" className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition">
-                      Download PDF
-                    </a>
-                    <span className="px-3 py-2 rounded-lg border border-emerald-200 text-emerald-700 bg-emerald-50">
-                      {personalInfo.location}
-                    </span>
-                  </div>
+                <div className="mt-6 flex flex-wrap gap-3">
+  <a
+    href="/resume.pdf"
+    className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+  >
+    Download PDF
+  </a>
+  <span className="px-3 py-2 rounded-lg border border-emerald-200 text-emerald-700 bg-emerald-50">
+    {personalInfo.location}
+  </span>
+</div>
+
                 </header>
               </AnimatedSection>
 
