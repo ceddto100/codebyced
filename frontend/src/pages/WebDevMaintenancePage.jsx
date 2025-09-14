@@ -1,3 +1,4 @@
+// frontend/src/pages/WebDevMaintenancePage.jsx
 import React, { useMemo } from "react";
 import { Helmet } from "react-helmet";
 import PageLayout from "../components/PageLayout";
@@ -5,9 +6,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 /**
- * Web Development & Maintenance — Service Page
- * Static page, dynamic content via arrays below.
- * Design matches your existing gradient/glass style.
+ * Web Development & Maintenance — Static Service Page
+ * Matches your glass/gradient style and uses data arrays for easy edits.
  */
 
 const content = {
@@ -223,20 +223,6 @@ const PriceCard = ({ tier, price, timeline, items, badge, cta, gradient, emphasi
   </motion.div>
 );
 
-const FeatureRow = ({ title, items }) => (
-  <div className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-6">
-    <h3 className="text-lg font-semibold text-gray-100 mb-3">{title}</h3>
-    <ul className="grid md:grid-cols-2 gap-2">
-      {items.map((t, i) => (
-        <li key={i} className="text-gray-300 flex">
-          <span className="mr-2 text-blue-400">•</span>
-          <span>{t}</span>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-
 const WebDevMaintenancePage = () => {
   const schema = useMemo(
     () => ({
@@ -247,36 +233,12 @@ const WebDevMaintenancePage = () => {
       areaServed: "US (remote available)",
       serviceType: "Web development, optimization, redesign, and maintenance",
       offers: [
-        {
-          "@type": "Offer",
-          name: "Starter Site",
-          priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "1500-3500" },
-        },
-        {
-          "@type": "Offer",
-          name: "Growth Site",
-          priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "4000-9000" },
-        },
-        {
-          "@type": "Offer",
-          name: "Pro / Web App",
-          priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "10000-25000" },
-        },
-        {
-          "@type": "Offer",
-          name: "Maintenance Essential",
-          priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "99" },
-        },
-        {
-          "@type": "Offer",
-          name: "Maintenance Growth",
-          priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "299" },
-        },
-        {
-          "@type": "Offer",
-          name: "Maintenance Pro",
-          priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "799" },
-        },
+        { "@type": "Offer", name: "Starter Site", priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "1500-3500" } },
+        { "@type": "Offer", name: "Growth Site",  priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "4000-9000" } },
+        { "@type": "Offer", name: "Pro / Web App", priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "10000-25000" } },
+        { "@type": "Offer", name: "Maintenance Essential", priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "99" } },
+        { "@type": "Offer", name: "Maintenance Growth",    priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "299" } },
+        { "@type": "Offer", name: "Maintenance Pro",        priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "799" } },
       ],
       url: content.seo.url,
       description: content.seo.description,
@@ -496,13 +458,14 @@ const WebDevMaintenancePage = () => {
             >
               Get a Quote
             </Link>
-            <Link
-              to="/resume.pdf"
+            <a
+              href="/resume.pdf"
               target="_blank"
+              rel="noreferrer"
               className="px-5 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
             >
               Download Capabilities PDF
-            </Link>
+            </a>
           </div>
         </section>
       </div>
@@ -511,3 +474,4 @@ const WebDevMaintenancePage = () => {
 };
 
 export default WebDevMaintenancePage;
+
