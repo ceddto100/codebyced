@@ -11,7 +11,8 @@ import IdeasPage from './pages/IdeasPage';
 import ProjectsPage from './pages/ProjectsPage';
 import ToolsPage from './pages/ToolsPage';
 import HonorableMentionsPage from './pages/HonorableMentionsPage';
-import WebDevMaintenancePage from './pages/WebDevMaintenancePage'; // ✅ add this
+import WebDevMaintenancePage from './pages/WebDevMaintenancePage';
+import WorkflowAutomationPage from './pages/WorkflowAutomationPage';
 
 function App() {
   return (
@@ -29,6 +30,10 @@ function App() {
           <Route
             path="/services/web-development-maintenance"
             element={<WebDevMaintenancePage />}   // ✅ new route
+          />
+          <Route
+            path="/services/workflow-automation"
+            element={<WorkflowAutomationPage />}
           />
         </Routes>
       </Layout>
