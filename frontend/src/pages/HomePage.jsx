@@ -300,7 +300,7 @@ const HomePage = () => {
         'Custom Tools & Dashboards (auth, reports)'
       ],
       ctaText: 'Ship an MVP',
-      ctaLink: '/contact?service=apps'
+      ctaLink: '/services/app-development'
     },
     {
       title: 'Technical Consulting',
