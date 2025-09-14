@@ -277,7 +277,7 @@ const HomePage = () => {
         'CRM Integrations (HubSpot, Salesforce, custom DBs)'
       ],
       ctaText: 'Automate My Business',
-      ctaLink: '/contact?service=automation'
+      ctaLink: '/services/workflow-automation'
     },
     {
       title: 'AI & Conversational Tools',
