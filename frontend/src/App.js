@@ -40,10 +40,8 @@ function App() {
               <Route path="/services/ai-conversational-tools" element={<AIConversationalToolsPage />} />
               <Route path="/services/ai" element={<AIConversationalToolsPage />} />
               <Route path="/services/ai&plan=:plan" element={<AIConversationalToolsPage />} />
-               <Route path="/services/app-development" element={<AppSoftwareDevPage />} />
-              <Route path="/services/apps" element={<AppSoftwareDevPage />} />
-              {/* keeps your CTA pattern like /services/apps&plan=growth */}
-              <Route path="/services/apps&plan=:plan" element={<AppSoftwareDevPage />} />
+                <Route path="/services/app-development" element={<AppSoftwareDevPage />} />
+              <Route path="/services/apps" element={<Navigate to="/services/app-development" replace />} />
         </Routes>
       </Layout>
     </Router>
