@@ -31,7 +31,7 @@ function App() {
           <Route path="/mentions" element={<HonorableMentionsPage />} />
           <Route
             path="/services/web-development-maintenance"
-            element={<WebDevMaintenancePage />}   // ✅ new route
+            element={<WebDevMaintenancePage />}
           />
           <Route
             path="/services/workflow-automation"
