@@ -14,6 +14,7 @@ const ideasRoutes = require('./routes/ideasRoutes');
 const projectsRoutes = require('./routes/projectsRoutes');
 const toolsRoutes = require('./routes/toolsRoutes');
 const honorsRoutes = require('./routes/honorsRoutes');
+const servicesRoutes = require('./routes/servicesRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -62,6 +63,7 @@ app.use('/api/projects', projectsRoutes);
 app.use('/api/tools', toolsRoutes);
 app.use('/api/honors', honorsRoutes);
 app.use('/api', searchRoutes);
+app.use('/api/services', servicesRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
