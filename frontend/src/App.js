@@ -15,7 +15,7 @@ import WebDevMaintenancePage from './pages/WebDevMaintenancePage';
 import WorkflowAutomationPage from './pages/WorkflowAutomationPage';
 import AIConversationalToolsPage from './pages/AIConversationalToolsPage';
 import AppSoftwareDevPage from './pages/AppSoftwareDevPage';
-import TechnicalConsultingPage from './pages/TechnicalConsultingPage';
+import TechnicalConsultingPage from './pages/TechnicalConsultingPage'; //
 
 function App() {
   return (
