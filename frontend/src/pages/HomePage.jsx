@@ -312,7 +312,7 @@ const HomePage = () => {
         'Cloud Deployment (Cloud Run, Render, AWS, Cloudflare)'
       ],
       ctaText: 'Book a Consult',
-      ctaLink: '/contact?service=consulting'
+      ctaLink: '/services/technical-consulting'
     },
     {
       title: 'User Experience & Frontend Polish',
