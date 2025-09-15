@@ -16,7 +16,7 @@ const HomePage = () => {
   const [tools, setTools] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);//
 
   useEffect(() => {
     // Add scroll progress tracking
