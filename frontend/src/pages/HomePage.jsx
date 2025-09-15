@@ -315,16 +315,17 @@ const HomePage = () => {
       ctaLink: '/services/technical-consulting'
     },
     {
-      title: 'User Experience & Frontend Polish',
-      color: 'from-rose-600 to-pink-600',
+      title: 'SEO Boost',
+      color: 'from-rose-600 to-pink-600', // keeps your existing gradient style
       items: [
-        'UI/UX Refinement & Accessibility',
-        'Custom Components & Animations (React + Tailwind)',
-        'Design-to-Code Conversion (Figma → Production)'
+        'Technical SEO Audit (Core Web Vitals, crawlability)',
+        'On-Page Optimization (titles, meta, headings, internal links)',
+        'Structured Data & Sitemap Fixes (Schema.org, XML, robots.txt)'
       ],
-      ctaText: 'Polish My UI',
-      ctaLink: '/contact?service=ux-ui'
+      ctaText: 'Boost My SEO',
+      ctaLink: '/services/seo-boost'
     }
+
   ];
 
   // Structured data for homepage
