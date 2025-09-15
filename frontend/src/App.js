@@ -15,6 +15,7 @@ import WebDevMaintenancePage from './pages/WebDevMaintenancePage';
 import WorkflowAutomationPage from './pages/WorkflowAutomationPage';
 import AIConversationalToolsPage from './pages/AIConversationalToolsPage';
 import AppSoftwareDevPage from './pages/AppSoftwareDevPage';
+import TechnicalConsultingPage from './pages/TechnicalConsultingPage';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
 
           {/* (Optional) 404 */}
           {/* <Route path="*" element={<NotFoundPage />} /> */}
+          <Route path="/services/technical-consulting" element={<TechnicalConsultingPage />} />
         </Routes>
       </Layout>
     </Router>
