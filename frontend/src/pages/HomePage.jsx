@@ -496,54 +496,56 @@ const CAL_EVENT_SLUGS = {
               <h2 className="text-2xl font-bold text-gray-100 mb-1">Services</h2>
               <div className="absolute bottom-0 left-0 w-24 h-1 bg-blue-500 rounded-full"></div>
             </div>
-            <div className="flex gap-3">
-          {/* inside servicesData.map(...) in the card footer */}
-          <Link
-            to={svc.ctaLink}
-            className="inline-flex items-center rounded-lg px-4 py-2 bg-blue-700 text-white hover:bg-blue-600 transition group"
-          >
-            {svc.ctaText}
-            <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-          </Link>
-
-
-              <Link
-                to="/projects"
-                className="bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
-              >
-                See Past Work
-              </Link>
-            </div>
+           <div className="flex gap-3">
+            <CalButton
+              handle={CAL_HANDLE}
+              event="secret"
+              label="Get a Quote"
+              className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+            />
+            <Link
+              to="/projects"
+              className="bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
+            >
+              See Past Work
+            </Link>
           </div>
 
           {/* Service Cards */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
-            {servicesData.map((svc, idx) => (
-              <div
-                key={idx}
-                className="relative overflow-hidden rounded-lg border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 group"
-              >
-                <div className={`absolute -top-8 -right-8 w-40 h-40 bg-gradient-to-br ${svc.color} opacity-20 rounded-full blur-2xl transition-all duration-300 group-hover:opacity-30`} />
-                <h3 className="text-xl font-semibold text-gray-100 mb-3">{svc.title}</h3>
-                <ul className="space-y-2 mb-4">
-                  {svc.items.map((item, i) => (
-                    <li key={i} className="text-gray-300 flex">
-                      <span className="mr-2 text-blue-400">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <CalButton
-                    handle={CAL_HANDLE}
-                    event={CAL_EVENT_SLUGS[svc.title]}
-                    label={svc.ctaText}
-                    className="inline-flex items-center rounded-lg px-4 py-2 bg-blue-700 text-white hover:bg-blue-600 transition group"
-                    metadata={{ service: svc.title, source: 'homepage#services', path: window.location.pathname }}
-                  />
 
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+                {servicesData.map((svc, idx) => (
+                  <div
+                    key={idx}
+                    className="relative overflow-hidden rounded-lg border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 group"
+                  >
+                    {/* decorative blob should not capture clicks */}
+                    <div className={`absolute -top-8 -right-8 w-40 h-40 bg-gradient-to-br ${svc.color} opacity-20 rounded-full blur-2xl transition-all duration-300 group-hover:opacity-30 pointer-events-none z-0`} />
+              
+                    <div className="relative z-10">
+                      <h3 className="text-xl font-semibold text-gray-100 mb-3">{svc.title}</h3>
+                      <ul className="space-y-2 mb-4">
+                        {svc.items.map((item, i) => (
+                          <li key={i} className="text-gray-300 flex">
+                            <span className="mr-2 text-blue-400">•</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+              
+                      {/* navigate to the service page, not Cal */}
+                      <Link
+                        to={svc.ctaLink}
+                        className="inline-flex items-center rounded-lg px-4 py-2 bg-blue-700 text-white hover:bg-blue-600 transition group"
+                      >
+                        {svc.ctaText}
+                        <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+
 
           {/* Package hint */}
           <div className="mt-8 text-sm text-gray-400">
