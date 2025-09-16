@@ -8,6 +8,8 @@ import { getProjects } from '../services/projectsService';
 import { getTools } from '../services/toolsService';
 import ShareButton from '../components/ShareButton';
 import PageLayout from '../components/PageLayout';
+import CalButton from '../components/CalButton';
+
 
 const HomePage = () => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -252,6 +254,21 @@ const HomePage = () => {
     }
   ];
 
+// Cal.com config (REAL handle)
+const CAL_HANDLE = 'cedrick-carter-ndeqh2';
+
+// For now, point all cards at the same event to test.
+// Later you can create separate event types and change these slugs.
+const CAL_EVENT_SLUGS = {
+  'Web Development & Maintenance': 'secret',
+  'Workflow & Automation': 'secret',
+  'AI & Conversational Tools': 'secret',
+  'App & Software Development': 'secret',
+  'Technical Consulting': 'secret',
+  'SEO Boost': 'secret',
+};
+
+
   // NEW: Services data (programming generalist offerings)
   // NOTE: "Data & Analytics" card has been removed per request.
   const servicesData = [
@@ -480,12 +497,13 @@ const HomePage = () => {
               <div className="absolute bottom-0 left-0 w-24 h-1 bg-blue-500 rounded-full"></div>
             </div>
             <div className="flex gap-3">
-              <Link
-                to="/contact"
+              <CalButton
+                handle={CAL_HANDLE}
+                event="secret"
+                label="Get a Quote"
                 className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-              >
-                Get a Quote
-              </Link>
+              />
+
               <Link
                 to="/projects"
                 className="bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
@@ -512,13 +530,14 @@ const HomePage = () => {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  to={svc.ctaLink}
-                  className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium group"
-                >
-                  {svc.ctaText}
-                  <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                </Link>
+                <CalButton
+                    handle={CAL_HANDLE}
+                    event={CAL_EVENT_SLUGS[svc.title]}
+                    label={svc.ctaText}
+                    className="inline-flex items-center rounded-lg px-4 py-2 bg-blue-700 text-white hover:bg-blue-600 transition group"
+                    metadata={{ service: svc.title, source: 'homepage#services', path: window.location.pathname }}
+                  />
+
               </div>
             ))}
           </div>
