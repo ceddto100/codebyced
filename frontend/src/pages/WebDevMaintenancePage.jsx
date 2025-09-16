@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 import PageLayout from "../components/PageLayout";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import CalButton from "../components/CalButton";
 
 /**
  * Web Development & Maintenance — Static Service Page
@@ -275,20 +276,28 @@ const WebDevMaintenancePage = () => {
             </h1>
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
             <div className="flex flex-wrap gap-3 mb-6">
-              {content.hero.ctas.map((c) => (
-                <Link
-                  key={c.label}
-                  to={c.to}
-                  className={
-                    c.variant === "secondary"
-                      ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
-                      : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-                  }
-                >
-                  {c.label}
-                </Link>
-              ))}
-            </div>
+                {content.hero.ctas.map((c) =>
+                  c.label === "Get a Quote" ? (
+                    <CalButton
+                      key={c.label}
+                      handle="cedrick-carter-ndeqh2"
+                      event="secret"
+                      label={c.label}
+                      className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                      metadata={{ page: "web-dev-maintenance", section: "hero" }}
+                    />
+                  ) : (
+                    <Link
+                      key={c.label}
+                      to={c.to}
+                      className="bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
+                    >
+                      {c.label}
+                    </Link>
+                  )
+                )}
+              </div>
+
             <ul className="grid md:grid-cols-2 gap-2">
               {content.hero.bullets.map((b, i) => (
                 <li key={i} className="text-gray-300 flex">
@@ -452,20 +461,13 @@ const WebDevMaintenancePage = () => {
         {/* CTA */}
         <section className="mb-6 text-center">
           <div className="inline-flex items-center gap-3">
-            <Link
-              to="/contact?service=web-dev"
-              className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-            >
-              Get a Quote
-            </Link>
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="px-5 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
-            >
-              Download Capabilities PDF
-            </a>
+            <CalButton
+                handle="cedrick-carter-ndeqh2"
+                event="secret"
+                label="Get a Quote"
+                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+                metadata={{ page: "web-dev-maintenance", section: "bottom-cta" }}
+              />
           </div>
         </section>
       </div>
