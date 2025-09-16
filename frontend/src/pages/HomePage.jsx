@@ -254,23 +254,7 @@ const HomePage = () => {
     }
   ];
 
-// Cal.com config (REAL handle)
-const CAL_HANDLE = 'cedrick-carter-ndeqh2';
 
-// For now, point all cards at the same event to test.
-// Later you can create separate event types and change these slugs.
-const CAL_EVENT_SLUGS = {
-  'Web Development & Maintenance': 'secret',
-  'Workflow & Automation': 'secret',
-  'AI & Conversational Tools': 'secret',
-  'App & Software Development': 'secret',
-  'Technical Consulting': 'secret',
-  'SEO Boost': 'secret',
-};
-
-
-  // NEW: Services data (programming generalist offerings)
-  // NOTE: "Data & Analytics" card has been removed per request.
   const servicesData = [
     {
       title: 'Web Development & Maintenance',
@@ -499,7 +483,7 @@ const CAL_EVENT_SLUGS = {
     </div>
     <div className="flex gap-3">
       <CalButton
-        handle={CAL_HANDLE}
+        handle="cedrick-carter-ndeqh2"
         event="secret"
         label="Get a Quote"
         className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
