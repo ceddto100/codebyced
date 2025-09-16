@@ -497,13 +497,14 @@ const CAL_EVENT_SLUGS = {
               <div className="absolute bottom-0 left-0 w-24 h-1 bg-blue-500 rounded-full"></div>
             </div>
             <div className="flex gap-3">
-            <Link
-              to={svc.ctaLink}
-              className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium group"
-            >
-              {svc.ctaText}
-              <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-            </Link>
+          {/* inside servicesData.map(...) in the card footer */}
+          <Link
+            to={svc.ctaLink}
+            className="inline-flex items-center rounded-lg px-4 py-2 bg-blue-700 text-white hover:bg-blue-600 transition group"
+          >
+            {svc.ctaText}
+            <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+          </Link>
 
 
               <Link
