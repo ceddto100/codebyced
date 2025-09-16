@@ -282,7 +282,7 @@ const CAL_EVENT_SLUGS = {
         'Ongoing Maintenance Plans (security, updates, uptime monitoring)'
       ],
       ctaText: 'Start a Website',
-      ctaLink: 'services/web-development-maintenance'
+      ctaLink: '/services/web-development-maintenance'
     },
     {
       title: 'Workflow & Automation',
@@ -497,12 +497,14 @@ const CAL_EVENT_SLUGS = {
               <div className="absolute bottom-0 left-0 w-24 h-1 bg-blue-500 rounded-full"></div>
             </div>
             <div className="flex gap-3">
-              <CalButton
-                handle={CAL_HANDLE}
-                event="secret"
-                label="Get a Quote"
-                className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-              />
+            <Link
+              to={svc.ctaLink}
+              className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium group"
+            >
+              {svc.ctaText}
+              <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+            </Link>
+
 
               <Link
                 to="/projects"
