@@ -22,7 +22,7 @@ const content = {
       "APIs & Integrations (REST/GraphQL, webhooks)"
     ],
     ctas: [
-      { "Book a 15-min discovery", useCal: true },
+      { label: "Book a 15-min discovery", useCal: true },
       { label: "See Past Work", to: "/projects", variant: "secondary" }
     ]
   },
