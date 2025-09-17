@@ -35,11 +35,11 @@ const content = {
     "Practical analytics that drive decisions",
   ],
 
-  // Budget pricing you approved
+  // Budget pricing (lowballed)
   packages: [
     {
       tier: "Starter Bot",
-      price: "$600–$1,200",
+      price: "$300–$600",
       timeline: "1–2 weeks",
       badge: "Great for one channel",
       items: [
@@ -53,7 +53,7 @@ const content = {
     },
     {
       tier: "Growth Assistant",
-      price: "$1,800–$3,500",
+      price: "$900–$1,750",
       timeline: "2–4 weeks",
       badge: "Most popular",
       items: [
@@ -68,7 +68,7 @@ const content = {
     },
     {
       tier: "Pro Conversational Platform",
-      price: "$4,500–$9,500+",
+      price: "$2,300–$4,800+",
       timeline: "4–8+ weeks",
       items: [
         "3–5 tools (CRM, ticketing, email/SMS)",
@@ -84,7 +84,7 @@ const content = {
   maintenance: [
     {
       name: "Essential",
-      price: "$99/mo",
+      price: "$59/mo",
       response: "72-hr (business)",
       features: [
         "Prompt/KB tweaks (0.5h/mo)",
@@ -97,7 +97,7 @@ const content = {
     },
     {
       name: "Growth",
-      price: "$249/mo",
+      price: "$149/mo",
       response: "24–48 hr",
       badge: "Most popular",
       features: [
@@ -112,7 +112,7 @@ const content = {
     },
     {
       name: "Pro",
-      price: "$499/mo",
+      price: "$299/mo",
       response: "Same-day (business)",
       features: [
         "Everything in Growth",
@@ -126,13 +126,13 @@ const content = {
   ],
 
   alacarte: [
-    { name: "Discovery & Fit Check (≤90 min)", price: "$95" },
-    { name: "Prompt/Guardrail Tune-up (≤2h)", price: "$180" },
-    { name: "RAG Setup (simple corpus)", price: "$400–$900" },
-    { name: "Voice Assistant Add-on (web/phone)", price: "$600–$1,200" },
-    { name: "Predictive Model Mini (baseline)", price: "$600–$1,200" },
-    { name: "Content Template Pack (5–8)", price: "$250–$500" },
-    { name: "Eval Harness & Safety Tests", price: "$350–$900" },
+    { name: "Discovery & Fit Check (≤90 min)", price: "$59" },
+    { name: "Prompt/Guardrail Tune-up (≤2h)", price: "$90" },
+    { name: "RAG Setup (simple corpus)", price: "$200–$450" },
+    { name: "Voice Assistant Add-on (web/phone)", price: "$300–$600" },
+    { name: "Predictive Model Mini (baseline)", price: "$300–$600" },
+    { name: "Content Template Pack (5–8)", price: "$150–$300" },
+    { name: "Eval Harness & Safety Tests", price: "$200–$450" },
   ],
 
   useCases: [
@@ -157,7 +157,7 @@ const content = {
   slas: [
     "Essential: 72-hr response | Growth: 24–48 hr | Pro: same-day (business).",
     "24/7 checks on requests & webhooks; alerts to email/Slack.",
-    "Overages billed at $60–$85/hr or rolled into a mini-sprint.",
+    "Overages billed at $35–$55/hr or rolled into a mini-sprint.",
   ],
 
   faq: [
@@ -233,12 +233,12 @@ const AIConversationalToolsPage = () => {
       provider: { "@type": "Person", name: "Cedrick Carter" },
       areaServed: "US (remote available)",
       offers: [
-        { "@type": "Offer", name: "Starter Bot", priceCurrency: "USD", price: "600-1200" },
-        { "@type": "Offer", name: "Growth Assistant", priceCurrency: "USD", price: "1800-3500" },
-        { "@type": "Offer", name: "Pro Conversational Platform", priceCurrency: "USD", price: "4500-9500" },
-        { "@type": "Offer", name: "Maintenance Essential", priceCurrency: "USD", price: "99" },
-        { "@type": "Offer", name: "Maintenance Growth", priceCurrency: "USD", price: "249" },
-        { "@type": "Offer", name: "Maintenance Pro", priceCurrency: "USD", price: "499" },
+        { "@type": "Offer", name: "Starter Bot", priceCurrency: "USD", price: "300-600" },
+        { "@type": "Offer", name: "Growth Assistant", priceCurrency: "USD", price: "900-1750" },
+        { "@type": "Offer", name: "Pro Conversational Platform", priceCurrency: "USD", price: "2300-4800" },
+        { "@type": "Offer", name: "Maintenance Essential", priceCurrency: "USD", price: "59" },
+        { "@type": "Offer", name: "Maintenance Growth", priceCurrency: "USD", price: "149" },
+        { "@type": "Offer", name: "Maintenance Pro", priceCurrency: "USD", price: "299" },
       ],
       url: content.seo.url,
       description: content.seo.description,
@@ -342,7 +342,7 @@ const AIConversationalToolsPage = () => {
             ))}
           </motion.div>
           <p className="text-sm text-gray-400 mt-3">
-            Hourly for extras/overages: <span className="font-medium text-gray-300">$60–$85/hr</span> (pre-approved). Payment terms: 50% deposit, 50% at delivery (milestones for longer projects).
+            Hourly for extras/overages: <span className="font-medium text-gray-300">$35–$55/hr</span> (pre-approved). Payment terms: 50% deposit, 50% at delivery (milestones for longer projects).
           </p>
         </section>
 
@@ -456,7 +456,7 @@ const AIConversationalToolsPage = () => {
             <h2 className="text-2xl font-bold text-gray-100">SLAs & Terms</h2>
             <div className="absolute bottom-0 left-0 w-16 h-1 bg-cyan-500 rounded-full"></div>
           </div>
-        <ul className="grid md:grid-cols-3 gap-4">
+          <ul className="grid md:grid-cols-3 gap-4">
             {content.slas.map((s, i) => (
               <li key={i} className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-5 text-gray-300">
                 {s}
@@ -505,3 +505,4 @@ const AIConversationalToolsPage = () => {
 };
 
 export default AIConversationalToolsPage;
+
