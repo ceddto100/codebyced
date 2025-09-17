@@ -31,7 +31,7 @@ const content = {
   packages: [
     {
       tier: "Starter MVP",
-      price: "$1,500–$3,500",
+      price: "$750–$1,800",
       timeline: "1–2 weeks",
       badge: "Great for validation",
       items: [
@@ -45,7 +45,7 @@ const content = {
     },
     {
       tier: "Growth App",
-      price: "$4,000–$8,500",
+      price: "$2,000–$4,250",
       timeline: "3–6 weeks",
       badge: "Most popular",
       items: [
@@ -60,7 +60,7 @@ const content = {
     },
     {
       tier: "Pro Product",
-      price: "$9,500–$20,000+",
+      price: "$4,800–$10,000+",
       timeline: "6–12+ weeks",
       items: [
         "React Native/Expo prototype → TestFlight/Play Internal",
@@ -76,7 +76,7 @@ const content = {
   maintenance: [
     {
       name: "Essential",
-      price: "$99/mo",
+      price: "$59/mo",
       response: "72-hr (business)",
       features: [
         "Uptime ping & weekly backups",
@@ -89,7 +89,7 @@ const content = {
     },
     {
       name: "Growth",
-      price: "$249/mo",
+      price: "$149/mo",
       response: "24–48 hr",
       badge: "Most popular",
       features: [
@@ -104,7 +104,7 @@ const content = {
     },
     {
       name: "Pro",
-      price: "$499/mo",
+      price: "$299/mo",
       response: "Same-day (business)",
       features: [
         "Everything in Growth",
@@ -118,12 +118,12 @@ const content = {
   ],
 
   alacarte: [
-    { name: "Quick Fix (≤1 hr, 1 issue)", price: "$150 flat" },
-    { name: "Diagnostic & Triage (up to 2 hrs)", price: "$149 (credited if we proceed)" },
-    { name: "Feature Sprint (1 week)", price: "$1,200–$2,400" },
-    { name: "App Store Prep (assets, listings, builds)", price: "$350–$900" },
-    { name: "Analytics Setup (events, dashboards)", price: "$250–$650" },
-    { name: "Deployment Hardening (CI/CD, envs, alerts)", price: "$300–$800" }
+    { name: "Quick Fix (≤1 hr, 1 issue)", price: "$90 flat" },
+    { name: "Diagnostic & Triage (up to 2 hrs)", price: "$75 (credited if we proceed)" },
+    { name: "Feature Sprint (1 week)", price: "$600–$1,200" },
+    { name: "App Store Prep (assets, listings, builds)", price: "$200–$450" },
+    { name: "Analytics Setup (events, dashboards)", price: "$150–$350" },
+    { name: "Deployment Hardening (CI/CD, envs, alerts)", price: "$180–$400" }
   ],
 
   outcomes: [
@@ -231,12 +231,12 @@ const AppSoftwareDevPage = () => {
       provider: { "@type": "Person", name: "Cedrick Carter" },
       areaServed: "US (remote available)",
       offers: [
-        { "@type": "Offer", name: "Starter MVP", priceCurrency: "USD", price: "1500-3500" },
-        { "@type": "Offer", name: "Growth App", priceCurrency: "USD", price: "4000-8500" },
-        { "@type": "Offer", name: "Pro Product", priceCurrency: "USD", price: "9500-20000" },
-        { "@type": "Offer", name: "Maintenance Essential", priceCurrency: "USD", price: "99" },
-        { "@type": "Offer", name: "Maintenance Growth", priceCurrency: "USD", price: "249" },
-        { "@type": "Offer", name: "Maintenance Pro", priceCurrency: "USD", price: "499" }
+        { "@type": "Offer", name: "Starter MVP", priceCurrency: "USD", price: "750-1800" },
+        { "@type": "Offer", name: "Growth App", priceCurrency: "USD", price: "2000-4250" },
+        { "@type": "Offer", name: "Pro Product", priceCurrency: "USD", price: "4800-10000" },
+        { "@type": "Offer", name: "Maintenance Essential", priceCurrency: "USD", price: "59" },
+        { "@type": "Offer", name: "Maintenance Growth", priceCurrency: "USD", price: "149" },
+        { "@type": "Offer", name: "Maintenance Pro", priceCurrency: "USD", price: "299" }
       ],
       url: content.seo.url,
       description: content.seo.description
@@ -349,7 +349,7 @@ const AppSoftwareDevPage = () => {
             ))}
           </motion.div>
           <p className="text-sm text-gray-400 mt-3">
-            Hourly for extras/overages: <span className="font-medium text-gray-300">$60–$85/hr</span> (pre-approved).
+            Hourly for extras/overages: <span className="font-medium text-gray-300">$35–$55/hr</span> (pre-approved).
             Payment terms: 50% to start, 50% at delivery (milestones for longer projects).
           </p>
         </section>
@@ -510,3 +510,4 @@ const AppSoftwareDevPage = () => {
 };
 
 export default AppSoftwareDevPage;
+
