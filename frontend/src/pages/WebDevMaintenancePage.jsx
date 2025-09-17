@@ -32,7 +32,7 @@ const content = {
   packages: [
     {
       tier: "Starter Site",
-      price: "$1,500–$3,500",
+      price: "$700–$1,500",
       timeline: "1–2 weeks",
       badge: "Popular for launches",
       items: [
@@ -46,7 +46,7 @@ const content = {
     },
     {
       tier: "Growth Site",
-      price: "$4,000–$9,000",
+      price: "$2,000–$5,000",
       timeline: "3–6 weeks",
       badge: "Most popular",
       items: [
@@ -61,7 +61,7 @@ const content = {
     },
     {
       tier: "Pro / Web App",
-      price: "$10,000–$25,000+",
+      price: "$6,000–$12,000+",
       timeline: "6–12+ weeks",
       items: [
         "Auth, dashboards, RBAC",
@@ -75,15 +75,15 @@ const content = {
   ],
 
   modernization: [
-    { name: "UI Refresh (same content)", price: "$3,000–$7,000" },
-    { name: "Full Redesign + IA/content", price: "$7,000–$15,000+" },
+    { name: "UI Refresh (same content)", price: "$1,200–$3,000" },
+    { name: "Full Redesign + IA/content", price: "$3,500–$8,000+" },
   ],
 
   // Maintenance Plans
   maintenance: [
     {
       name: "Essential",
-      price: "$99/mo",
+      price: "$49/mo",
       response: "72-hr email",
       features: [
         "Uptime monitoring (HTTP ping)",
@@ -96,7 +96,7 @@ const content = {
     },
     {
       name: "Growth",
-      price: "$299/mo",
+      price: "$149/mo",
       response: "24–48 hr",
       badge: "Most popular",
       features: [
@@ -111,7 +111,7 @@ const content = {
     },
     {
       name: "Pro",
-      price: "$799/mo",
+      price: "$399/mo",
       response: "Same-day (business)",
       features: [
         "Everything in Growth",
@@ -125,9 +125,9 @@ const content = {
   ],
 
   alacarte: [
-    { name: "Quick Fix (≤1 hr, 1 issue)", price: "$150 flat" },
-    { name: "Diagnostic & Triage (up to 2 hrs)", price: "$149 (credited if we proceed)" },
-    { name: "Optimization Sprint (1 week)", price: "$1,200–$2,400" },
+    { name: "Quick Fix (≤1 hr, 1 issue)", price: "$75 flat" },
+    { name: "Diagnostic & Triage (up to 2 hrs)", price: "$79 (credited if we proceed)" },
+    { name: "Optimization Sprint (1 week)", price: "$600–$1,200" },
   ],
 
   process: [
@@ -234,12 +234,12 @@ const WebDevMaintenancePage = () => {
       areaServed: "US (remote available)",
       serviceType: "Web development, optimization, redesign, and maintenance",
       offers: [
-        { "@type": "Offer", name: "Starter Site", priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "1500-3500" } },
-        { "@type": "Offer", name: "Growth Site",  priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "4000-9000" } },
-        { "@type": "Offer", name: "Pro / Web App", priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "10000-25000" } },
-        { "@type": "Offer", name: "Maintenance Essential", priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "99" } },
-        { "@type": "Offer", name: "Maintenance Growth",    priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "299" } },
-        { "@type": "Offer", name: "Maintenance Pro",        priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "799" } },
+        { "@type": "Offer", name: "Starter Site", priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "700-1500" } },
+        { "@type": "Offer", name: "Growth Site",  priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "2000-5000" } },
+        { "@type": "Offer", name: "Pro / Web App", priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "6000-12000" } },
+        { "@type": "Offer", name: "Maintenance Essential", priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "49" } },
+        { "@type": "Offer", name: "Maintenance Growth",    priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "149" } },
+        { "@type": "Offer", name: "Maintenance Pro",        priceSpecification: { "@type": "PriceSpecification", priceCurrency: "USD", price: "399" } },
       ],
       url: content.seo.url,
       description: content.seo.description,
@@ -395,7 +395,7 @@ const WebDevMaintenancePage = () => {
             ))}
           </motion.div>
           <p className="text-sm text-gray-400 mt-3">
-            Overages billed at $95–$125/hr or rolled into a mini-sprint.
+            Overages billed at $60–$90/hr or rolled into a mini-sprint.
           </p>
         </section>
 
@@ -476,4 +476,5 @@ const WebDevMaintenancePage = () => {
 };
 
 export default WebDevMaintenancePage;
+
 
