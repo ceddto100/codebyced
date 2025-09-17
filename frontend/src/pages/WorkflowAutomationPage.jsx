@@ -4,13 +4,14 @@ import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import PageLayout from "../components/PageLayout";
+import CalButton from "../components/CalButton";
 
 /**
  * Workflow & Automation — Static Service Page
  * Pricing is the 50%-reduced budget version you approved.
  * CTAs use: /services/automation&plan=<starter|growth|pro>
  */
-
+const CAL_HANDLE = "cedrick-carter-ndeqh2";
 const content = {
   hero: {
     title: "Workflow & Automation",
@@ -24,7 +25,7 @@ const content = {
     ],
     ctas: [
       { label: "Automate My Workflow", to: "/services/automation&plan=growth" },
-      { label: "Book a 15-min Discovery", to: "/services/automation" , variant: "secondary" },
+      { label: "Book a 15-min Discovery", variant: "secondary", useCal: true },
     ],
   },
 
@@ -286,20 +287,33 @@ const WorkflowAutomationPage = () => {
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
 
             <div className="flex flex-wrap gap-3 mb-6">
-              {content.hero.ctas.map((c) => (
-                <Link
-                  key={c.label}
-                  to={c.to}
-                  className={
-                    c.variant === "secondary"
-                      ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
-                      : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-                  }
-                >
-                  {c.label}
-                </Link>
-              ))}
-            </div>
+  {content.hero.ctas.map((c) =>
+    c.useCal ? (
+      <CalButton
+        key={c.label}
+        handle={CAL_HANDLE}
+        event="secret"            // ← replace with your Cal event slug if not "secret"
+        label={c.label}
+        className={
+          // style it however you want; this matches your primary button style
+          "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+        }
+      />
+    ) : (
+      <Link
+        key={c.label}
+        to={c.to}
+        className={
+          c.variant === "secondary"
+            ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
+            : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+        }
+      >
+        {c.label}
+      </Link>
+    )
+  )}
+</div>
 
             <ul className="grid md:grid-cols-2 gap-2">
               {content.hero.bullets.map((b, i) => (
@@ -487,12 +501,13 @@ const WorkflowAutomationPage = () => {
             >
               Automate My Workflow
             </Link>
-            <Link
-              to="/services/automation"
-              className="px-5 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
-            >
-              Book a 15-min Discovery
-            </Link>
+            <CalButton
+              handle={CAL_HANDLE}
+              event="secret"
+              label="Book a 15-min Discovery"
+              className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+              metadata={{ page: "workflow-automation", section: "bottom-cta" }}
+            />
           </div>
         </section>
       </div>
