@@ -6,7 +6,7 @@ import PageLayout from "../components/PageLayout";
 import CalButton from "../components/CalButton";
 
 /**
- * App & Software Development — Static Service Page
+ * App & Software Development — Statics Service Page
  * CTAs use /services/apps&plan=<starter|growth|pro>
  */
 const CONTEXT = "app";
