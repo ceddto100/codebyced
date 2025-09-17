@@ -3,13 +3,13 @@ import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import PageLayout from "../components/PageLayout";
-
+import CalButton from "../components/CalButton";
 /**
  * Technical Consulting — Static Service Page
  * CTAs use /contact?service=consulting&plan=<essential|growth|pro|...>
  * Highlights a card when URL has ?plan=<value>
  */
-
+const CAL_HANDLE = "cedrick-carter-ndeqh2";
 const content = {
   hero: {
     title: "Technical Consulting",
@@ -22,8 +22,7 @@ const content = {
       "Cloud Deployment (Cloud Run, Render, AWS, Cloudflare)"
     ],
     ctas: [
-      { label: "Book a Consult", to: "/contact?service=consulting" },
-      { label: "See Past Work", to: "/projects", variant: "secondary" }
+      { label: "Book a Consult", useCal: true },
     ]
   },
 
@@ -314,21 +313,22 @@ const TechnicalConsultingPage = () => {
               {content.hero.title}
             </h1>
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
-            <div className="flex flex-wrap gap-3 mb-6">
+           <div className="flex flex-wrap gap-3 mb-6">
               {content.hero.ctas.map((c) => (
-                <Link
+                <CalButton
                   key={c.label}
-                  to={c.to}
+                  handle={CAL_HANDLE}
+                  event={c.event || "secret"} // or hardcode "secret"
+                  label={c.label}
                   className={
                     c.variant === "secondary"
                       ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
                       : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
                   }
-                >
-                  {c.label}
-                </Link>
+                />
               ))}
             </div>
+
             <ul className="grid md:grid-cols-2 gap-2">
               {content.hero.bullets.map((b, i) => (
                 <li key={i} className="text-gray-300 flex">
@@ -483,12 +483,13 @@ const TechnicalConsultingPage = () => {
         {/* CTA */}
         <section className="mb-6 text-center">
           <div className="inline-flex items-center gap-3">
-            <Link
-              to="/contact?service=consulting&plan=growth"
+             <CalButton
+              handle={CAL_HANDLE}
+              event="secret"
+              label="Book a Consult"
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-            >
-              Book a Consult
-            </Link>
+              metadata={{ page: "technical-consulting", section: "bottom-cta" }}
+            />
             <Link
               to="/contact?service=consulting"
               className="px-5 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
