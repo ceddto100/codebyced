@@ -10,7 +10,7 @@ import CalButton from "../components/CalButton";
  * Web Development & Maintenance — Static Service Page
  * Matches your glass/gradient style and uses data arrays for easy edits.
  */
-
+const CONTEXT = "maintenance";
 const content = {
   hero: {
     title: "Web Development & Maintenance",
