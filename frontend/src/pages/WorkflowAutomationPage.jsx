@@ -11,6 +11,7 @@ import CalButton from "../components/CalButton";
  * Pricing is the further lowballed version.
  * CTAs use: /services/automation&plan=<starter|growth|pro>
  */
+const CONTEXT = "automation";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
 const content = {
   hero: {
