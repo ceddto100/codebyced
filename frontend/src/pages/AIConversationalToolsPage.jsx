@@ -3,12 +3,13 @@ import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import PageLayout from "../components/PageLayout";
+import CalButton from "../components/CalButton";
 
 /**
  * AI & Conversational Tools — Static Service Page
  * Budget-friendly pricing. CTAs use /services/ai&plan=<tier>.
  */
-
+const CAL_HANDLE = "cedrick-carter-ndeqh2";
 const content = {
   hero: {
     title: "AI & Conversational Tools",
@@ -22,7 +23,7 @@ const content = {
     ],
     ctas: [
       { label: "Set up my AI assistant", to: "/services/ai&plan=growth" },
-      { label: "Book a 15-min discovery", to: "/services/ai", variant: "secondary" },
+      { label: "Book a 15-min discovery", useCal: true, variant: "secondary" },
     ],
   },
 
@@ -275,19 +276,32 @@ const AIConversationalToolsPage = () => {
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
 
             <div className="flex flex-wrap gap-3 mb-6">
-              {content.hero.ctas.map((c) => (
-                <Link
-                  key={c.label}
-                  to={c.to}
-                  className={
-                    c.variant === "secondary"
-                      ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
-                      : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-                  }
-                >
-                  {c.label}
-                </Link>
-              ))}
+              {content.hero.ctas.map((c) =>
+                c.useCal ? (
+                  <CalButton
+                    key={c.label}
+                    handle={CAL_HANDLE}
+                    event="secret"            // ← replace with your Cal event slug if not "secret"
+                    label={c.label}
+                    className={
+                      // style it however you want; this matches your primary button style
+                      "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                    }
+                  />
+                ) : (
+                  <Link
+                    key={c.label}
+                    to={c.to}
+                    className={
+                      c.variant === "secondary"
+                        ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
+                        : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                    }
+                  >
+                    {c.label}
+                  </Link>
+                )
+              )}
             </div>
 
             <ul className="grid md:grid-cols-2 gap-2">
@@ -476,12 +490,13 @@ const AIConversationalToolsPage = () => {
             >
               Set up my AI assistant
             </Link>
-            <Link
-              to="/services/ai"
-              className="px-5 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
-            >
-              Book a 15-min discovery
-            </Link>
+            <CalButton
+              handle={CAL_HANDLE}
+              event="secret"
+              label="Book a 15-min Discovery"
+              className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+              metadata={{ page: "ai-conversational-tools", section: "bottom-cta" }}
+            />
           </div>
         </section>
       </div>
