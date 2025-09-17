@@ -3,12 +3,13 @@ import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import { Link, useParams } from "react-router-dom";
 import PageLayout from "../components/PageLayout";
+import CalButton from "../components/CalButton";
 
 /**
  * App & Software Development — Static Service Page
  * CTAs use /services/apps&plan=<starter|growth|pro>
  */
-
+const CAL_HANDLE = "cedrick-carter-ndeqh2";
 const content = {
   hero: {
     title: "App & Software Development",
@@ -21,7 +22,7 @@ const content = {
       "APIs & Integrations (REST/GraphQL, webhooks)"
     ],
     ctas: [
-      { label: "Start my MVP", to: "/services/apps&plan=starter" },
+      { "Book a 15-min discovery", useCal: true },
       { label: "See Past Work", to: "/projects", variant: "secondary" }
     ]
   },
@@ -282,19 +283,32 @@ const AppSoftwareDevPage = () => {
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
 
             <div className="flex flex-wrap gap-3 mb-6">
-              {content.hero.ctas.map((c) => (
-                <Link
-                  key={c.label}
-                  to={c.to}
-                  className={
-                    c.variant === "secondary"
-                      ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
-                      : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-                  }
-                >
-                  {c.label}
-                </Link>
-              ))}
+              {content.hero.ctas.map((c) =>
+                c.useCal ? (
+                  <CalButton
+                    key={c.label}
+                    handle={CAL_HANDLE}
+                    event="secret"            // ← replace with your Cal event slug if not "secret"
+                    label={c.label}
+                    className={
+                      // style it however you want; this matches your primary button style
+                      "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                    }
+                  />
+                ) : (
+                  <Link
+                    key={c.label}
+                    to={c.to}
+                    className={
+                      c.variant === "secondary"
+                        ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
+                        : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                    }
+                  >
+                    {c.label}
+                  </Link>
+                )
+              )}
             </div>
 
             <ul className="grid md:grid-cols-2 gap-2">
@@ -475,12 +489,13 @@ const AppSoftwareDevPage = () => {
         {/* CTA */}
         <section className="mb-6 text-center">
           <div className="inline-flex items-center gap-3">
-            <Link
-              to="/services/apps&plan=growth"
+           <CalButton
+              handle={CAL_HANDLE}
+              event="secret"
+              label="Book a 15-min Discovery"
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-            >
-              Start my MVP
-            </Link>
+              metadata={{ page: "app-development", section: "bottom-cta" }}
+            />
             <Link
               to="/services/apps"
               className="px-5 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
