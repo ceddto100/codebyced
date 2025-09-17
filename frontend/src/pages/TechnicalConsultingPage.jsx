@@ -9,6 +9,7 @@ import CalButton from "../components/CalButton";
  * CTAs use /contact?service=consulting&plan=<essential|growth|pro|...>
  * Highlights a card when URL has ?plan=<value>
  */
+const CONTEXT = "consulting";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
 const content = {
   hero: {
