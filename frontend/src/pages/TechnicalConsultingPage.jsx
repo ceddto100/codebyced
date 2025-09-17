@@ -30,7 +30,7 @@ const content = {
   reviews: [
     {
       tier: "Code Review Lite",
-      price: "$149 flat",
+      price: "$79 flat",
       timeline: "≤1 PR / ≤500 LOC",
       items: [
         "Written notes with clear, actionable findings",
@@ -42,7 +42,7 @@ const content = {
     },
     {
       tier: "Deep Review",
-      price: "$399",
+      price: "$199",
       timeline: "up to 4 hrs",
       badge: "Most popular",
       items: [
@@ -60,7 +60,7 @@ const content = {
   architecture: [
     {
       tier: "Architecture Blueprint",
-      price: "$650",
+      price: "$325",
       timeline: "1 day",
       items: [
         "System diagram & boundaries",
@@ -72,7 +72,7 @@ const content = {
     },
     {
       tier: "Blueprint+",
-      price: "$1,200",
+      price: "$600",
       timeline: "2–3 days",
       items: [
         "Capacity estimates & failure modes",
@@ -87,25 +87,25 @@ const content = {
 
   // DevOps pick-and-play
   devops: [
-    { name: "Git & PR Workflow", price: "$200", desc: "Branch model, PR templates, protection rules", ctaTo: "/contact?service=consulting&plan=git-pr" },
-    { name: "Dockerize App", price: "$300", desc: "Dev & prod images, compose file", ctaTo: "/contact?service=consulting&plan=dockerize" },
-    { name: "CI/CD Pipeline", price: "$450", desc: "Tests, build, deploy (GH Actions/GitLab/etc.)", ctaTo: "/contact?service=consulting&plan=cicd" },
-    { name: "Observability Starter", price: "$250", desc: "Basic logs/alerts + runbook", ctaTo: "/contact?service=consulting&plan=obs" },
-    { name: "DevOps Starter Bundle", price: "$900", desc: "Git/PR + Docker + CI/CD + Observability", ctaTo: "/contact?service=consulting&plan=devops-bundle", highlight: true }
+    { name: "Git & PR Workflow", price: "$120", desc: "Branch model, PR templates, protection rules", ctaTo: "/contact?service=consulting&plan=git-pr" },
+    { name: "Dockerize App", price: "$180", desc: "Dev & prod images, compose file", ctaTo: "/contact?service=consulting&plan=dockerize" },
+    { name: "CI/CD Pipeline", price: "$250", desc: "Tests, build, deploy (GH Actions/GitLab/etc.)", ctaTo: "/contact?service=consulting&plan=cicd" },
+    { name: "Observability Starter", price: "$150", desc: "Basic logs/alerts + runbook", ctaTo: "/contact?service=consulting&plan=obs" },
+    { name: "DevOps Starter Bundle", price: "$500", desc: "Git/PR + Docker + CI/CD + Observability", ctaTo: "/contact?service=consulting&plan=devops-bundle", highlight: true }
   ],
 
   // Cloud deployment one-time setups
   cloud: [
-    { name: "Google Cloud Run", price: "$350", desc: "Containerize, service, domain/SSL, rollout", ctaTo: "/contact?service=consulting&plan=cloudrun", gradient: "from-sky-600 to-blue-600" },
-    { name: "Render", price: "$300", desc: "PaaS deploy, autoscaling config (per plan)", ctaTo: "/contact?service=consulting&plan=render", gradient: "from-indigo-600 to-violet-600" },
-    { name: "AWS Fargate (ECS)", price: "$600", desc: "Task/service, IAM, rollout", ctaTo: "/contact?service=consulting&plan=fargate", gradient: "from-amber-600 to-orange-600" },
-    { name: "Cloudflare Workers", price: "$300", desc: "Edge function, routing, KV if needed", ctaTo: "/contact?service=consulting&plan=workers", gradient: "from-rose-600 to-pink-600" }
+    { name: "Google Cloud Run", price: "$200", desc: "Containerize, service, domain/SSL, rollout", ctaTo: "/contact?service=consulting&plan=cloudrun", gradient: "from-sky-600 to-blue-600" },
+    { name: "Render", price: "$180", desc: "PaaS deploy, autoscaling config (per plan)", ctaTo: "/contact?service=consulting&plan=render", gradient: "from-indigo-600 to-violet-600" },
+    { name: "AWS Fargate (ECS)", price: "$350", desc: "Task/service, IAM, rollout", ctaTo: "/contact?service=consulting&plan=fargate", gradient: "from-amber-600 to-orange-600" },
+    { name: "Cloudflare Workers", price: "$180", desc: "Edge function, routing, KV if needed", ctaTo: "/contact?service=consulting&plan=workers", gradient: "from-rose-600 to-pink-600" }
   ],
 
   retainers: [
     {
       name: "Essential",
-      price: "$149/mo",
+      price: "$89/mo",
       response: "72-hr business",
       features: [
         "2 hrs consulting/month",
@@ -117,7 +117,7 @@ const content = {
     },
     {
       name: "Growth",
-      price: "$349/mo",
+      price: "$199/mo",
       response: "24–48 hr",
       badge: "Most popular",
       features: [
@@ -131,7 +131,7 @@ const content = {
     },
     {
       name: "Pro",
-      price: "$749/mo",
+      price: "$399/mo",
       response: "Same-day (business)",
       features: [
         "12 hrs consulting/month",
@@ -144,7 +144,7 @@ const content = {
   ],
 
   notes: [
-    "Overages billed at $95/hr (rounded to 30 min).",
+    "Overages billed at $60/hr (rounded to 30 min).",
     "Project work typically 50% to start, 50% on delivery."
   ],
 
@@ -258,18 +258,18 @@ const TechnicalConsultingPage = () => {
       url: content.seo.url,
       description: content.seo.description,
       offers: [
-        { "@type": "Offer", name: "Code Review Lite", priceCurrency: "USD", price: "149" },
-        { "@type": "Offer", name: "Deep Review", priceCurrency: "USD", price: "399" },
-        { "@type": "Offer", name: "Architecture Blueprint", priceCurrency: "USD", price: "650" },
-        { "@type": "Offer", name: "Blueprint+", priceCurrency: "USD", price: "1200" },
-        { "@type": "Offer", name: "DevOps Starter Bundle", priceCurrency: "USD", price: "900" },
-        { "@type": "Offer", name: "Cloud Run Deploy", priceCurrency: "USD", price: "350" },
-        { "@type": "Offer", name: "Render Deploy", priceCurrency: "USD", price: "300" },
-        { "@type": "Offer", name: "AWS Fargate Deploy", priceCurrency: "USD", price: "600" },
-        { "@type": "Offer", name: "Cloudflare Workers Deploy", priceCurrency: "USD", price: "300" },
-        { "@type": "Offer", name: "Essential Retainer", priceCurrency: "USD", price: "149" },
-        { "@type": "Offer", name: "Growth Retainer", priceCurrency: "USD", price: "349" },
-        { "@type": "Offer", name: "Pro Retainer", priceCurrency: "USD", price: "749" }
+        { "@type": "Offer", name: "Code Review Lite", priceCurrency: "USD", price: "79" },
+        { "@type": "Offer", name: "Deep Review", priceCurrency: "USD", price: "199" },
+        { "@type": "Offer", name: "Architecture Blueprint", priceCurrency: "USD", price: "325" },
+        { "@type": "Offer", name: "Blueprint+", priceCurrency: "USD", price: "600" },
+        { "@type": "Offer", name: "DevOps Starter Bundle", priceCurrency: "USD", price: "500" },
+        { "@type": "Offer", name: "Cloud Run Deploy", priceCurrency: "USD", price: "200" },
+        { "@type": "Offer", name: "Render Deploy", priceCurrency: "USD", price: "180" },
+        { "@type": "Offer", name: "AWS Fargate Deploy", priceCurrency: "USD", price: "350" },
+        { "@type": "Offer", name: "Cloudflare Workers Deploy", priceCurrency: "USD", price: "180" },
+        { "@type": "Offer", name: "Essential Retainer", priceCurrency: "USD", price: "89" },
+        { "@type": "Offer", name: "Growth Retainer", priceCurrency: "USD", price: "199" },
+        { "@type": "Offer", name: "Pro Retainer", priceCurrency: "USD", price: "399" }
       ]
     }),
     []
@@ -504,3 +504,4 @@ const TechnicalConsultingPage = () => {
 };
 
 export default TechnicalConsultingPage;
+
