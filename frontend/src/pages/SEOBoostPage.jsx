@@ -3,13 +3,14 @@ import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import PageLayout from "../components/PageLayout";
+import CalButton from "../components/CalButton";
 
 /**
  * SEO Boost — Static Service Page
  * CTAs use /contact?service=seo&plan=<quick|audit|onpage|schema|starter|essential|growth|pro>
  * Highlights a card when URL has ?plan=<value>
  */
-
+const CAL_HANDLE = "cedrick-carter-ndeqh2";
 const content = {
   hero: {
     title: "SEO Boost",
@@ -22,7 +23,7 @@ const content = {
       "Structured Data (Schema.org JSON-LD) for rich results"
     ],
     ctas: [
-      { label: "Get an Audit", to: "/contact?service=seo&plan=audit" },
+      { label: "Get an Audit", useCal: true },
       { label: "Ask About Bundles", to: "/contact?service=seo", variant: "secondary" }
     ]
   },
@@ -303,20 +304,33 @@ const SEOBoostPage = () => {
               {content.hero.title}
             </h1>
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
-            <div className="flex flex-wrap gap-3 mb-6">
-              {content.hero.ctas.map((c) => (
-                <Link
-                  key={c.label}
-                  to={c.to}
-                  className={
-                    c.variant === "secondary"
-                      ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
-                      : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-                  }
-                >
-                  {c.label}
-                </Link>
-              ))}
+             <div className="flex flex-wrap gap-3 mb-6">
+              {content.hero.ctas.map((c) =>
+                c.useCal ? (
+                  <CalButton
+                    key={c.label}
+                    handle={CAL_HANDLE}
+                    event="secret"            // ← replace with your Cal event slug if not "secret"
+                    label={c.label}
+                    className={
+                      // style it however you want; this matches your primary button style
+                      "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                    }
+                  />
+                ) : (
+                  <Link
+                    key={c.label}
+                    to={c.to}
+                    className={
+                      c.variant === "secondary"
+                        ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
+                        : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                    }
+                  >
+                    {c.label}
+                  </Link>
+                )
+              )}
             </div>
             <ul className="grid md:grid-cols-2 gap-2">
               {content.hero.bullets.map((b, i) => (
@@ -446,12 +460,13 @@ const SEOBoostPage = () => {
         {/* CTA */}
         <section className="mb-6 text-center">
           <div className="inline-flex items-center gap-3">
-            <Link
-              to="/contact?service=seo&plan=audit"
+            <CalButton
+              handle={CAL_HANDLE}
+              event="secret"
+              label="Get an Audit"
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-            >
-              Get an Audit
-            </Link>
+              metadata={{ page: "seo-boost", section: "bottom-cta" }}
+            />
             <Link
               to="/contact?service=seo"
               className="px-5 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
