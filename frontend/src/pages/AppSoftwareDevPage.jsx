@@ -9,6 +9,7 @@ import CalButton from "../components/CalButton";
  * App & Software Development — Static Service Page
  * CTAs use /services/apps&plan=<starter|growth|pro>
  */
+const CONTEXT = "app";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
 const content = {
   hero: {
