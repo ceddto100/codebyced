@@ -10,7 +10,7 @@ import CalButton from "../components/CalButton";
  * Budget-friendly pricing. CTAs use /services/ai&plan=<tier>.
  */
 
-const CONTEXT = "aiconv";
+const CONTEXT = "ai";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
 const content = {
   hero: {
