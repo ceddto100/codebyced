@@ -8,7 +8,7 @@ import CalButton from "../components/CalButton";
 
 /**
  * Workflow & Automation — Static Service Page
- * Pricing is the 50%-reduced budget version you approved.
+ * Pricing is the further lowballed version.
  * CTAs use: /services/automation&plan=<starter|growth|pro>
  */
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
@@ -36,11 +36,11 @@ const content = {
     "Lower tooling costs by removing glue work",
   ],
 
-  // 50% reduced pricing
+  // Lowballed pricing
   packages: [
     {
       tier: "Starter Automation",
-      price: "$450–$900",
+      price: "$300–$600",
       timeline: "3–7 days",
       badge: "Great for one workflow",
       items: [
@@ -54,7 +54,7 @@ const content = {
     },
     {
       tier: "Growth Automation",
-      price: "$1,250–$2,750",
+      price: "$800–$1,800",
       timeline: "2–4 weeks",
       badge: "Most popular",
       items: [
@@ -69,7 +69,7 @@ const content = {
     },
     {
       tier: "Pro / Automation System",
-      price: "$3,000–$7,500+",
+      price: "$1,900–$4,900+",
       timeline: "4–10+ weeks",
       items: [
         "10+ tools, authenticated API(s)",
@@ -85,7 +85,7 @@ const content = {
   maintenance: [
     {
       name: "Essential",
-      price: "$79/mo",
+      price: "$49/mo",
       response: "72-hr (business)",
       features: [
         "24/7 run + webhook monitoring",
@@ -98,7 +98,7 @@ const content = {
     },
     {
       name: "Growth",
-      price: "$199/mo",
+      price: "$129/mo",
       response: "24–48 hr",
       badge: "Most popular",
       features: [
@@ -113,7 +113,7 @@ const content = {
     },
     {
       name: "Pro",
-      price: "$449/mo",
+      price: "$299/mo",
       response: "Same-day (business)",
       features: [
         "Everything in Growth",
@@ -127,11 +127,11 @@ const content = {
   ],
 
   alacarte: [
-    { name: "Diagnostic & Triage (up to 2h)", price: "$75 (credited if we proceed)" },
-    { name: "Quick Fix (≤1h, one issue)", price: "$90 flat" },
-    { name: "Scraper Setup (simple site)", price: "$225–$450" },
-    { name: "Custom Endpoint (typical)", price: "$150–$300 per endpoint" },
-    { name: "ETL to Sheets/DB/Warehouse", price: "$300–$1,000" },
+    { name: "Diagnostic & Triage (up to 2h)", price: "$59 (credited if we proceed)" },
+    { name: "Quick Fix (≤1h, one issue)", price: "$65 flat" },
+    { name: "Scraper Setup (simple site)", price: "$150–$300" },
+    { name: "Custom Endpoint (typical)", price: "$100–$200 per endpoint" },
+    { name: "ETL to Sheets/DB/Warehouse", price: "$200–$650" },
   ],
 
   useCases: [
@@ -154,7 +154,7 @@ const content = {
   slas: [
     "Essential: 72-hr response | Growth: 24–48 hr | Pro: same-day (business).",
     "24/7 checks on scheduled runs and webhooks, alerts to email/Slack.",
-    "Overages billed at $50–$65/hr or rolled into a mini-sprint.",
+    "Overages billed at $35–$45/hr or rolled into a mini-sprint.",
   ],
 
   faq: [
@@ -244,12 +244,12 @@ const WorkflowAutomationPage = () => {
       provider: { "@type": "Person", name: "Cedrick Carter" },
       areaServed: "US (remote available)",
       offers: [
-        { "@type": "Offer", name: "Starter Automation", priceCurrency: "USD", price: "450-900" },
-        { "@type": "Offer", name: "Growth Automation",  priceCurrency: "USD", price: "1250-2750" },
-        { "@type": "Offer", name: "Pro / Automation System", priceCurrency: "USD", price: "3000-7500" },
-        { "@type": "Offer", name: "Maintenance Essential", priceCurrency: "USD", price: "79" },
-        { "@type": "Offer", name: "Maintenance Growth",   priceCurrency: "USD", price: "199" },
-        { "@type": "Offer", name: "Maintenance Pro",       priceCurrency: "USD", price: "449" },
+        { "@type": "Offer", name: "Starter Automation", priceCurrency: "USD", price: "300-600" },
+        { "@type": "Offer", name: "Growth Automation",  priceCurrency: "USD", price: "800-1800" },
+        { "@type": "Offer", name: "Pro / Automation System", priceCurrency: "USD", price: "1900-4900" },
+        { "@type": "Offer", name: "Maintenance Essential", priceCurrency: "USD", price: "49" },
+        { "@type": "Offer", name: "Maintenance Growth",   priceCurrency: "USD", price: "129" },
+        { "@type": "Offer", name: "Maintenance Pro",       priceCurrency: "USD", price: "299" },
       ],
       url: content.seo.url,
       description: content.seo.description,
@@ -287,33 +287,30 @@ const WorkflowAutomationPage = () => {
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
 
             <div className="flex flex-wrap gap-3 mb-6">
-  {content.hero.ctas.map((c) =>
-    c.useCal ? (
-      <CalButton
-        key={c.label}
-        handle={CAL_HANDLE}
-        event="secret"            // ← replace with your Cal event slug if not "secret"
-        label={c.label}
-        className={
-          // style it however you want; this matches your primary button style
-          "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-        }
-      />
-    ) : (
-      <Link
-        key={c.label}
-        to={c.to}
-        className={
-          c.variant === "secondary"
-            ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
-            : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-        }
-      >
-        {c.label}
-      </Link>
-    )
-  )}
-</div>
+              {content.hero.ctas.map((c) =>
+                c.useCal ? (
+                  <CalButton
+                    key={c.label}
+                    handle={CAL_HANDLE}
+                    event="secret" // replace with your Cal event slug if not "secret"
+                    label={c.label}
+                    className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                  />
+                ) : (
+                  <Link
+                    key={c.label}
+                    to={c.to}
+                    className={
+                      c.variant === "secondary"
+                        ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
+                        : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                    }
+                  >
+                    {c.label}
+                  </Link>
+                )
+              )}
+            </div>
 
             <ul className="grid md:grid-cols-2 gap-2">
               {content.hero.bullets.map((b, i) => (
@@ -353,7 +350,7 @@ const WorkflowAutomationPage = () => {
             ))}
           </motion.div>
           <p className="text-sm text-gray-400 mt-3">
-            Hourly for extras/overages: <span className="font-medium text-gray-300">$50–$65/hr</span> (pre-approved). Payment terms: 50% deposit, 50% at delivery (milestones for longer projects).
+            Hourly for extras/overages: <span className="font-medium text-gray-300">$35–$45/hr</span> (pre-approved). Payment terms: 50% deposit, 50% at delivery (milestones for longer projects).
           </p>
         </section>
 
