@@ -1,24 +1,39 @@
 // /frontend/src/utils/stripeCheckout.js
 import { loadStripe } from "@stripe/stripe-js";
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
-const API_BASE = import.meta.env.VITE_API_BASE; // e.g. http://localhost:3001/api
+const PUBLISHABLE_KEY = import.meta.env?.VITE_STRIPE_PUBLISHABLE_KEY || "";
+// Accept "/api" or "http://localhost:3001/api" and strip trailing slash
+const RAW_API_BASE = import.meta.env?.VITE_API_BASE || "/api";
+const API_BASE = RAW_API_BASE.replace(/\/+$/, ""); // no trailing '/'
+
+let stripePromise = null;
+function getStripe() {
+  if (!PUBLISHABLE_KEY) {
+    console.warn("Missing VITE_STRIPE_PUBLISHABLE_KEY. Set it in frontend .env and redeploy.");
+    return null;
+  }
+  if (!stripePromise) stripePromise = loadStripe(PUBLISHABLE_KEY);
+  return stripePromise;
+}
 
 async function post(path, body) {
-  const resp = await fetch(`${API_BASE}/stripe/${path}`, {
+  const url = `${API_BASE}/stripe/${path}`;
+  const resp = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
+    credentials: "include", // optional if you need cookies
   });
   if (!resp.ok) {
     const text = await resp.text();
-    throw new Error(text || "Stripe request failed");
+    throw new Error(text || `Stripe request failed: ${resp.status}`);
   }
   return resp.json();
 }
 
 async function redirectToCheckout(sessionId) {
-  const stripe = await stripePromise;
+  const stripe = await getStripe();
+  if (!stripe) throw new Error("Stripe is not configured.");
   const { error } = await stripe.redirectToCheckout({ sessionId });
   if (error) throw error;
 }
@@ -34,10 +49,7 @@ export async function startDepositCheckout({ context, pkg, email }) {
   await redirectToCheckout(id);
 }
 
-/** One-time flat amounts.
- *  If amountCents is omitted, backend will use pricing[context].fixed[pkg]
- *  Example: { context: 'seo', pkg: 'onPageBundle' }
- */
+/** One-time amounts (or backend fixed amounts per context/pkg) */
 export async function startOneTimeCheckout({ context, pkg, amountCents, email }) {
   const { id } = await post("create-session", {
     planType: "one_time",
@@ -49,9 +61,7 @@ export async function startOneTimeCheckout({ context, pkg, amountCents, email })
   await redirectToCheckout(id);
 }
 
-/** Subscriptions (monthly). pkg is 'starter'|'growth'|'pro'.
- *  priceId is optional; if omitted, backend looks up pricing[context].subs[pkg]
- */
+/** Subscriptions (monthly). 'pkg' like 'starter'|'growth'|'pro' */
 export async function startSubscriptionCheckout({ context, pkg, priceId, email }) {
   const { id } = await post("create-session", {
     planType: "subscription",
@@ -67,9 +77,10 @@ export async function startSubscriptionCheckout({ context, pkg, priceId, email }
 export async function startMilestoneCheckout({ context, pkg, phase, email }) {
   const { id } = await post("create-milestone-session", {
     context,
-    pkg,      // 'starter'|'growth'|'pro'
-    phase,    // 'midway'|'final'
+    pkg,
+    phase, // 'midway' | 'final'
     customerEmail: email || undefined,
   });
   await redirectToCheckout(id);
 }
+
