@@ -22,21 +22,21 @@ export const pricing = {
     depositPct: { starter: 0.30, growth: 0.25, pro: 0.20 },
     milestonePct: DEFAULT_MILESTONE_PCT, // use defaults
     subs: {
-      starter: "price_1S8TbkLqm1z2fUKBfAq1tTAk",
-      growth: "price_1S8ThgLqm1z2fUKBYF1cQ3Tm",
-      pro: "price_1S8TldLqm1z2fUKBBkRfFW4X",
+      starter: "price_1S8pzyL0N7h4wfoOB79X7w0U",
+      growth: "price_1S8q1ML0N7h4wfoOcWtKvb3w",
+      pro: "price_1S8q3mL0N7h4wfoOX0DYLXRC",
     },
   },
 
-  // App development page
+  // App development page (maps from “Maintenance & support”)
   app: {
     totals: { starter: 75000, growth: 200000, pro: 480000 }, // cents
     depositPct: { starter: 0.30, growth: 0.25, pro: 0.20 },
     milestonePct: DEFAULT_MILESTONE_PCT,
     subs: {
-      starter: "price_1S8WPALqm1z2fUKBq38L6RHr",
-      growth: "price_1S8WWwLqm1z2fUKBD7qjT1fp",
-      pro: "price_1S8WZqLqm1z2fUKBxpjEzWWr",
+      starter: "price_1S8qAeL0N7h4wfoOUJubfWoo",
+      growth: "price_1S8qCWL0N7h4wfoOoBj5navv",
+      pro: "price_1S8qEjL0N7h4wfoOfes9Ifuc",
     },
   },
 
@@ -54,9 +54,9 @@ export const pricing = {
     },
 
     subs: {
-      starter: "price_1S8WmMLqm1z2fUKBBwiucupz",
-      growth: "price_1S8WnnLqm1z2fUKBleNPjxCB",
-      pro: "price_1S8WptLqm1z2fUKBzlQVbpQV",
+      starter: "price_1S8pr8L0N7h4wfoOZFMmGYqP",
+      growth: "price_1S8pt7L0N7h4wfoOJSu5FlHZ",
+      pro: "price_1S8ptyL0N7h4wfoOd9CYqbuA",
     },
   },
 
@@ -94,9 +94,9 @@ export const pricing = {
 
     // Monthly retainers → subscriptions (use Stripe PRICE IDs here)
     subs: {
-      starter: "price_1S8awNLqm1z2fUKBfqyBXUxU", // Essential $89/mo
-      growth: "price_1S8ayYLqm1z2fUKBOCHOcxvM",   // Growth $199/mo
-      pro: "price_1S8b09Lqm1z2fUKBUlEdtQgm",         // Pro $399/mo
+      starter: "price_1S8pZYL0N7h4wfoOzE0cO15v", // Essential $89/mo
+      growth: "price_1S8pbBL0N7h4wfoOK2qu8Y1g",  // Growth $199/mo
+      pro: "price_1S8pcDL0N7h4wfoO2UDEWE8n",     // Pro $399/mo
     },
   },
 
@@ -106,9 +106,9 @@ export const pricing = {
     depositPct: { starter: 0.30, growth: 0.25, pro: 0.20 },
     milestonePct: DEFAULT_MILESTONE_PCT,
     subs: {
-      starter: "price_1S8WPALqm1z2fUKBq38L6RHr",
-      growth: "price_1S8WWwLqm1z2fUKBD7qjT1fp",
-      pro: "price_1S8WZqLqm1z2fUKBxpjEzWWr",
+      starter: "price_1S8pjyL0N7h4wfoOPIYVVfLw",
+      growth: "price_1S8pl8L0N7h4wfoONdDz50CR",
+      pro: "price_1S8pmFL0N7h4wfoO4uznwYse",
     },
   },
 
@@ -118,9 +118,10 @@ export const pricing = {
     depositPct: { starter: 0.30, growth: 0.25, pro: 0.20 },
     milestonePct: DEFAULT_MILESTONE_PCT,
     subs: {
-      starter: "price_1S8TbkLqm1z2fUKBfAq1tTAk",
-      growth: "price_1S8ThgLqm1z2fUKBYF1cQ3Tm",
-      pro: "price_1S8TldLqm1z2fUKBBkRfFW4X",
+      starter: "price_1S8pfCL0N7h4wfoOKRqcSRwN",
+      growth: "price_1S8pgKL0N7h4wfoO1p7Z6f3C",
+      pro: "price_1S8phUL0N7h4wfoO3WYjimL5",
     },
   },
 };
+
