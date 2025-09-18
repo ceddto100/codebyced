@@ -1,16 +1,25 @@
+// /frontend/src/pages/TechnicalConsultingPage.jsx
 import React, { useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import PageLayout from "../components/PageLayout";
 import CalButton from "../components/CalButton";
+
+// NEW: Stripe helpers
+import {
+  startOneTimeCheckout,
+  startSubscriptionCheckout,
+} from "../utils/stripeCheckout";
+
 /**
  * Technical Consulting — Static Service Page
- * CTAs use /contact?service=consulting&plan=<essential|growth|pro|...>
- * Highlights a card when URL has ?plan=<value>
+ * All package cards on this page are ONE-TIME payments,
+ * except the Retainers section which are monthly SUBSCRIPTIONS.
  */
 const CONTEXT = "consulting";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
+
 const content = {
   hero: {
     title: "Technical Consulting",
@@ -20,14 +29,12 @@ const content = {
       "Code Reviews & Best Practices",
       "Project Architecture & Scalability",
       "DevOps Support (Git, Docker, CI/CD)",
-      "Cloud Deployment (Cloud Run, Render, AWS, Cloudflare)"
+      "Cloud Deployment (Cloud Run, Render, AWS, Cloudflare)",
     ],
-    ctas: [
-      { label: "Book a Consult", useCal: true },
-    ]
+    ctas: [{ label: "Book a Consult", useCal: true }],
   },
 
-  // Quick help & reviews
+  // Quick help & reviews (ONE-TIME): map to pricing.consulting.fixed
   reviews: [
     {
       tier: "Code Review Lite",
@@ -36,10 +43,10 @@ const content = {
       items: [
         "Written notes with clear, actionable findings",
         "Best-practice checklist tailored to your stack",
-        "Focus: design, tests, readability, maintainability"
+        "Focus: design, tests, readability, maintainability",
       ],
-      ctaTo: "/contact?service=consulting&plan=review-lite",
-      gradient: "from-blue-600 to-indigo-600"
+      pkg: "reviewLite", // <-- fixed key
+      gradient: "from-blue-600 to-indigo-600",
     },
     {
       tier: "Deep Review",
@@ -49,15 +56,15 @@ const content = {
       items: [
         "Multiple PRs or one critical module",
         "Recorded walkthrough + action plan",
-        "Follow-up Q&A async"
+        "Follow-up Q&A async",
       ],
-      ctaTo: "/contact?service=consulting&plan=review-deep",
+      pkg: "reviewDeep",
       gradient: "from-indigo-600 to-fuchsia-600",
-      emphasized: true
-    }
+      emphasized: true,
+    },
   ],
 
-  // Architecture packages
+  // Architecture packages (ONE-TIME)
   architecture: [
     {
       tier: "Architecture Blueprint",
@@ -66,10 +73,10 @@ const content = {
       items: [
         "System diagram & boundaries",
         "Scaling/caching plan & risks",
-        "Backlog of next steps"
+        "Backlog of next steps",
       ],
-      ctaTo: "/contact?service=consulting&plan=blueprint",
-      gradient: "from-emerald-600 to-teal-600"
+      pkg: "blueprint",
+      gradient: "from-emerald-600 to-teal-600",
     },
     {
       tier: "Blueprint+",
@@ -78,31 +85,82 @@ const content = {
       items: [
         "Capacity estimates & failure modes",
         "Observability plan (logs/metrics)",
-        "Rollout strategy"
+        "Rollout strategy",
       ],
-      ctaTo: "/contact?service=consulting&plan=blueprint-plus",
+      pkg: "blueprintPlus",
       gradient: "from-teal-600 to-cyan-600",
-      emphasized: true
-    }
+      emphasized: true,
+    },
   ],
 
-  // DevOps pick-and-play
+  // DevOps pick-and-play (ONE-TIME)
   devops: [
-    { name: "Git & PR Workflow", price: "$120", desc: "Branch model, PR templates, protection rules", ctaTo: "/contact?service=consulting&plan=git-pr" },
-    { name: "Dockerize App", price: "$180", desc: "Dev & prod images, compose file", ctaTo: "/contact?service=consulting&plan=dockerize" },
-    { name: "CI/CD Pipeline", price: "$250", desc: "Tests, build, deploy (GH Actions/GitLab/etc.)", ctaTo: "/contact?service=consulting&plan=cicd" },
-    { name: "Observability Starter", price: "$150", desc: "Basic logs/alerts + runbook", ctaTo: "/contact?service=consulting&plan=obs" },
-    { name: "DevOps Starter Bundle", price: "$500", desc: "Git/PR + Docker + CI/CD + Observability", ctaTo: "/contact?service=consulting&plan=devops-bundle", highlight: true }
+    {
+      name: "Git & PR Workflow",
+      price: "$120",
+      desc: "Branch model, PR templates, protection rules",
+      pkg: "gitPr",
+    },
+    {
+      name: "Dockerize App",
+      price: "$180",
+      desc: "Dev & prod images, compose file",
+      pkg: "dockerize",
+    },
+    {
+      name: "CI/CD Pipeline",
+      price: "$250",
+      desc: "Tests, build, deploy (GH Actions/GitLab/etc.)",
+      pkg: "cicd",
+    },
+    {
+      name: "Observability Starter",
+      price: "$150",
+      desc: "Basic logs/alerts + runbook",
+      pkg: "obs",
+    },
+    {
+      name: "DevOps Starter Bundle",
+      price: "$500",
+      desc: "Git/PR + Docker + CI/CD + Observability",
+      pkg: "devopsBundle",
+      highlight: true,
+    },
   ],
 
   // Cloud deployment one-time setups
   cloud: [
-    { name: "Google Cloud Run", price: "$200", desc: "Containerize, service, domain/SSL, rollout", ctaTo: "/contact?service=consulting&plan=cloudrun", gradient: "from-sky-600 to-blue-600" },
-    { name: "Render", price: "$180", desc: "PaaS deploy, autoscaling config (per plan)", ctaTo: "/contact?service=consulting&plan=render", gradient: "from-indigo-600 to-violet-600" },
-    { name: "AWS Fargate (ECS)", price: "$350", desc: "Task/service, IAM, rollout", ctaTo: "/contact?service=consulting&plan=fargate", gradient: "from-amber-600 to-orange-600" },
-    { name: "Cloudflare Workers", price: "$180", desc: "Edge function, routing, KV if needed", ctaTo: "/contact?service=consulting&plan=workers", gradient: "from-rose-600 to-pink-600" }
+    {
+      name: "Google Cloud Run",
+      price: "$200",
+      desc: "Containerize, service, domain/SSL, rollout",
+      pkg: "cloudrun",
+      gradient: "from-sky-600 to-blue-600",
+    },
+    {
+      name: "Render",
+      price: "$180",
+      desc: "PaaS deploy, autoscaling config (per plan)",
+      pkg: "render",
+      gradient: "from-indigo-600 to-violet-600",
+    },
+    {
+      name: "AWS Fargate (ECS)",
+      price: "$350",
+      desc: "Task/service, IAM, rollout",
+      pkg: "fargate",
+      gradient: "from-amber-600 to-orange-600",
+    },
+    {
+      name: "Cloudflare Workers",
+      price: "$180",
+      desc: "Edge function, routing, KV if needed",
+      pkg: "workers",
+      gradient: "from-rose-600 to-pink-600",
+    },
   ],
 
+  // Retainers (SUBSCRIPTIONS): map to pricing.consulting.subs
   retainers: [
     {
       name: "Essential",
@@ -111,10 +169,10 @@ const content = {
       features: [
         "2 hrs consulting/month",
         "Light triage & async support",
-        "Monthly dependency review"
+        "Monthly dependency review",
       ],
-      ctaTo: "/contact?service=consulting&plan=essential",
-      gradient: "from-blue-600 to-indigo-600"
+      pkg: "starter", // <-- subs key
+      gradient: "from-blue-600 to-indigo-600",
     },
     {
       name: "Growth",
@@ -124,11 +182,11 @@ const content = {
       features: [
         "5 hrs consulting/month",
         "Roadmap nudges & check-ins",
-        "Perf/quality monthly report"
+        "Perf/quality monthly report",
       ],
-      ctaTo: "/contact?service=consulting&plan=growth",
+      pkg: "growth",
       gradient: "from-indigo-600 to-fuchsia-600",
-      emphasized: true
+      emphasized: true,
     },
     {
       name: "Pro",
@@ -137,51 +195,62 @@ const content = {
       features: [
         "12 hrs consulting/month",
         "Priority queue & incident help",
-        "Runbook updates & training"
+        "Runbook updates & training",
       ],
-      ctaTo: "/contact?service=consulting&plan=pro",
-      gradient: "from-emerald-600 to-teal-600"
-    }
+      pkg: "pro",
+      gradient: "from-emerald-600 to-teal-600",
+    },
   ],
 
   notes: [
     "Overages billed at $60/hr (rounded to 30 min).",
-    "Project work typically 50% to start, 50% on delivery."
+    "Project work typically 50% to start, 50% on delivery.",
   ],
 
   process: [
-    { name: "Discovery", desc: "Goals, constraints, success metrics (free; extended $95 if needed)." },
-    { name: "SOW & Quote", desc: "Scope, timeline, outcomes, clear pricing." },
-    { name: "Working Sprint(s)", desc: "Async work + weekly touchpoints; tight feedback loops." },
+    {
+      name: "Discovery",
+      desc: "Goals, constraints, success metrics (free; extended $95 if needed).",
+    },
+    {
+      name: "SOW & Quote",
+      desc: "Scope, timeline, outcomes, clear pricing.",
+    },
+    {
+      name: "Working Sprint(s)",
+      desc: "Async work + weekly touchpoints; tight feedback loops.",
+    },
     { name: "Demo & Handoff", desc: "Docs, runbooks, recordings, next steps." },
-    { name: "Measure & Iterate", desc: "Optional retainer to improve DORA metrics." }
+    { name: "Measure & Iterate", desc: "Optional retainer to improve DORA metrics." },
   ],
 
   slas: [
     "Response — Essential: 72h, Growth: 24–48h, Pro: same-day (business).",
     "Incidents — Pro start ≤4 business hrs; Growth ≤8; Essential best effort.",
-    "Comms — Slack/email + weekly sync when active; change windows agreed."
-  ],
-
-  faq: [
-    { q: "Will you work in our existing stack?", a: "Yes—React/Next, Node/Express, headless CMS, common CI/CD tools, major clouds." },
-    { q: "Who owns code, infra, and secrets?", a: "You do. I use least-privilege access in your org accounts." },
-    { q: "How do scope changes work?", a: "Small tweaks included; bigger changes get a quick estimate and mini-SOW." },
-    { q: "How do we measure success?", a: "We track DORA metrics (deploy frequency, lead time, change failure rate, MTTR) and set targets." }
+    "Comms — Slack/email + weekly sync when active; change windows agreed.",
   ],
 
   seo: {
     title: "Technical Consulting | CodeByCed",
     description:
       "Affordable code reviews, architecture & scalability guidance, DevOps (Git, Docker, CI/CD), and cloud deployments (Cloud Run, Render, AWS, Cloudflare).",
-    url: "https://codebyced.com/services/technical-consulting"
-  }
+    url: "https://codebyced.com/services/technical-consulting",
+  },
 };
 
 const variants = {
-  fadeInUp: { hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45 } } },
-  reveal: { hidden: { opacity: 0, scale: 0.98 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } } },
-  stagger: { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } }
+  fadeInUp: {
+    hidden: { opacity: 0, y: 18 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
+  },
+  reveal: {
+    hidden: { opacity: 0, scale: 0.98 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+  },
+  stagger: {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
+  },
 };
 
 const Pill = ({ children }) => (
@@ -190,21 +259,37 @@ const Pill = ({ children }) => (
   </span>
 );
 
-const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized, highlight }) => (
+// UPDATED: uses onPrimaryClick instead of Link
+const PriceCard = ({
+  tier,
+  price,
+  timeline,
+  items,
+  badge,
+  gradient,
+  emphasized,
+  highlight,
+  onPrimaryClick,
+  primaryLabel = "Select",
+}) => (
   <motion.div
     variants={variants.fadeInUp}
     className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 ${
       emphasized ? "ring-1 ring-indigo-500/40" : ""
     } ${highlight ? "outline outline-2 outline-indigo-400/60" : ""}`}
   >
-    <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`} />
+    <div
+      className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`}
+    />
     <div className="relative z-10">
       <div className="flex items-start justify-between mb-2">
         <h3 className="text-xl font-semibold text-gray-100">{tier}</h3>
         {badge ? <Pill>{badge}</Pill> : null}
       </div>
       <div className="text-3xl font-bold text-gray-100">{price}</div>
-      {timeline && <div className="text-sm text-gray-400 mb-4">Timeline: {timeline}</div>}
+      {timeline && (
+        <div className="text-sm text-gray-400 mb-4">Timeline: {timeline}</div>
+      )}
       <ul className="space-y-2 mb-5">
         {items.map((it, i) => (
           <li key={i} className="text-gray-300 flex">
@@ -213,33 +298,40 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
           </li>
         ))}
       </ul>
-      <Link
-        to={ctaTo}
+      <button
+        onClick={onPrimaryClick}
         className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
       >
-        Choose {tier}
-        <span className="ml-1">→</span>
-      </Link>
+        {primaryLabel} <span className="ml-1">→</span>
+      </button>
     </div>
   </motion.div>
 );
 
-const ChipCard = ({ name, price, desc, ctaTo, gradient, highlight }) => (
-  <div className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 ${highlight ? "ring-1 ring-indigo-500/40" : ""}`}>
-    {gradient ? <div className={`absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`} /> : null}
+// UPDATED: button instead of Link
+const ChipCard = ({ name, price, desc, gradient, highlight, onSelect }) => (
+  <div
+    className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 ${
+      highlight ? "ring-1 ring-indigo-500/40" : ""
+    }`}
+  >
+    {gradient ? (
+      <div
+        className={`absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`}
+      />
+    ) : null}
     <div className="relative z-10">
       <div className="flex items-start justify-between">
         <h3 className="text-gray-100 font-semibold">{name}</h3>
         <div className="text-gray-300">{price}</div>
       </div>
       <p className="text-gray-400 mt-1">{desc}</p>
-      <Link
-        to={ctaTo}
+      <button
+        onClick={onSelect}
         className="inline-flex items-center mt-4 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition text-sm"
       >
-        Select
-        <span className="ml-1">→</span>
-      </Link>
+        Select <span className="ml-1">→</span>
+      </button>
     </div>
   </div>
 );
@@ -253,7 +345,8 @@ const TechnicalConsultingPage = () => {
       "@context": "https://schema.org",
       "@type": "Service",
       name: "Technical Consulting",
-      serviceType: "Code reviews, architecture & scalability, DevOps, cloud deployment",
+      serviceType:
+        "Code reviews, architecture & scalability, DevOps, cloud deployment",
       provider: { "@type": "Person", name: "Cedrick Carter" },
       areaServed: "US (remote available)",
       url: content.seo.url,
@@ -270,8 +363,8 @@ const TechnicalConsultingPage = () => {
         { "@type": "Offer", name: "Cloudflare Workers Deploy", priceCurrency: "USD", price: "180" },
         { "@type": "Offer", name: "Essential Retainer", priceCurrency: "USD", price: "89" },
         { "@type": "Offer", name: "Growth Retainer", priceCurrency: "USD", price: "199" },
-        { "@type": "Offer", name: "Pro Retainer", priceCurrency: "USD", price: "399" }
-      ]
+        { "@type": "Offer", name: "Pro Retainer", priceCurrency: "USD", price: "399" },
+      ],
     }),
     []
   );
@@ -282,9 +375,14 @@ const TechnicalConsultingPage = () => {
     return (
       (label.toLowerCase().includes("growth") && (p === "growth" || p === "growth-maint")) ||
       (label.toLowerCase().includes("pro") && (p === "pro" || p === "pro-maint")) ||
-      label.toLowerCase().includes(p) // generic match (review-lite, review-deep, blueprint, etc.)
+      label.toLowerCase().includes(p)
     );
   };
+
+  // Handlers — these map directly to your pricing.consulting.* keys
+  const payOneTime = (pkg) => startOneTimeCheckout({ context: CONTEXT, pkg });
+  const subscribe = (tier) =>
+    startSubscriptionCheckout({ context: CONTEXT, pkg: tier }); // tier: 'starter'|'growth'|'pro'
 
   return (
     <PageLayout>
@@ -314,12 +412,12 @@ const TechnicalConsultingPage = () => {
               {content.hero.title}
             </h1>
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
-           <div className="flex flex-wrap gap-3 mb-6">
+            <div className="flex flex-wrap gap-3 mb-6">
               {content.hero.ctas.map((c) => (
                 <CalButton
                   key={c.label}
                   handle={CAL_HANDLE}
-                  event={c.event || "secret"} // or hardcode "secret"
+                  event={c.event || "secret"}
                   label={c.label}
                   className={
                     c.variant === "secondary"
@@ -341,33 +439,55 @@ const TechnicalConsultingPage = () => {
           </div>
         </motion.section>
 
-        {/* Reviews */}
+        {/* Reviews (one-time) */}
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Code Reviews & Best Practices</h2>
             <div className="absolute bottom-0 left-0 w-28 h-1 bg-blue-500 rounded-full"></div>
           </div>
-          <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
+          <motion.div
+            variants={variants.stagger}
+            initial="hidden"
+            animate="visible"
+            className="grid md:grid-cols-2 gap-6"
+          >
             {content.reviews.map((p) => (
-              <PriceCard key={p.tier} {...p} highlight={highlight(p.tier)} />
+              <PriceCard
+                key={p.tier}
+                {...p}
+                onPrimaryClick={() => payOneTime(p.pkg)}
+                primaryLabel={`Pay ${p.price.replace(" flat", "")}`}
+                highlight={highlight(p.tier)}
+              />
             ))}
           </motion.div>
         </section>
 
-        {/* Architecture */}
+        {/* Architecture (one-time) */}
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Project Architecture & Scalability</h2>
             <div className="absolute bottom-0 left-0 w-28 h-1 bg-emerald-500 rounded-full"></div>
           </div>
-          <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
+          <motion.div
+            variants={variants.stagger}
+            initial="hidden"
+            animate="visible"
+            className="grid md:grid-cols-2 gap-6"
+          >
             {content.architecture.map((p) => (
-              <PriceCard key={p.tier} {...p} highlight={highlight(p.tier)} />
+              <PriceCard
+                key={p.tier}
+                {...p}
+                onPrimaryClick={() => payOneTime(p.pkg)}
+                primaryLabel={`Pay ${p.price}`}
+                highlight={highlight(p.tier)}
+              />
             ))}
           </motion.div>
         </section>
 
-        {/* DevOps pick-and-play */}
+        {/* DevOps pick-and-play (one-time) */}
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">DevOps Support (Pick & Play)</h2>
@@ -375,12 +495,16 @@ const TechnicalConsultingPage = () => {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {content.devops.map((d) => (
-              <ChipCard key={d.name} {...d} />
+              <ChipCard
+                key={d.name}
+                {...d}
+                onSelect={() => payOneTime(d.pkg)}
+              />
             ))}
           </div>
         </section>
 
-        {/* Cloud deployment */}
+        {/* Cloud deployment (one-time) */}
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Cloud Deployment (One-time Setup)</h2>
@@ -388,18 +512,23 @@ const TechnicalConsultingPage = () => {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {content.cloud.map((c) => (
-              <ChipCard key={c.name} {...c} />
+              <ChipCard key={c.name} {...c} onSelect={() => payOneTime(c.pkg)} />
             ))}
           </div>
         </section>
 
-        {/* Retainers */}
+        {/* Retainers (subscriptions) */}
         <section className="mb-4">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Retainers (Month-to-Month)</h2>
             <div className="absolute bottom-0 left-0 w-28 h-1 bg-violet-500 rounded-full"></div>
           </div>
-          <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-3 gap-6">
+          <motion.div
+            variants={variants.stagger}
+            initial="hidden"
+            animate="visible"
+            className="grid md:grid-cols-3 gap-6"
+          >
             {content.retainers.map((m) => (
               <PriceCard
                 key={m.name}
@@ -407,11 +536,12 @@ const TechnicalConsultingPage = () => {
                 price={m.price}
                 timeline={`Response: ${m.response}`}
                 items={m.features}
-                ctaTo={m.ctaTo}
                 gradient={m.gradient}
                 emphasized={m.emphasized}
                 badge={m.badge}
                 highlight={highlight(m.name)}
+                onPrimaryClick={() => subscribe(m.pkg)}   // <-- subscription
+                primaryLabel={`Subscribe ${m.price}`}
               />
             ))}
           </motion.div>
@@ -458,7 +588,10 @@ const TechnicalConsultingPage = () => {
           </div>
           <ul className="grid md:grid-cols-3 gap-4">
             {content.slas.map((s, i) => (
-              <li key={i} className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-5 text-gray-300">
+              <li
+                key={i}
+                className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-5 text-gray-300"
+              >
                 {s}
               </li>
             ))}
@@ -473,7 +606,10 @@ const TechnicalConsultingPage = () => {
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             {content.faq.map((f) => (
-              <div key={f.q} className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-6">
+              <div
+                key={f.q}
+                className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-6"
+              >
                 <h3 className="text-gray-100 font-semibold">{f.q}</h3>
                 <p className="text-gray-300 mt-2">{f.a}</p>
               </div>
@@ -484,19 +620,13 @@ const TechnicalConsultingPage = () => {
         {/* CTA */}
         <section className="mb-6 text-center">
           <div className="inline-flex items-center gap-3">
-             <CalButton
+            <CalButton
               handle={CAL_HANDLE}
               event="secret"
               label="Book a Consult"
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
               metadata={{ page: "technical-consulting", section: "bottom-cta" }}
             />
-            <Link
-              to="/contact?service=consulting"
-              className="px-5 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
-            >
-              Ask about bundles
-            </Link>
           </div>
         </section>
       </div>
