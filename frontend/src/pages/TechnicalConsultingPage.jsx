@@ -6,16 +6,17 @@ import { useSearchParams } from "react-router-dom";
 import PageLayout from "../components/PageLayout";
 import CalButton from "../components/CalButton";
 
-// NEW: Stripe helpers
+// Stripe helpers (client-side)
 import {
   startOneTimeCheckout,
   startSubscriptionCheckout,
 } from "../utils/stripeCheckout";
 
 /**
- * Technical Consulting — Static Service Page
- * All package cards on this page are ONE-TIME payments,
- * except the Retainers section which are monthly SUBSCRIPTIONS.
+ * Technical Consulting — Service Page
+ * - ONE-TIME cards call startOneTimeCheckout
+ * - Retainers call startSubscriptionCheckout
+ * - All .map() calls are guarded to prevent blank screens
  */
 const CONTEXT = "consulting";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
@@ -24,7 +25,7 @@ const content = {
   hero: {
     title: "Technical Consulting",
     subtitle:
-      "Tighten code quality, architecture, CI/CD, and cloud delivery. I apply proven practices (DORA metrics, clean code reviews, pragmatic DevOps) so you ship faster and safer.",
+      "Tighten code quality, architecture, CI/CD, and cloud delivery. I apply pragmatic practices (clean code reviews, DORA metrics, DevOps) so you ship faster and safer.",
     bullets: [
       "Code Reviews & Best Practices",
       "Project Architecture & Scalability",
@@ -34,7 +35,7 @@ const content = {
     ctas: [{ label: "Book a Consult", useCal: true }],
   },
 
-  // Quick help & reviews (ONE-TIME): map to pricing.consulting.fixed
+  // ONE-TIME: map to pricing.consulting.fixed
   reviews: [
     {
       tier: "Code Review Lite",
@@ -45,7 +46,7 @@ const content = {
         "Best-practice checklist tailored to your stack",
         "Focus: design, tests, readability, maintainability",
       ],
-      pkg: "reviewLite", // <-- fixed key
+      pkg: "reviewLite",
       gradient: "from-blue-600 to-indigo-600",
     },
     {
@@ -64,7 +65,7 @@ const content = {
     },
   ],
 
-  // Architecture packages (ONE-TIME)
+  // ONE-TIME
   architecture: [
     {
       tier: "Architecture Blueprint",
@@ -93,74 +94,24 @@ const content = {
     },
   ],
 
-  // DevOps pick-and-play (ONE-TIME)
+  // ONE-TIME
   devops: [
-    {
-      name: "Git & PR Workflow",
-      price: "$120",
-      desc: "Branch model, PR templates, protection rules",
-      pkg: "gitPr",
-    },
-    {
-      name: "Dockerize App",
-      price: "$180",
-      desc: "Dev & prod images, compose file",
-      pkg: "dockerize",
-    },
-    {
-      name: "CI/CD Pipeline",
-      price: "$250",
-      desc: "Tests, build, deploy (GH Actions/GitLab/etc.)",
-      pkg: "cicd",
-    },
-    {
-      name: "Observability Starter",
-      price: "$150",
-      desc: "Basic logs/alerts + runbook",
-      pkg: "obs",
-    },
-    {
-      name: "DevOps Starter Bundle",
-      price: "$500",
-      desc: "Git/PR + Docker + CI/CD + Observability",
-      pkg: "devopsBundle",
-      highlight: true,
-    },
+    { name: "Git & PR Workflow", price: "$120", desc: "Branch model, PR templates, protection rules", pkg: "gitPr" },
+    { name: "Dockerize App", price: "$180", desc: "Dev & prod images, compose file", pkg: "dockerize" },
+    { name: "CI/CD Pipeline", price: "$250", desc: "Tests, build, deploy (GH Actions/GitLab/etc.)", pkg: "cicd" },
+    { name: "Observability Starter", price: "$150", desc: "Basic logs/alerts + runbook", pkg: "obs" },
+    { name: "DevOps Starter Bundle", price: "$500", desc: "Git/PR + Docker + CI/CD + Observability", pkg: "devopsBundle", highlight: true },
   ],
 
-  // Cloud deployment one-time setups
+  // ONE-TIME
   cloud: [
-    {
-      name: "Google Cloud Run",
-      price: "$200",
-      desc: "Containerize, service, domain/SSL, rollout",
-      pkg: "cloudrun",
-      gradient: "from-sky-600 to-blue-600",
-    },
-    {
-      name: "Render",
-      price: "$180",
-      desc: "PaaS deploy, autoscaling config (per plan)",
-      pkg: "render",
-      gradient: "from-indigo-600 to-violet-600",
-    },
-    {
-      name: "AWS Fargate (ECS)",
-      price: "$350",
-      desc: "Task/service, IAM, rollout",
-      pkg: "fargate",
-      gradient: "from-amber-600 to-orange-600",
-    },
-    {
-      name: "Cloudflare Workers",
-      price: "$180",
-      desc: "Edge function, routing, KV if needed",
-      pkg: "workers",
-      gradient: "from-rose-600 to-pink-600",
-    },
+    { name: "Google Cloud Run", price: "$200", desc: "Containerize, service, domain/SSL, rollout", pkg: "cloudrun", gradient: "from-sky-600 to-blue-600" },
+    { name: "Render", price: "$180", desc: "PaaS deploy, autoscaling config (per plan)", pkg: "render", gradient: "from-indigo-600 to-violet-600" },
+    { name: "AWS Fargate (ECS)", price: "$350", desc: "Task/service, IAM, rollout", pkg: "fargate", gradient: "from-amber-600 to-orange-600" },
+    { name: "Cloudflare Workers", price: "$180", desc: "Edge function, routing, KV if needed", pkg: "workers", gradient: "from-rose-600 to-pink-600" },
   ],
 
-  // Retainers (SUBSCRIPTIONS): map to pricing.consulting.subs
+  // SUBSCRIPTIONS: map to pricing.consulting.subs
   retainers: [
     {
       name: "Essential",
@@ -171,7 +122,7 @@ const content = {
         "Light triage & async support",
         "Monthly dependency review",
       ],
-      pkg: "starter", // <-- subs key
+      pkg: "starter",
       gradient: "from-blue-600 to-indigo-600",
     },
     {
@@ -208,18 +159,9 @@ const content = {
   ],
 
   process: [
-    {
-      name: "Discovery",
-      desc: "Goals, constraints, success metrics (free; extended $95 if needed).",
-    },
-    {
-      name: "SOW & Quote",
-      desc: "Scope, timeline, outcomes, clear pricing.",
-    },
-    {
-      name: "Working Sprint(s)",
-      desc: "Async work + weekly touchpoints; tight feedback loops.",
-    },
+    { name: "Discovery", desc: "Goals, constraints, success metrics (free; extended $95 if needed)." },
+    { name: "SOW & Quote", desc: "Scope, timeline, outcomes, clear pricing." },
+    { name: "Working Sprint(s)", desc: "Async work + weekly touchpoints; tight feedback loops." },
     { name: "Demo & Handoff", desc: "Docs, runbooks, recordings, next steps." },
     { name: "Measure & Iterate", desc: "Optional retainer to improve DORA metrics." },
   ],
@@ -230,6 +172,13 @@ const content = {
     "Comms — Slack/email + weekly sync when active; change windows agreed.",
   ],
 
+  // ✅ provide FAQ to avoid undefined .map
+  faq: [
+    { q: "How do payments work?", a: "One-time items charge immediately via Stripe Checkout. Retainers bill monthly; you can self-manage in the customer portal." },
+    { q: "Do you sign NDAs?", a: "Yes—happy to sign a mutual NDA before reviewing repositories or cloud resources." },
+    { q: "Which stacks do you support?", a: "React/Vite, Node/Express, MongoDB/Postgres, Docker, GitHub Actions, GCP Cloud Run, Render, AWS (ECS/Fargate), Cloudflare Workers." },
+  ],
+
   seo: {
     title: "Technical Consulting | CodeByCed",
     description:
@@ -238,19 +187,11 @@ const content = {
   },
 };
 
+// ---- Motion variants
 const variants = {
-  fadeInUp: {
-    hidden: { opacity: 0, y: 18 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.45 } },
-  },
-  reveal: {
-    hidden: { opacity: 0, scale: 0.98 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
-  },
-  stagger: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
-  },
+  fadeInUp: { hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45 } } },
+  reveal: { hidden: { opacity: 0, scale: 0.98 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } } },
+  stagger: { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.12 } } },
 };
 
 const Pill = ({ children }) => (
@@ -259,12 +200,12 @@ const Pill = ({ children }) => (
   </span>
 );
 
-// UPDATED: uses onPrimaryClick instead of Link
+// Card components (buttons call handlers; safe to render)
 const PriceCard = ({
   tier,
   price,
   timeline,
-  items,
+  items = [],
   badge,
   gradient,
   emphasized,
@@ -278,20 +219,16 @@ const PriceCard = ({
       emphasized ? "ring-1 ring-indigo-500/40" : ""
     } ${highlight ? "outline outline-2 outline-indigo-400/60" : ""}`}
   >
-    <div
-      className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`}
-    />
+    <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${gradient ?? ""} opacity-20 rounded-full blur-3xl`} />
     <div className="relative z-10">
       <div className="flex items-start justify-between mb-2">
         <h3 className="text-xl font-semibold text-gray-100">{tier}</h3>
         {badge ? <Pill>{badge}</Pill> : null}
       </div>
       <div className="text-3xl font-bold text-gray-100">{price}</div>
-      {timeline && (
-        <div className="text-sm text-gray-400 mb-4">Timeline: {timeline}</div>
-      )}
+      {timeline && <div className="text-sm text-gray-400 mb-4">Timeline: {timeline}</div>}
       <ul className="space-y-2 mb-5">
-        {items.map((it, i) => (
+        {(items ?? []).map((it, i) => (
           <li key={i} className="text-gray-300 flex">
             <span className="mr-2 text-blue-400">•</span>
             <span>{it}</span>
@@ -308,17 +245,10 @@ const PriceCard = ({
   </motion.div>
 );
 
-// UPDATED: button instead of Link
 const ChipCard = ({ name, price, desc, gradient, highlight, onSelect }) => (
-  <div
-    className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 ${
-      highlight ? "ring-1 ring-indigo-500/40" : ""
-    }`}
-  >
+  <div className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 ${highlight ? "ring-1 ring-indigo-500/40" : ""}`}>
     {gradient ? (
-      <div
-        className={`absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`}
-      />
+      <div className={`absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`} />
     ) : null}
     <div className="relative z-10">
       <div className="flex items-start justify-between">
@@ -340,13 +270,13 @@ const TechnicalConsultingPage = () => {
   const [searchParams] = useSearchParams();
   const plan = (searchParams.get("plan") || "").toLowerCase();
 
+  // SEO schema
   const schema = useMemo(
     () => ({
       "@context": "https://schema.org",
       "@type": "Service",
       name: "Technical Consulting",
-      serviceType:
-        "Code reviews, architecture & scalability, DevOps, cloud deployment",
+      serviceType: "Code reviews, architecture & scalability, DevOps, cloud deployment",
       provider: { "@type": "Person", name: "Cedrick Carter" },
       areaServed: "US (remote available)",
       url: content.seo.url,
@@ -369,20 +299,20 @@ const TechnicalConsultingPage = () => {
     []
   );
 
-  const highlight = (label) => {
+  const highlight = (label = "") => {
     if (!plan) return false;
     const p = plan;
+    const L = label.toLowerCase();
     return (
-      (label.toLowerCase().includes("growth") && (p === "growth" || p === "growth-maint")) ||
-      (label.toLowerCase().includes("pro") && (p === "pro" || p === "pro-maint")) ||
-      label.toLowerCase().includes(p)
+      (L.includes("growth") && (p === "growth" || p === "growth-maint")) ||
+      (L.includes("pro") && (p === "pro" || p === "pro-maint")) ||
+      L.includes(p)
     );
   };
 
-  // Handlers — these map directly to your pricing.consulting.* keys
+  // Handlers — wire to Stripe helpers
   const payOneTime = (pkg) => startOneTimeCheckout({ context: CONTEXT, pkg });
-  const subscribe = (tier) =>
-    startSubscriptionCheckout({ context: CONTEXT, pkg: tier }); // tier: 'starter'|'growth'|'pro'
+  const subscribe = (tier) => startSubscriptionCheckout({ context: CONTEXT, pkg: tier }); // 'starter'|'growth'|'pro'
 
   return (
     <PageLayout>
@@ -408,12 +338,11 @@ const TechnicalConsultingPage = () => {
           className="mb-10 backdrop-blur-sm bg-gray-900/80 p-8 rounded-xl border border-gray-800 shadow-lg relative overflow-hidden"
         >
           <div className="relative z-10">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-100 mb-3">
-              {content.hero.title}
-            </h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-100 mb-3">{content.hero.title}</h1>
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
+
             <div className="flex flex-wrap gap-3 mb-6">
-              {content.hero.ctas.map((c) => (
+              {(content.hero.ctas ?? []).map((c) => (
                 <CalButton
                   key={c.label}
                   handle={CAL_HANDLE}
@@ -429,7 +358,7 @@ const TechnicalConsultingPage = () => {
             </div>
 
             <ul className="grid md:grid-cols-2 gap-2">
-              {content.hero.bullets.map((b, i) => (
+              {(content.hero.bullets ?? []).map((b, i) => (
                 <li key={i} className="text-gray-300 flex">
                   <span className="mr-2 text-indigo-400">•</span>
                   <span>{b}</span>
@@ -443,15 +372,10 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Code Reviews & Best Practices</h2>
-            <div className="absolute bottom-0 left-0 w-28 h-1 bg-blue-500 rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-28 h-1 bg-blue-500 rounded-full" />
           </div>
-          <motion.div
-            variants={variants.stagger}
-            initial="hidden"
-            animate="visible"
-            className="grid md:grid-cols-2 gap-6"
-          >
-            {content.reviews.map((p) => (
+          <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
+            {(content.reviews ?? []).map((p) => (
               <PriceCard
                 key={p.tier}
                 {...p}
@@ -467,15 +391,10 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Project Architecture & Scalability</h2>
-            <div className="absolute bottom-0 left-0 w-28 h-1 bg-emerald-500 rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-28 h-1 bg-emerald-500 rounded-full" />
           </div>
-          <motion.div
-            variants={variants.stagger}
-            initial="hidden"
-            animate="visible"
-            className="grid md:grid-cols-2 gap-6"
-          >
-            {content.architecture.map((p) => (
+          <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
+            {(content.architecture ?? []).map((p) => (
               <PriceCard
                 key={p.tier}
                 {...p}
@@ -491,15 +410,11 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">DevOps Support (Pick & Play)</h2>
-            <div className="absolute bottom-0 left-0 w-28 h-1 bg-cyan-500 rounded-full"></div>
+          <div className="absolute bottom-0 left-0 w-28 h-1 bg-cyan-500 rounded-full" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {content.devops.map((d) => (
-              <ChipCard
-                key={d.name}
-                {...d}
-                onSelect={() => payOneTime(d.pkg)}
-              />
+            {(content.devops ?? []).map((d) => (
+              <ChipCard key={d.name} {...d} onSelect={() => payOneTime(d.pkg)} />
             ))}
           </div>
         </section>
@@ -508,10 +423,10 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Cloud Deployment (One-time Setup)</h2>
-            <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {content.cloud.map((c) => (
+            {(content.cloud ?? []).map((c) => (
               <ChipCard key={c.name} {...c} onSelect={() => payOneTime(c.pkg)} />
             ))}
           </div>
@@ -521,15 +436,10 @@ const TechnicalConsultingPage = () => {
         <section className="mb-4">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Retainers (Month-to-Month)</h2>
-            <div className="absolute bottom-0 left-0 w-28 h-1 bg-violet-500 rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-28 h-1 bg-violet-500 rounded-full" />
           </div>
-          <motion.div
-            variants={variants.stagger}
-            initial="hidden"
-            animate="visible"
-            className="grid md:grid-cols-3 gap-6"
-          >
-            {content.retainers.map((m) => (
+          <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-3 gap-6">
+            {(content.retainers ?? []).map((m) => (
               <PriceCard
                 key={m.name}
                 tier={m.name}
@@ -540,15 +450,13 @@ const TechnicalConsultingPage = () => {
                 emphasized={m.emphasized}
                 badge={m.badge}
                 highlight={highlight(m.name)}
-                onPrimaryClick={() => subscribe(m.pkg)}   // <-- subscription
+                onPrimaryClick={() => subscribe(m.pkg)}
                 primaryLabel={`Subscribe ${m.price}`}
               />
             ))}
           </motion.div>
           <ul className="text-sm text-gray-400 mt-3 space-y-1">
-            {content.notes.map((n, i) => (
-              <li key={i}>{n}</li>
-            ))}
+            {(content.notes ?? []).map((n, i) => <li key={i}>{n}</li>)}
           </ul>
         </section>
 
@@ -556,12 +464,12 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Process</h2>
-            <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full" />
           </div>
           <div className="relative">
             <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-blue-200/20 via-blue-300/30 to-blue-200/20" />
             <div className="space-y-6">
-              {content.process.map((step, idx) => (
+              {(content.process ?? []).map((step, idx) => (
                 <div key={step.name} className="relative pl-10">
                   <div className="absolute left-0 top-1 h-6 w-6 rounded-full bg-white/10 border border-blue-500/40 flex items-center justify-center">
                     <span className="h-2 w-2 rounded-full bg-blue-500" />
@@ -584,38 +492,34 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">SLAs & Terms</h2>
-            <div className="absolute bottom-0 left-0 w-16 h-1 bg-emerald-500 rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-16 h-1 bg-emerald-500 rounded-full" />
           </div>
           <ul className="grid md:grid-cols-3 gap-4">
-            {content.slas.map((s, i) => (
-              <li
-                key={i}
-                className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-5 text-gray-300"
-              >
+            {(content.slas ?? []).map((s, i) => (
+              <li key={i} className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-5 text-gray-300">
                 {s}
               </li>
             ))}
           </ul>
         </section>
 
-        {/* FAQ */}
-        <section className="mb-12">
-          <div className="relative pb-3 mb-6">
-            <h2 className="text-2xl font-bold text-gray-100">FAQ</h2>
-            <div className="absolute bottom-0 left-0 w-14 h-1 bg-indigo-500 rounded-full"></div>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {content.faq.map((f) => (
-              <div
-                key={f.q}
-                className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-6"
-              >
-                <h3 className="text-gray-100 font-semibold">{f.q}</h3>
-                <p className="text-gray-300 mt-2">{f.a}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* FAQ (guarded) */}
+        {Array.isArray(content.faq) && content.faq.length > 0 && (
+          <section className="mb-12">
+            <div className="relative pb-3 mb-6">
+              <h2 className="text-2xl font-bold text-gray-100">FAQ</h2>
+              <div className="absolute bottom-0 left-0 w-14 h-1 bg-indigo-500 rounded-full" />
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {content.faq.map((f) => (
+                <div key={f.q} className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-6">
+                  <h3 className="text-gray-100 font-semibold">{f.q}</h3>
+                  <p className="text-gray-300 mt-2">{f.a}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* CTA */}
         <section className="mb-6 text-center">
@@ -635,4 +539,3 @@ const TechnicalConsultingPage = () => {
 };
 
 export default TechnicalConsultingPage;
-
