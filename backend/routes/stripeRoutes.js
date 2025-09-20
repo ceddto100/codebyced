@@ -18,25 +18,31 @@ function defaultUrls() {
 /**
  * POST /api/stripe/checkout/one-time
  * body: { priceId, successUrl?, cancelUrl? }
+ * Uses LIVE price IDs directly from your pricing config
  */
 router.post("/checkout/one-time", async (req, res) => {
   try {
     const { priceId, successUrl, cancelUrl } = req.body;
-    if (!priceId) return res.status(400).json({ error: "Missing priceId" });
+    if (!priceId) {
+      return res.status(400).json({ error: "Missing priceId" });
+    }
 
     const urls = defaultUrls();
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [{ 
+        price: priceId, 
+        quantity: 1 
+      }],
       success_url: successUrl || urls.successUrl,
       cancel_url: cancelUrl || urls.cancelUrl,
       allow_promotion_codes: true,
-      // Optional: customer_creation: "always",
+      customer_creation: "always",
     });
 
     return res.json({ url: session.url });
   } catch (err) {
-    console.error("one-time error:", err);
+    console.error("One-time checkout error:", err.message);
     return res.status(500).json({ error: "Failed to create one-time session" });
   }
 });
@@ -44,26 +50,58 @@ router.post("/checkout/one-time", async (req, res) => {
 /**
  * POST /api/stripe/checkout/subscription
  * body: { priceId, successUrl?, cancelUrl? }
+ * Uses LIVE price IDs directly from your pricing config
  */
 router.post("/checkout/subscription", async (req, res) => {
   try {
     const { priceId, successUrl, cancelUrl } = req.body;
-    if (!priceId) return res.status(400).json({ error: "Missing priceId" });
+    if (!priceId) {
+      return res.status(400).json({ error: "Missing priceId" });
+    }
 
     const urls = defaultUrls();
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [{ 
+        price: priceId, 
+        quantity: 1 
+      }],
       success_url: successUrl || urls.successUrl,
       cancel_url: cancelUrl || urls.cancelUrl,
       allow_promotion_codes: true,
-      // Optional: billing_address_collection: "required",
+      billing_address_collection: "required",
+      customer_creation: "always",
     });
 
     return res.json({ url: session.url });
   } catch (err) {
-    console.error("subscription error:", err);
+    console.error("Subscription checkout error:", err.message);
     return res.status(500).json({ error: "Failed to create subscription session" });
+  }
+});
+
+/**
+ * POST /api/stripe/customer-portal
+ * body: { customerId }
+ * For managing subscriptions
+ */
+router.post("/customer-portal", async (req, res) => {
+  try {
+    const { customerId } = req.body;
+    if (!customerId) {
+      return res.status(400).json({ error: "Missing customerId" });
+    }
+
+    const origin = process.env.FRONTEND_PUBLIC_ORIGIN || "https://codebyced.com";
+    const session = await stripe.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: `${origin}/account`,
+    });
+
+    return res.json({ url: session.url });
+  } catch (err) {
+    console.error("Customer portal error:", err.message);
+    return res.status(500).json({ error: "Failed to create portal session" });
   }
 });
 
