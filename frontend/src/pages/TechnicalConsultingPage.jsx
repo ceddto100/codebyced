@@ -250,7 +250,16 @@ const PriceCard = ({
   </motion.div>
 );
 
-const ChipCard = ({ name, price, desc, gradient, highlight, onSelect, disabled = false }) => (
+const ChipCard = ({
+  name,
+  price,
+  desc,
+  gradient,
+  highlight,
+  onSelect,
+  primaryLabel = "Pay Now",
+  disabled = false,
+}) => (
   <div className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 ${highlight ? "ring-1 ring-indigo-500/40" : ""}`}>
     {gradient ? (
       <div className={`absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`} />
@@ -269,7 +278,7 @@ const ChipCard = ({ name, price, desc, gradient, highlight, onSelect, disabled =
         }`}
         aria-busy={disabled ? "true" : "false"}
       >
-        Checkout <span className="ml-1">→</span>
+        {primaryLabel} <span className="ml-1">→</span>
       </button>
     </div>
   </div>
@@ -320,36 +329,29 @@ const TechnicalConsultingPage = () => {
     );
   };
 
-  // Direct Stripe checkout - no alerts, goes straight to payment
+  // DIRECT Stripe redirect (no alerts)
   const payOneTime = async (pkg) => {
     try {
       setBusy(true);
       console.log(`Starting one-time checkout for: ${CONTEXT}.${pkg}`);
-      
-      await startOneTimeCheckout({ context: CONTEXT, pkg });
-      
+      await startOneTimeCheckout({ context: CONTEXT, pkg }); // ← go straight to Stripe
     } catch (err) {
       console.error("One-time checkout failed:", err);
-      alert("Payment failed. Please try again or contact support.");
+      alert("Checkout failed. Please try again or use 'Book a Consult' for assistance.");
     } finally {
       setBusy(false);
     }
   };
 
-  // Subscription handler using existing LIVE price IDs
+  // Subscriptions (unchanged)
   const subscribe = async (tier) => {
     try {
       setBusy(true);
       console.log(`Starting subscription checkout for: ${CONTEXT}.${tier}`);
-      
-      await startSubscriptionCheckout({ 
-        context: CONTEXT, 
-        pkg: tier // 'starter'|'growth'|'pro' maps to your existing price IDs
-      });
-      
+      await startSubscriptionCheckout({ context: CONTEXT, pkg: tier });
     } catch (err) {
       console.error("Subscription checkout failed:", err);
-      alert("Subscription failed. Please try again or contact support.");
+      alert("Subscription start failed. Please try again or contact support.");
     } finally {
       setBusy(false);
     }
@@ -421,7 +423,7 @@ const TechnicalConsultingPage = () => {
                 key={p.tier}
                 {...p}
                 onPrimaryClick={() => payOneTime(p.pkg)}
-                primaryLabel={`Pay ${p.price.replace(" flat", "")}`}
+                primaryLabel="Pay Now"
                 highlight={highlight(p.tier)}
                 disabled={busy}
               />
@@ -441,7 +443,7 @@ const TechnicalConsultingPage = () => {
                 key={p.tier}
                 {...p}
                 onPrimaryClick={() => payOneTime(p.pkg)}
-                primaryLabel={`Pay ${p.price}`}
+                primaryLabel="Pay Now"
                 highlight={highlight(p.tier)}
                 disabled={busy}
               />
@@ -457,7 +459,14 @@ const TechnicalConsultingPage = () => {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {(content.devops ?? []).map((d) => (
-              <ChipCard key={d.name} {...d} onSelect={() => payOneTime(d.pkg)} disabled={busy} highlight={highlight(d.name)} />
+              <ChipCard
+                key={d.name}
+                {...d}
+                onSelect={() => payOneTime(d.pkg)}
+                primaryLabel="Pay Now"
+                disabled={busy}
+                highlight={highlight(d.name)}
+              />
             ))}
           </div>
         </section>
@@ -466,11 +475,18 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Cloud Deployment (One-time Setup)</h2>
-            <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full" />
+          <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {(content.cloud ?? []).map((c) => (
-              <ChipCard key={c.name} {...c} onSelect={() => payOneTime(c.pkg)} disabled={busy} highlight={highlight(c.name)} />
+              <ChipCard
+                key={c.name}
+                {...c}
+                onSelect={() => payOneTime(c.pkg)}
+                primaryLabel="Pay Now"
+                disabled={busy}
+                highlight={highlight(c.name)}
+              />
             ))}
           </div>
         </section>
