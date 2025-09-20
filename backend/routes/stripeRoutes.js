@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2024-06-
 
 // Helper: default redirect URLs if caller doesn't send them
 function defaultUrls() {
-  const origin = process.env.ALLOWED_ORIGINS || "https://codebyced.com";
+  const origin = process.env.FRONTEND_PUBLIC_ORIGIN || "https://codebyced.com";
   return {
     successUrl: `${origin}/success`,
     cancelUrl: `${origin}/pricing`,
