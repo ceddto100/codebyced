@@ -29,7 +29,8 @@ const defaultOrigins = [
   'http://localhost:5173',
   'https://codebyced.com',
   'https://www.codebyced.com',
-  'https://codebyced.onrender.com'
+  'https://codebyced.onrender.com',
+  'https://api.codebyced.com'
 ];
 
 const envOrigins = (process.env.ALLOWED_ORIGINS || '')
