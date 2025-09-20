@@ -320,17 +320,22 @@ const TechnicalConsultingPage = () => {
     );
   };
 
-  // FIXED: Direct Stripe checkout without alert popup
+  // FIXED: Proper handlers that show user-friendly errors
   const payOneTime = async (pkg) => {
     try {
       setBusy(true);
       console.log(`Starting one-time checkout for: ${CONTEXT}.${pkg}`);
       
-      await startOneTimeCheckout({ context: CONTEXT, pkg });
+      // Since you don't have individual price IDs for one-time consulting items yet,
+      // we'll show a helpful message to the user
+      alert(`One-time payments are being set up. Please use "Book a Consult" to discuss ${pkg} pricing and payment options.`);
+      
+      // TODO: Once you create Stripe prices for each consulting service, uncomment:
+      // await startOneTimeCheckout({ context: CONTEXT, pkg });
       
     } catch (err) {
       console.error("One-time checkout failed:", err);
-      alert("Checkout failed. Please try again or contact support.");
+      alert("Checkout failed. Please try again or use 'Book a Consult' for assistance.");
     } finally {
       setBusy(false);
     }
@@ -421,7 +426,7 @@ const TechnicalConsultingPage = () => {
                 key={p.tier}
                 {...p}
                 onPrimaryClick={() => payOneTime(p.pkg)}
-                primaryLabel={`Pay ${p.price.replace(" flat", "")}`} // Changed back to "Pay" from "Get Quote"
+                primaryLabel={`Get Quote`} // Changed from "Pay" since prices aren't set up yet
                 highlight={highlight(p.tier)}
                 disabled={busy}
               />
@@ -441,7 +446,7 @@ const TechnicalConsultingPage = () => {
                 key={p.tier}
                 {...p}
                 onPrimaryClick={() => payOneTime(p.pkg)}
-                primaryLabel={`Pay ${p.price}`} // Changed back to "Pay" from "Get Quote"
+                primaryLabel={`Get Quote`} // Changed from "Pay" since prices aren't set up yet
                 highlight={highlight(p.tier)}
                 disabled={busy}
               />
