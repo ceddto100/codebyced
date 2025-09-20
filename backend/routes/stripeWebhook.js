@@ -1,22 +1,15 @@
 // /backend/routes/stripeWebhook.js
 const express = require("express");
 const Stripe = require("stripe");
-const dotenv = require("dotenv");
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" });
 
-dotenv.config();
+// Export shape supported by mountStripeWebhook()
+module.exports = {
+  raw: express.raw({ type: "application/json" }),
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2024-06-20",
-});
-
-// Export an array: [express.raw middleware, handler]
-// This is why app.js mounts it like: app.post("/api/stripe/webhook", ...stripeWebhook)
-module.exports = [
-  express.raw({ type: "application/json" }),
-  (req, res) => {
+  handler: (req, res) => {
     const sig = req.headers["stripe-signature"];
     let event;
-
     try {
       event = stripe.webhooks.constructEvent(
         req.body,
@@ -28,25 +21,26 @@ module.exports = [
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    // Handle event types you care about
+    // Handle the events you actually care about
     switch (event.type) {
       case "checkout.session.completed": {
-        const session = event.data.object;
-        console.log("Checkout completed:", session.metadata);
+        // If you need the line items or subscription ID:
+        // const session = event.data.object; // { id, subscription, customer, ... }
+        // TODO: mark order paid / provision access / send email
         break;
       }
-      case "invoice.paid": {
-        console.log("Invoice paid:", event.data.object.id);
-        break;
-      }
+      case "invoice.paid":
+      case "customer.subscription.created":
+      case "customer.subscription.updated":
       case "customer.subscription.deleted": {
-        console.log("Subscription cancelled:", event.data.object.id);
+        // TODO: sync subscription status in your DB
         break;
       }
       default:
-        console.log(`Unhandled event type ${event.type}`);
+        // no-op
+        break;
     }
 
     res.json({ received: true });
   },
-];
+};
