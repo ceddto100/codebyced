@@ -434,6 +434,26 @@ const TechnicalConsultingPage = () => {
           </motion.div>
         </section>
 
+        {/* Architecture (one-time) */}
+        <section className="mb-14">
+          <div className="relative pb-3 mb-6">
+            <h2 className="text-2xl font-bold text-gray-100">Project Architecture & Scalability</h2>
+            <div className="absolute bottom-0 left-0 w-28 h-1 bg-emerald-500 rounded-full" />
+          </div>
+          <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
+            {(content.architecture ?? []).map((p) => (
+              <PriceCard
+                key={p.tier}
+                {...p}
+                onPrimaryClick={() => payOneTime(p.pkg)}
+                primaryLabel={`Get Quote`} // Changed from "Pay" since prices aren't set up yet
+                highlight={highlight(p.tier)}
+                disabled={busy}
+              />
+            ))}
+          </motion.div>
+        </section>
+
         {/* DevOps pick-and-play (one-time) */}
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
@@ -567,24 +587,4 @@ const TechnicalConsultingPage = () => {
   );
 };
 
-export default TechnicalConsultingPage;Click={() => payOneTime(p.pkg)}
-                primaryLabel={`Get Quote`} // Changed from "Pay" since prices aren't set up yet
-                highlight={highlight(p.tier)}
-                disabled={busy}
-              />
-            ))}
-          </motion.div>
-        </section>
-
-        {/* Architecture (one-time) */}
-        <section className="mb-14">
-          <div className="relative pb-3 mb-6">
-            <h2 className="text-2xl font-bold text-gray-100">Project Architecture & Scalability</h2>
-            <div className="absolute bottom-0 left-0 w-28 h-1 bg-emerald-500 rounded-full" />
-          </div>
-          <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
-            {(content.architecture ?? []).map((p) => (
-              <PriceCard
-                key={p.tier}
-                {...p}
-                onPrimary
+export default TechnicalConsultingPage;
