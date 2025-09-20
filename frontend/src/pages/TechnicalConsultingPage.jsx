@@ -1,5 +1,5 @@
 // /frontend/src/pages/TechnicalConsultingPage.jsx
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
@@ -14,8 +14,8 @@ import {
 
 /**
  * Technical Consulting — Service Page
- * - ONE-TIME cards call startOneTimeCheckout
- * - Retainers call startSubscriptionCheckout
+ * - ONE-TIME cards call startOneTimeCheckout (uses pricing.consulting.fixed)
+ * - Retainers call startSubscriptionCheckout (uses pricing.consulting.subs)
  * - All .map() calls are guarded to prevent blank screens
  */
 const CONTEXT = "consulting";
@@ -172,7 +172,7 @@ const content = {
     "Comms — Slack/email + weekly sync when active; change windows agreed.",
   ],
 
-  // ✅ provide FAQ to avoid undefined .map
+  // provide FAQ to avoid undefined .map
   faq: [
     { q: "How do payments work?", a: "One-time items charge immediately via Stripe Checkout. Retainers bill monthly; you can self-manage in the customer portal." },
     { q: "Do you sign NDAs?", a: "Yes—happy to sign a mutual NDA before reviewing repositories or cloud resources." },
@@ -200,7 +200,7 @@ const Pill = ({ children }) => (
   </span>
 );
 
-// Card components (buttons call handlers; safe to render)
+// Card components
 const PriceCard = ({
   tier,
   price,
@@ -212,6 +212,7 @@ const PriceCard = ({
   highlight,
   onPrimaryClick,
   primaryLabel = "Select",
+  disabled = false,
 }) => (
   <motion.div
     variants={variants.fadeInUp}
@@ -237,7 +238,11 @@ const PriceCard = ({
       </ul>
       <button
         onClick={onPrimaryClick}
-        className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+        disabled={disabled}
+        className={`inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow transition ${
+          disabled ? "opacity-60 cursor-not-allowed" : "hover:shadow-md"
+        }`}
+        aria-busy={disabled ? "true" : "false"}
       >
         {primaryLabel} <span className="ml-1">→</span>
       </button>
@@ -245,7 +250,7 @@ const PriceCard = ({
   </motion.div>
 );
 
-const ChipCard = ({ name, price, desc, gradient, highlight, onSelect }) => (
+const ChipCard = ({ name, price, desc, gradient, highlight, onSelect, disabled = false }) => (
   <div className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 ${highlight ? "ring-1 ring-indigo-500/40" : ""}`}>
     {gradient ? (
       <div className={`absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`} />
@@ -258,7 +263,11 @@ const ChipCard = ({ name, price, desc, gradient, highlight, onSelect }) => (
       <p className="text-gray-400 mt-1">{desc}</p>
       <button
         onClick={onSelect}
-        className="inline-flex items-center mt-4 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition text-sm"
+        disabled={disabled}
+        className={`inline-flex items-center mt-4 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow transition text-sm ${
+          disabled ? "opacity-60 cursor-not-allowed" : "hover:shadow-md"
+        }`}
+        aria-busy={disabled ? "true" : "false"}
       >
         Select <span className="ml-1">→</span>
       </button>
@@ -269,6 +278,7 @@ const ChipCard = ({ name, price, desc, gradient, highlight, onSelect }) => (
 const TechnicalConsultingPage = () => {
   const [searchParams] = useSearchParams();
   const plan = (searchParams.get("plan") || "").toLowerCase();
+  const [busy, setBusy] = useState(false);
 
   // SEO schema
   const schema = useMemo(
@@ -310,9 +320,30 @@ const TechnicalConsultingPage = () => {
     );
   };
 
-  // Handlers — wire to Stripe helpers
-  const payOneTime = (pkg) => startOneTimeCheckout({ context: CONTEXT, pkg });
-  const subscribe = (tier) => startSubscriptionCheckout({ context: CONTEXT, pkg: tier }); // 'starter'|'growth'|'pro'
+  // Handlers — wire to Stripe helpers with safe try/catch and "busy" lock
+  const payOneTime = async (pkg) => {
+    try {
+      setBusy(true);
+      await startOneTimeCheckout({ context: CONTEXT, pkg });
+    } catch (err) {
+      console.error("One-time checkout failed:", err);
+      alert("Checkout failed. Please try again or contact support.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const subscribe = async (tier) => {
+    try {
+      setBusy(true);
+      await startSubscriptionCheckout({ context: CONTEXT, pkg: tier }); // 'starter'|'growth'|'pro'
+    } catch (err) {
+      console.error("Subscription checkout failed:", err);
+      alert("Subscription start failed. Please try again or contact support.");
+    } finally {
+      setBusy(false);
+    }
+  };
 
   return (
     <PageLayout>
@@ -382,6 +413,7 @@ const TechnicalConsultingPage = () => {
                 onPrimaryClick={() => payOneTime(p.pkg)}
                 primaryLabel={`Pay ${p.price.replace(" flat", "")}`}
                 highlight={highlight(p.tier)}
+                disabled={busy}
               />
             ))}
           </motion.div>
@@ -401,6 +433,7 @@ const TechnicalConsultingPage = () => {
                 onPrimaryClick={() => payOneTime(p.pkg)}
                 primaryLabel={`Pay ${p.price}`}
                 highlight={highlight(p.tier)}
+                disabled={busy}
               />
             ))}
           </motion.div>
@@ -410,11 +443,11 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">DevOps Support (Pick & Play)</h2>
-          <div className="absolute bottom-0 left-0 w-28 h-1 bg-cyan-500 rounded-full" />
+            <div className="absolute bottom-0 left-0 w-28 h-1 bg-cyan-500 rounded-full" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {(content.devops ?? []).map((d) => (
-              <ChipCard key={d.name} {...d} onSelect={() => payOneTime(d.pkg)} />
+              <ChipCard key={d.name} {...d} onSelect={() => payOneTime(d.pkg)} disabled={busy} highlight={highlight(d.name)} />
             ))}
           </div>
         </section>
@@ -427,7 +460,7 @@ const TechnicalConsultingPage = () => {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {(content.cloud ?? []).map((c) => (
-              <ChipCard key={c.name} {...c} onSelect={() => payOneTime(c.pkg)} />
+              <ChipCard key={c.name} {...c} onSelect={() => payOneTime(c.pkg)} disabled={busy} highlight={highlight(c.name)} />
             ))}
           </div>
         </section>
@@ -452,6 +485,7 @@ const TechnicalConsultingPage = () => {
                 highlight={highlight(m.name)}
                 onPrimaryClick={() => subscribe(m.pkg)}
                 primaryLabel={`Subscribe ${m.price}`}
+                disabled={busy}
               />
             ))}
           </motion.div>
