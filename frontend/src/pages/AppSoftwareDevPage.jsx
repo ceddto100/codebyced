@@ -33,7 +33,7 @@ const content = {
   packages: [
   {
     tier: "Starter MVP",
-    price: "Deposit: (30%) · Full: $750–$1,800",
+    price: "Deposit: (30%) ·      Full: $750–$1,800",
     timeline: "1–2 weeks",
     badge: "Great for validation",
     items: [
@@ -48,7 +48,7 @@ const content = {
   },
   {
     tier: "Growth App",
-    price: "Deposit: (25%) · Full: $2,000–$4,250",
+    price: "Deposit: (25%) ·      Full: $2,000–$4,250",
     timeline: "3–6 weeks",
     badge: "Most popular",
     items: [
@@ -64,7 +64,7 @@ const content = {
   },
   {
     tier: "Pro Product",
-    price: "Deposit: (20%) · Full: $4,800–$10,000+",
+    price: "Deposit: (20%) ·      Full: $4,800–$10,000+",
     timeline: "6–12+ weeks",
     items: [
       "React Native/Expo prototype → TestFlight/Play Internal",
@@ -413,14 +413,14 @@ const AppSoftwareDevPage = () => {
 {m.name === "Pro" ? (
   <div className="mt-2">
     <stripe-buy-button
-      buy-button-id="buy_btn_1S9vqeL0N7h4wfoOMB7Obd44"
+      buy-button-id="buy_btn_1S9vulL0N7h4wfoORXYydrNC"
       publishable-key="pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8"
     ></stripe-buy-button>
   </div>
 ) : m.name === "Growth" ? (
   <div className="mt-2">
     <stripe-buy-button
-      buy-button-id="buy_btn_1S9vulL0N7h4wfoORXYydrNC"
+      buy-button-id="buy_btn_1S9pGCL0N7h4wfoOja79wFsC"
       publishable-key="pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8"
     ></stripe-buy-button>
   </div>
