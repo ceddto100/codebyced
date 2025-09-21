@@ -99,6 +99,7 @@ const content = {
         "Staging & deploy review",
         "Monthly perf/analytics report"
       ],
+      // NOTE: We'll render the Stripe Buy Button for this "Growth" card below.
       ctaTo: "/services/apps&plan=growth-maint",
       gradient: "from-indigo-600 to-violet-600",
       emphasized: true
@@ -261,6 +262,9 @@ const AppSoftwareDevPage = () => {
         <meta name="description" content={content.seo.description} />
         <link rel="canonical" href={content.seo.url} />
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
+
+        {/* [STRIPE] Load Buy Button script exactly as provided (React-Helmet adds this to <head>) */}
+        <script async src="https://js.stripe.com/v3/buy-button.js" />
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-10 relative">
@@ -400,13 +404,26 @@ const AppSoftwareDevPage = () => {
                       </li>
                     ))}
                   </ul>
-                  <Link
-                    to={m.ctaTo}
-                    className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-                  >
-                    Choose {m.name}
-                    <span className="ml-1">→</span>
-                  </Link>
+
+                  {/* [STRIPE] Replace the "Growth" CTA with your exact Buy Button element */}
+                  {m.name === "Growth" ? (
+                    <div className="mt-2">
+                      <stripe-buy-button
+                        buy-button-id="buy_btn_1S9pGCL0N7h4wfoOja79wFsC"
+                        publishable-key="pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8"
+                      >
+                      </stripe-buy-button>
+                    </div>
+                  ) : (
+                    // For other plans, keep the original Link CTA
+                    <Link
+                      to={m.ctaTo}
+                      className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+                    >
+                      Choose {m.name}
+                      <span className="ml-1">→</span>
+                    </Link>
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -490,7 +507,7 @@ const AppSoftwareDevPage = () => {
         {/* CTA */}
         <section className="mb-6 text-center">
           <div className="inline-flex items-center gap-3">
-           <CalButton
+            <CalButton
               handle={CAL_HANDLE}
               event="secret"
               label="Book a 15-min Discovery"
@@ -511,4 +528,3 @@ const AppSoftwareDevPage = () => {
 };
 
 export default AppSoftwareDevPage;
-
