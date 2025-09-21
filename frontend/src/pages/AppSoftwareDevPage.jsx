@@ -113,7 +113,7 @@ const content = {
         "Incident response window",
         "Runbook updates & training"
       ],
-      ctaTo: "/services/apps&plan=pro-maint",
+      ctaTo: "https://buy.stripe.com/aFa4gA0vG5158jG9w3awo00",
       gradient: "from-rose-600 to-pink-600"
     }
   ],
