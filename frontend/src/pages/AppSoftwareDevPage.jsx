@@ -1,3 +1,4 @@
+// /frontend/src/pages/AppSoftwareDevPage.jsx
 import React, { useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
@@ -6,7 +7,7 @@ import PageLayout from "../components/PageLayout";
 import CalButton from "../components/CalButton";
 
 /**
- * App & Software Development — Statics Service Page
+ * App & Software Development — Static Service Page
  * CTAs use /services/apps&plan=<starter|growth|pro>
  */
 const CONTEXT = "app";
@@ -30,49 +31,53 @@ const content = {
 
   // Packages (budget-friendly)
   packages: [
-    {
-      tier: "Starter MVP",
-      price: "$750–$1,800",
-      timeline: "1–2 weeks",
-      badge: "Great for validation",
-      items: [
-        "3–6 screens, responsive UI",
-        "Email/password auth (basic)",
-        "CRUD + 1 integration (e.g., email or payments sandbox)",
-        "Staging & production deploy + Loom walkthrough"
-      ],
-      ctaTo: "/services/apps&plan=starter",
-      gradient: "from-blue-600 to-indigo-600"
-    },
-    {
-      tier: "Growth App",
-      price: "$2,000–$4,250",
-      timeline: "3–6 weeks",
-      badge: "Most popular",
-      items: [
-        "6–12 screens with design tokens",
-        "RBAC (roles/permissions)",
-        "2–3 integrations (Stripe, Zapier, SendGrid, Notion, etc.)",
-        "Dashboard + reports + basic E2E tests"
-      ],
-      ctaTo: "/services/apps&plan=growth",
-      gradient: "from-indigo-600 to-fuchsia-600",
-      emphasized: true
-    },
-    {
-      tier: "Pro Product",
-      price: "$4,800–$10,000+",
-      timeline: "6–12+ weeks",
-      items: [
-        "React Native/Expo prototype → TestFlight/Play Internal",
-        "Custom API (Node/Express), queues & webhooks",
-        "File storage, CI/CD, observability",
-        "Admin panel with role-based access"
-      ],
-      ctaTo: "/services/apps&plan=pro",
-      gradient: "from-emerald-600 to-teal-600"
-    }
-  ],
+  {
+    tier: "Starter MVP",
+    price: "Deposit: $225–$540 (30%) · Full: $750–$1,800",
+    timeline: "1–2 weeks",
+    badge: "Great for validation",
+    items: [
+      "3–6 screens, responsive UI",
+      "Email/password auth (basic)",
+      "CRUD + 1 integration (e.g., email or payments sandbox)",
+      "Staging & production deploy + Loom walkthrough",
+      "⚡ Only a deposit required to kick off — balance due at delivery"
+    ],
+    ctaTo: "https://buy.stripe.com/fZufZi4LWeBFbvScIfawo06",
+    gradient: "from-blue-600 to-indigo-600"
+  },
+  {
+    tier: "Growth App",
+    price: "Deposit: $500–$1,062 (25%) · Full: $2,000–$4,250",
+    timeline: "3–6 weeks",
+    badge: "Most popular",
+    items: [
+      "6–12 screens with design tokens",
+      "RBAC (roles/permissions)",
+      "2–3 integrations (Stripe, Zapier, SendGrid, Notion, etc.)",
+      "Dashboard + reports + basic E2E tests",
+      "⚡ Pay a deposit now — finish payment at milestones/delivery"
+    ],
+    ctaTo: "https://buy.stripe.com/eVqaEY4LW0KPdE0eQnawo05",
+    gradient: "from-indigo-600 to-fuchsia-600",
+    emphasized: true
+  },
+  {
+    tier: "Pro Product",
+    price: "Deposit: $960–$2,000 (20%) · Full: $4,800–$10,000+",
+    timeline: "6–12+ weeks",
+    items: [
+      "React Native/Expo prototype → TestFlight/Play Internal",
+      "Custom API (Node/Express), queues & webhooks",
+      "File storage, CI/CD, observability",
+      "Admin panel with role-based access",
+      "⚡ Start with a deposit — remaining balance tied to project phases"
+    ],
+    ctaTo: "https://buy.stripe.com/aFaeVefqA1OTeI45fNawo04",
+    gradient: "from-emerald-600 to-teal-600"
+  }
+],
+
 
   maintenance: [
     {
@@ -99,7 +104,7 @@ const content = {
         "Staging & deploy review",
         "Monthly perf/analytics report"
       ],
-      // NOTE: We'll render the Stripe Buy Button for this "Growth" card below.
+      // NOTE: "Growth" will render a Stripe Buy Button below.
       ctaTo: "/services/apps&plan=growth-maint",
       gradient: "from-indigo-600 to-violet-600",
       emphasized: true
@@ -263,7 +268,7 @@ const AppSoftwareDevPage = () => {
         <link rel="canonical" href={content.seo.url} />
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
 
-        {/* [STRIPE] Load Buy Button script exactly as provided (React-Helmet adds this to <head>) */}
+        {/* [STRIPE BUY BUTTON] Load once in <head>. Do not duplicate. */}
         <script async src="https://js.stripe.com/v3/buy-button.js" />
       </Helmet>
 
@@ -293,12 +298,9 @@ const AppSoftwareDevPage = () => {
                   <CalButton
                     key={c.label}
                     handle={CAL_HANDLE}
-                    event="secret"            // ← replace with your Cal event slug if not "secret"
+                    event="secret"
                     label={c.label}
-                    className={
-                      // style it however you want; this matches your primary button style
-                      "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-                    }
+                    className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
                   />
                 ) : (
                   <Link
@@ -386,7 +388,9 @@ const AppSoftwareDevPage = () => {
               <motion.div
                 key={m.name}
                 variants={variants.fadeInUp}
-                className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl transition ${m.emphasized ? "ring-1 ring-indigo-500/40" : ""}`}
+                className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl transition ${
+                  m.emphasized ? "ring-1 ring-indigo-500/40" : ""
+                }`}
               >
                 <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${m.gradient} opacity-20 rounded-full blur-3xl`} />
                 <div className="relative z-10">
@@ -405,17 +409,22 @@ const AppSoftwareDevPage = () => {
                     ))}
                   </ul>
 
-                  {/* [STRIPE] Replace the "Growth" CTA with your exact Buy Button element */}
-                  {m.name === "Growth" ? (
+                  {/* [STRIPE BUY BUTTONS] Replace CTA with embedded buttons where provided */}
+                  {m.name === "Essential" ? (
                     <div className="mt-2">
                       <stripe-buy-button
-                        buy-button-id="buy_btn_1S9pGCL0N7h4wfoOja79wFsC"
+                        buy-button-id="buy_btn_1S9vqeL0N7h4wfoOMB7Obd44"
                         publishable-key="pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8"
-                      >
-                      </stripe-buy-button>
+                      ></stripe-buy-button>
+                    </div>
+                  ) : m.name === "Growth" ? (
+                    <div className="mt-2">
+                      <stripe-buy-button
+                        buy-button-id="buy_btn_1S9vulL0N7h4wfoORXYydrNC"
+                        publishable-key="pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8"
+                      ></stripe-buy-button>
                     </div>
                   ) : (
-                    // For other plans, keep the original Link CTA
                     <Link
                       to={m.ctaTo}
                       className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
@@ -492,7 +501,7 @@ const AppSoftwareDevPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">FAQ</h2>
-            <div className="absolute bottom-0 left-0 w-14 h-1 bg-indigo-500 rounded-full"></div>
+          <div className="absolute bottom-0 left-0 w-14 h-1 bg-indigo-500 rounded-full"></div>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             {content.faq.map((f) => (
@@ -528,3 +537,4 @@ const AppSoftwareDevPage = () => {
 };
 
 export default AppSoftwareDevPage;
+
