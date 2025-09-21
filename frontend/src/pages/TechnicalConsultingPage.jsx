@@ -1,24 +1,15 @@
 // /frontend/src/pages/TechnicalConsultingPage.jsx
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Helmet } from "react-helmet";
-import { motion } from "framer-motion";
-import { useSearchParams } from "react-router-dom";
 import PageLayout from "../components/PageLayout";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import CalButton from "../components/CalButton";
 
-// Stripe helpers (client-side)
-import {
-  startOneTimeCheckout,
-  startSubscriptionCheckout,
-} from "../utils/stripeCheckout";
-
 /**
- * Technical Consulting — Service Page
- * - ONE-TIME cards call startOneTimeCheckout (uses pricing.consulting.fixed)
- * - Retainers call startSubscriptionCheckout (uses pricing.consulting.subs)
- * - All .map() calls are guarded to prevent blank screens
+ * Technical Consulting — Static Service Page (no Stripe)
+ * Uses contact links and Cal.com, mirroring WebDevMaintenancePage structure.
  */
-const CONTEXT = "consulting";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
 
 const content = {
@@ -26,21 +17,25 @@ const content = {
     title: "Technical Consulting",
     subtitle:
       "Tighten code quality, architecture, CI/CD, and cloud delivery. I apply pragmatic practices (clean code reviews, DORA metrics, DevOps) so you ship faster and safer.",
+    ctas: [
+      { label: "Book a Consult", cal: true },
+      { label: "Get a Quote", to: "/contact?service=consulting" },
+    ],
     bullets: [
       "Code Reviews & Best Practices",
       "Project Architecture & Scalability",
       "DevOps Support (Git, Docker, CI/CD)",
       "Cloud Deployment (Cloud Run, Render, AWS, Cloudflare)",
     ],
-    ctas: [{ label: "Book a Consult", useCal: true }],
   },
 
-  // ONE-TIME: map to pricing.consulting.fixed
+  // ONE-TIME
   reviews: [
     {
       tier: "Code Review Lite",
       price: "$79 flat",
       timeline: "≤1 PR / ≤500 LOC",
+      badge: "",
       items: [
         "Written notes with clear, actionable findings",
         "Best-practice checklist tailored to your stack",
@@ -94,7 +89,7 @@ const content = {
     },
   ],
 
-  // ONE-TIME
+  // ONE-TIME (card chips)
   devops: [
     { name: "Git & PR Workflow", price: "$120", desc: "Branch model, PR templates, protection rules", pkg: "gitPr" },
     { name: "Dockerize App", price: "$180", desc: "Dev & prod images, compose file", pkg: "dockerize" },
@@ -103,7 +98,7 @@ const content = {
     { name: "DevOps Starter Bundle", price: "$500", desc: "Git/PR + Docker + CI/CD + Observability", pkg: "devopsBundle", highlight: true },
   ],
 
-  // ONE-TIME
+  // ONE-TIME (card chips)
   cloud: [
     { name: "Google Cloud Run", price: "$200", desc: "Containerize, service, domain/SSL, rollout", pkg: "cloudrun", gradient: "from-sky-600 to-blue-600" },
     { name: "Render", price: "$180", desc: "PaaS deploy, autoscaling config (per plan)", pkg: "render", gradient: "from-indigo-600 to-violet-600" },
@@ -111,7 +106,7 @@ const content = {
     { name: "Cloudflare Workers", price: "$180", desc: "Edge function, routing, KV if needed", pkg: "workers", gradient: "from-rose-600 to-pink-600" },
   ],
 
-  // SUBSCRIPTIONS: map to pricing.consulting.subs
+  // Retainers (contact flow instead of subscribe)
   retainers: [
     {
       name: "Essential",
@@ -172,9 +167,8 @@ const content = {
     "Comms — Slack/email + weekly sync when active; change windows agreed.",
   ],
 
-  // provide FAQ to avoid undefined .map
   faq: [
-    { q: "How do payments work?", a: "One-time items charge immediately via Stripe Checkout. Retainers bill monthly; you can self-manage in the customer portal." },
+    { q: "How do payments work?", a: "We scope via a quick call, then send a proposal. One-time items are invoiced; retainers are monthly. You can manage billing via email link or portal." },
     { q: "Do you sign NDAs?", a: "Yes—happy to sign a mutual NDA before reviewing repositories or cloud resources." },
     { q: "Which stacks do you support?", a: "React/Vite, Node/Express, MongoDB/Postgres, Docker, GitHub Actions, GCP Cloud Run, Render, AWS (ECS/Fargate), Cloudflare Workers." },
   ],
@@ -187,7 +181,7 @@ const content = {
   },
 };
 
-// ---- Motion variants
+// ---- Motion variants (same feel as WebDevMaintenancePage)
 const variants = {
   fadeInUp: { hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45 } } },
   reveal: { hidden: { opacity: 0, scale: 0.98 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } } },
@@ -200,25 +194,13 @@ const Pill = ({ children }) => (
   </span>
 );
 
-// Card components
-const PriceCard = ({
-  tier,
-  price,
-  timeline,
-  items = [],
-  badge,
-  gradient,
-  emphasized,
-  highlight,
-  onPrimaryClick,
-  primaryLabel = "Select",
-  disabled = false,
-}) => (
+// Reuse the same PriceCard pattern (CTA uses <Link> not Stripe)
+const PriceCard = ({ tier, price, timeline, items, badge, cta, gradient, emphasized }) => (
   <motion.div
     variants={variants.fadeInUp}
     className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 ${
       emphasized ? "ring-1 ring-indigo-500/40" : ""
-    } ${highlight ? "outline outline-2 outline-indigo-400/60" : ""}`}
+    }`}
   >
     <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${gradient ?? ""} opacity-20 rounded-full blur-3xl`} />
     <div className="relative z-10">
@@ -236,31 +218,26 @@ const PriceCard = ({
           </li>
         ))}
       </ul>
-      <button
-        onClick={onPrimaryClick}
-        disabled={disabled}
-        className={`inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow transition ${
-          disabled ? "opacity-60 cursor-not-allowed" : "hover:shadow-md"
-        }`}
-        aria-busy={disabled ? "true" : "false"}
-      >
-        {primaryLabel} <span className="ml-1">→</span>
-      </button>
+      {cta?.to && (
+        <Link
+          to={cta.to}
+          className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+        >
+          {cta.label ?? "Choose"}
+          <span className="ml-1">→</span>
+        </Link>
+      )}
     </div>
   </motion.div>
 );
 
-const ChipCard = ({
-  name,
-  price,
-  desc,
-  gradient,
-  highlight,
-  onSelect,
-  primaryLabel = "Pay Now",
-  disabled = false,
-}) => (
-  <div className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 ${highlight ? "ring-1 ring-indigo-500/40" : ""}`}>
+// Small chip-style card for à la carte items
+const ChipCard = ({ name, price, desc, gradient, to, highlight }) => (
+  <div
+    className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 ${
+      highlight ? "ring-1 ring-indigo-500/40" : ""
+    }`}
+  >
     {gradient ? (
       <div className={`absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`} />
     ) : null}
@@ -269,27 +246,19 @@ const ChipCard = ({
         <h3 className="text-gray-100 font-semibold">{name}</h3>
         <div className="text-gray-300">{price}</div>
       </div>
-      <p className="text-gray-400 mt-1">{desc}</p>
-      <button
-        onClick={onSelect}
-        disabled={disabled}
-        className={`inline-flex items-center mt-4 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow transition text-sm ${
-          disabled ? "opacity-60 cursor-not-allowed" : "hover:shadow-md"
-        }`}
-        aria-busy={disabled ? "true" : "false"}
+      {desc && <p className="text-gray-400 mt-1">{desc}</p>}
+      <Link
+        to={to}
+        className="inline-flex items-center mt-4 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition text-sm"
       >
-        {primaryLabel} <span className="ml-1">→</span>
-      </button>
+        Choose {name}
+        <span className="ml-1">→</span>
+      </Link>
     </div>
   </div>
 );
 
 const TechnicalConsultingPage = () => {
-  const [searchParams] = useSearchParams();
-  const plan = (searchParams.get("plan") || "").toLowerCase();
-  const [busy, setBusy] = useState(false);
-
-  // SEO schema
   const schema = useMemo(
     () => ({
       "@context": "https://schema.org",
@@ -318,45 +287,6 @@ const TechnicalConsultingPage = () => {
     []
   );
 
-  const highlight = (label = "") => {
-    if (!plan) return false;
-    const p = plan;
-    const L = label.toLowerCase();
-    return (
-      (L.includes("growth") && (p === "growth" || p === "growth-maint")) ||
-      (L.includes("pro") && (p === "pro" || p === "pro-maint")) ||
-      L.includes(p)
-    );
-  };
-
-  // DIRECT Stripe redirect (no alerts)
-  const payOneTime = async (pkg) => {
-    try {
-      setBusy(true);
-      console.log(`Starting one-time checkout for: ${CONTEXT}.${pkg}`);
-      await startOneTimeCheckout({ context: CONTEXT, pkg }); // ← go straight to Stripe
-    } catch (err) {
-      console.error("One-time checkout failed:", err);
-      alert("Checkout failed. Please try again or use 'Book a Consult' for assistance.");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  // Subscriptions (unchanged)
-  const subscribe = async (tier) => {
-    try {
-      setBusy(true);
-      console.log(`Starting subscription checkout for: ${CONTEXT}.${tier}`);
-      await startSubscriptionCheckout({ context: CONTEXT, pkg: tier });
-    } catch (err) {
-      console.error("Subscription checkout failed:", err);
-      alert("Subscription start failed. Please try again or contact support.");
-    } finally {
-      setBusy(false);
-    }
-  };
-
   return (
     <PageLayout>
       <Helmet>
@@ -381,27 +311,36 @@ const TechnicalConsultingPage = () => {
           className="mb-10 backdrop-blur-sm bg-gray-900/80 p-8 rounded-xl border border-gray-800 shadow-lg relative overflow-hidden"
         >
           <div className="relative z-10">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-100 mb-3">{content.hero.title}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-100 mb-3">
+              {content.hero.title}
+            </h1>
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
 
             <div className="flex flex-wrap gap-3 mb-6">
-              {(content.hero.ctas ?? []).map((c) => (
-                <CalButton
-                  key={c.label}
-                  handle={CAL_HANDLE}
-                  event={c.event || "secret"}
-                  label={c.label}
-                  className={
-                    c.variant === "secondary"
-                      ? "bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
-                      : "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-                  }
-                />
-              ))}
+              {content.hero.ctas.map((c) =>
+                c.cal ? (
+                  <CalButton
+                    key={c.label}
+                    handle={CAL_HANDLE}
+                    event="secret"
+                    label={c.label}
+                    className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                    metadata={{ page: "technical-consulting", section: "hero" }}
+                  />
+                ) : (
+                  <Link
+                    key={c.label}
+                    to={c.to}
+                    className="bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
+                  >
+                    {c.label}
+                  </Link>
+                )
+              )}
             </div>
 
             <ul className="grid md:grid-cols-2 gap-2">
-              {(content.hero.bullets ?? []).map((b, i) => (
+              {content.hero.bullets.map((b, i) => (
                 <li key={i} className="text-gray-300 flex">
                   <span className="mr-2 text-indigo-400">•</span>
                   <span>{b}</span>
@@ -418,14 +357,11 @@ const TechnicalConsultingPage = () => {
             <div className="absolute bottom-0 left-0 w-28 h-1 bg-blue-500 rounded-full" />
           </div>
           <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
-            {(content.reviews ?? []).map((p) => (
+            {content.reviews.map((p) => (
               <PriceCard
                 key={p.tier}
                 {...p}
-                onPrimaryClick={() => payOneTime(p.pkg)}
-                primaryLabel="Pay Now"
-                highlight={highlight(p.tier)}
-                disabled={busy}
+                cta={{ label: `Choose ${p.tier}`, to: `/contact?service=consulting&plan=${p.pkg}` }}
               />
             ))}
           </motion.div>
@@ -438,14 +374,11 @@ const TechnicalConsultingPage = () => {
             <div className="absolute bottom-0 left-0 w-28 h-1 bg-emerald-500 rounded-full" />
           </div>
           <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-2 gap-6">
-            {(content.architecture ?? []).map((p) => (
+            {content.architecture.map((p) => (
               <PriceCard
                 key={p.tier}
                 {...p}
-                onPrimaryClick={() => payOneTime(p.pkg)}
-                primaryLabel="Pay Now"
-                highlight={highlight(p.tier)}
-                disabled={busy}
+                cta={{ label: `Choose ${p.tier}`, to: `/contact?service=consulting&plan=${p.pkg}` }}
               />
             ))}
           </motion.div>
@@ -458,14 +391,15 @@ const TechnicalConsultingPage = () => {
             <div className="absolute bottom-0 left-0 w-28 h-1 bg-cyan-500 rounded-full" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(content.devops ?? []).map((d) => (
+            {content.devops.map((d) => (
               <ChipCard
                 key={d.name}
-                {...d}
-                onSelect={() => payOneTime(d.pkg)}
-                primaryLabel="Pay Now"
-                disabled={busy}
-                highlight={highlight(d.name)}
+                name={d.name}
+                price={d.price}
+                desc={d.desc}
+                gradient={d.gradient}
+                highlight={d.highlight}
+                to={`/contact?service=consulting&plan=${d.pkg}`}
               />
             ))}
           </div>
@@ -475,30 +409,30 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Cloud Deployment (One-time Setup)</h2>
-          <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full" />
+            <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {(content.cloud ?? []).map((c) => (
+            {content.cloud.map((c) => (
               <ChipCard
                 key={c.name}
-                {...c}
-                onSelect={() => payOneTime(c.pkg)}
-                primaryLabel="Pay Now"
-                disabled={busy}
-                highlight={highlight(c.name)}
+                name={c.name}
+                price={c.price}
+                desc={c.desc}
+                gradient={c.gradient}
+                to={`/contact?service=consulting&plan=${c.pkg}`}
               />
             ))}
           </div>
         </section>
 
-        {/* Retainers (subscriptions) */}
+        {/* Retainers */}
         <section className="mb-4">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Retainers (Month-to-Month)</h2>
             <div className="absolute bottom-0 left-0 w-28 h-1 bg-violet-500 rounded-full" />
           </div>
           <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-3 gap-6">
-            {(content.retainers ?? []).map((m) => (
+            {content.retainers.map((m) => (
               <PriceCard
                 key={m.name}
                 tier={m.name}
@@ -508,15 +442,12 @@ const TechnicalConsultingPage = () => {
                 gradient={m.gradient}
                 emphasized={m.emphasized}
                 badge={m.badge}
-                highlight={highlight(m.name)}
-                onPrimaryClick={() => subscribe(m.pkg)}
-                primaryLabel={`Subscribe ${m.price}`}
-                disabled={busy}
+                cta={{ label: `Choose ${m.name}`, to: `/contact?service=consulting&plan=${m.pkg}` }}
               />
             ))}
           </motion.div>
           <ul className="text-sm text-gray-400 mt-3 space-y-1">
-            {(content.notes ?? []).map((n, i) => <li key={i}>{n}</li>)}
+            {content.notes.map((n, i) => <li key={i}>{n}</li>)}
           </ul>
         </section>
 
@@ -529,7 +460,7 @@ const TechnicalConsultingPage = () => {
           <div className="relative">
             <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-blue-200/20 via-blue-300/30 to-blue-200/20" />
             <div className="space-y-6">
-              {(content.process ?? []).map((step, idx) => (
+              {content.process.map((step, idx) => (
                 <div key={step.name} className="relative pl-10">
                   <div className="absolute left-0 top-1 h-6 w-6 rounded-full bg-white/10 border border-blue-500/40 flex items-center justify-center">
                     <span className="h-2 w-2 rounded-full bg-blue-500" />
@@ -555,7 +486,7 @@ const TechnicalConsultingPage = () => {
             <div className="absolute bottom-0 left-0 w-16 h-1 bg-emerald-500 rounded-full" />
           </div>
           <ul className="grid md:grid-cols-3 gap-4">
-            {(content.slas ?? []).map((s, i) => (
+            {content.slas.map((s, i) => (
               <li key={i} className="backdrop-blur-sm bg-gray-900/70 border border-gray-800 rounded-xl p-5 text-gray-300">
                 {s}
               </li>
@@ -563,7 +494,7 @@ const TechnicalConsultingPage = () => {
           </ul>
         </section>
 
-        {/* FAQ (guarded) */}
+        {/* FAQ */}
         {Array.isArray(content.faq) && content.faq.length > 0 && (
           <section className="mb-12">
             <div className="relative pb-3 mb-6">
@@ -591,6 +522,12 @@ const TechnicalConsultingPage = () => {
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
               metadata={{ page: "technical-consulting", section: "bottom-cta" }}
             />
+            <Link
+              to="/contact?service=consulting"
+              className="px-5 py-2.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-100 border border-gray-700 transition"
+            >
+              Get a Quote
+            </Link>
           </div>
         </section>
       </div>
