@@ -14,7 +14,8 @@ import CalButton from "../components/CalButton";
 const CONTEXT = "seo";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
 
-// Map monthly plan → Stripe Buy Button ID (from your message, in order)
+// Map monthly plan → Stripe Buy Button ID (as provided)
+// 1) Essential (starter), 2) Growth, 3) Pro
 const BUY_BUTTONS = {
   Essential: "buy_btn_1S9zwYL0N7h4wfoOODYOE9PR",
   Growth: "buy_btn_1S9zzpL0N7h4wfoOmiz7ViFJ",
@@ -82,6 +83,7 @@ const content = {
       ],
       ctaTo: "https://buy.stripe.com/5kQbJ2bakctx6by6jRawo0p",
       gradient: "from-emerald-600 to-teal-600",
+      // Optional: keeps your earlier deposit note placement style
       depositNote: "Deposit required to start: $90 (applied to total).",
     }
   ],
@@ -111,7 +113,7 @@ const content = {
     }
   ],
 
-  // Monthly retainers
+  // Monthly retainers (Stripe buttons embedded)
   retainers: [
     {
       name: "Essential",
@@ -200,13 +202,25 @@ const Pill = ({ children }) => (
   </span>
 );
 
-// UPDATED: supports buyButtonId to render Stripe button instead of Link
-const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized, depositNote }) => (
+// Price card supports either Link CTA or embedded Stripe Buy Button via buyButtonId
+const PriceCard = ({
+  tier,
+  price,
+  timeline,
+  items,
+  badge,
+  ctaTo,
+  gradient,
+  emphasized,
+  highlight,
+  depositNote,
+  buyButtonId
+}) => (
   <motion.div
     variants={variants.fadeInUp}
     className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 ${
       emphasized ? "ring-1 ring-indigo-500/40" : ""
-    }`}
+    } ${highlight ? "outline outline-2 outline-indigo-400/60" : ""}`}
   >
     <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`} />
     <div className="relative z-10">
@@ -216,7 +230,7 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
       </div>
 
       <div className="text-3xl font-bold text-gray-100">{price}</div>
-      {timeline && <div className="text-sm text-gray-400 mb-4">Timeline: {timeline}</div>}
+      {timeline && <div className="text-sm text-gray-400 mb-4">{timeline}</div>}
 
       <ul className="space-y-2 mb-5">
         {items.map((it, i) => (
@@ -227,13 +241,24 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
         ))}
       </ul>
 
-      <Link
-        to={ctaTo}
-        className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-      >
-        Choose {tier}
-        <span className="ml-1">→</span>
-      </Link>
+      {/* If a Stripe Buy Button ID is provided, render the embedded element.
+          Otherwise, fall back to the Link CTA. */}
+      {buyButtonId ? (
+        <div className="mt-1">
+          <stripe-buy-button
+            buy-button-id={buyButtonId}
+            publishable-key={STRIPE_PUBLISHABLE_KEY}
+          ></stripe-buy-button>
+        </div>
+      ) : (
+        <Link
+          to={ctaTo}
+          className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+        >
+          Choose {tier}
+          <span className="ml-1">→</span>
+        </Link>
+      )}
 
       {depositNote ? (
         <div className="mt-4 p-3 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-200 text-sm font-medium">
@@ -393,7 +418,7 @@ const SEOBoostPage = () => {
           </div>
         </section>
 
-        {/* Retainers */}
+        {/* Retainers with Stripe Buy Buttons */}
         <section className="mb-4">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Monthly Plans</h2>
@@ -412,7 +437,7 @@ const SEOBoostPage = () => {
                 emphasized={m.emphasized}
                 badge={m.badge}
                 highlight={highlight(m.name)}
-                buyButtonId={BUY_BUTTONS[m.name]}   // ← Stripe button here (fallbacks to Link if undefined)
+                buyButtonId={BUY_BUTTONS[m.name]} // Embedded Stripe button
               />
             ))}
           </motion.div>
