@@ -1,3 +1,4 @@
+// frontend/src/pages/AIConversationalToolsPage.jsx
 import React, { useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
@@ -9,9 +10,20 @@ import CalButton from "../components/CalButton";
  * AI & Conversational Toolss — dStatic Service Page
  * Budget-friendly pricing. CTAs use /services/ai&plan=<tier>.
  */
-
 const CONTEXT = "aiconv";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
+
+// Map maintenance plan → Stripe Buy Button ID (from your message)
+const BUY_BUTTONS = {
+  Essential: "buy_btn_1S9yEGL0N7h4wfoOQvU7d0Fa",
+  Growth: "buy_btn_1S9yGwL0N7h4wfoOPJAizKjH",
+  Pro: "buy_btn_1S9yJnL0N7h4wfoOtdm5D28F",
+};
+
+// Your live publishable key
+const STRIPE_PUBLISHABLE_KEY =
+  "pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8";
+
 const content = {
   hero: {
     title: "AI & Conversational Tools",
@@ -37,51 +49,55 @@ const content = {
     "Practical analytics that drive decisions",
   ],
 
-  // Budget pricing (lowballed)
-  packages: [
-    {
-      tier: "Starter Bot",
-      price: "$300–$600",
-      timeline: "1–2 weeks",
-      badge: "Great for one channel",
-      items: [
-        "1 channel (web or Slack)",
-        "1 knowledge base (~≤50 pages/PDFs)",
-        "Brand prompts + guardrails",
-        "Basic analytics + Loom walkthrough",
-      ],
-      ctaTo: "/services/ai&plan=starter",
-      gradient: "from-blue-600 to-indigo-600",
-    },
-    {
-      tier: "Growth Assistant",
-      price: "$900–$1,750",
-      timeline: "2–4 weeks",
-      badge: "Most popular",
-      items: [
-        "Multi-channel (2–3)",
-        "RAG over ~200 docs with citations",
-        "Action tools (tickets, CRM notes)",
-        "Analytics dashboard + 2-week hypercare",
-      ],
-      ctaTo: "/services/ai&plan=growth",
-      gradient: "from-indigo-600 to-fuchsia-600",
-      emphasized: true,
-    },
-    {
-      tier: "Pro Conversational Platform",
-      price: "$2,300–$4,800+",
-      timeline: "4–8+ weeks",
-      items: [
-        "3–5 tools (CRM, ticketing, email/SMS)",
-        "Vector DB + role-based access",
-        "Voice IVR/assistant + custom tools",
-        "Tests, evals, observability, training",
-      ],
-      ctaTo: "/services/ai&plan=pro",
-      gradient: "from-emerald-600 to-teal-600",
-    },
-  ],
+ // Budget pricing (lowballed)
+packages: [
+  {
+    tier: "Starter Bot",
+    price: "$300–$600",
+    timeline: "1–2 weeks",
+    badge: "Great for one channel",
+    items: [
+      "1 channel (web or Slack)",
+      "1 knowledge base (~≤50 pages/PDFs)",
+      "Brand prompts + guardrails",
+      "Basic analytics + Loom walkthrough",
+    ],
+    ctaTo: "https://buy.stripe.com/28E6oIguE8dh43qfUrawo0d",
+    gradient: "from-blue-600 to-indigo-600",
+    depositNote: "Deposit required to start: $300 (applied to total).",
+  },
+  {
+    tier: "Growth Assistant",
+    price: "$900–$1,750",
+    timeline: "2–4 weeks",
+    badge: "Most popular",
+    items: [
+      "Multi-channel (2–3)",
+      "RAG over ~200 docs with citations",
+      "Action tools (tickets, CRM notes)",
+      "Analytics dashboard + 2-week hypercare",
+    ],
+    ctaTo: "https://buy.stripe.com/bJeeVe0vGalp57uaA7awo0e",
+    gradient: "from-indigo-600 to-fuchsia-600",
+    emphasized: true,
+    depositNote: "Deposit required to start: $900 (applied to total).",
+  },
+  {
+    tier: "Pro Conversational Platform",
+    price: "$2,300–$4,800+",
+    timeline: "4–8+ weeks",
+    items: [
+      "3–5 tools (CRM, ticketing, email/SMS)",
+      "Vector DB + role-based access",
+      "Voice IVR/assistant + custom tools",
+      "Tests, evals, observability, training",
+    ],
+    ctaTo: "https://buy.stripe.com/fZudRabakalparO0Zxawo0f",
+    gradient: "from-emerald-600 to-teal-600",
+    depositNote: "Deposit required to start: $2,300 (applied to total).",
+  },
+],
+
 
   maintenance: [
     {
@@ -191,7 +207,7 @@ const Pill = ({ children }) => (
   </span>
 );
 
-const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized }) => (
+const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized, depositNote }) => (
   <motion.div
     variants={variants.fadeInUp}
     className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 ${
@@ -204,8 +220,10 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
         <h3 className="text-xl font-semibold text-gray-100">{tier}</h3>
         {badge ? <Pill>{badge}</Pill> : null}
       </div>
+
       <div className="text-3xl font-bold text-gray-100">{price}</div>
       {timeline && <div className="text-sm text-gray-400 mb-4">Timeline: {timeline}</div>}
+
       <ul className="space-y-2 mb-5">
         {items.map((it, i) => (
           <li key={i} className="text-gray-300 flex">
@@ -214,6 +232,7 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
           </li>
         ))}
       </ul>
+
       <Link
         to={ctaTo}
         className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
@@ -221,9 +240,17 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
         Choose {tier}
         <span className="ml-1">→</span>
       </Link>
+
+      {depositNote ? (
+        <div className="mt-4 p-3 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-200 text-sm font-medium">
+          {depositNote}
+        </div>
+      ) : null}
     </div>
   </motion.div>
 );
+
+
 
 const AIConversationalToolsPage = () => {
   const schema = useMemo(
@@ -255,6 +282,9 @@ const AIConversationalToolsPage = () => {
         <meta name="description" content={content.seo.description} />
         <link rel="canonical" href={content.seo.url} />
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
+
+        {/* Load Stripe Buy Button script once in <head> */}
+        <script async src="https://js.stripe.com/v3/buy-button.js" />
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-10 relative">
@@ -283,12 +313,9 @@ const AIConversationalToolsPage = () => {
                   <CalButton
                     key={c.label}
                     handle={CAL_HANDLE}
-                    event="secret"            // ← replace with your Cal event slug if not "secret"
+                    event="secret"
                     label={c.label}
-                    className={
-                      // style it however you want; this matches your primary button style
-                      "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-                    }
+                    className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
                   />
                 ) : (
                   <Link
@@ -364,45 +391,59 @@ const AIConversationalToolsPage = () => {
           </div>
         </section>
 
-        {/* Maintenance */}
+        {/* Maintenance & Support */}
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Maintenance & Support (Month-to-Month)</h2>
             <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full"></div>
           </div>
           <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-3 gap-6">
-            {content.maintenance.map((m) => (
-              <motion.div
-                key={m.name}
-                variants={variants.fadeInUp}
-                className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl transition ${m.emphasized ? "ring-1 ring-indigo-500/40" : ""}`}
-              >
-                <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${m.gradient} opacity-20 rounded-full blur-3xl`} />
-                <div className="relative z-10">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-xl font-semibold text-gray-100">{m.name}</h3>
-                    {m.badge ? <Pill>{m.badge}</Pill> : null}
+            {content.maintenance.map((m) => {
+              const buyId = BUY_BUTTONS[m.name];
+              return (
+                <motion.div
+                  key={m.name}
+                  variants={variants.fadeInUp}
+                  className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl transition ${m.emphasized ? "ring-1 ring-indigo-500/40" : ""}`}
+                >
+                  <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${m.gradient} opacity-20 rounded-full blur-3xl`} />
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="text-xl font-semibold text-gray-100">{m.name}</h3>
+                      {m.badge ? <Pill>{m.badge}</Pill> : null}
+                    </div>
+                    <div className="text-3xl font-bold text-gray-100">{m.price}</div>
+                    <div className="text-sm text-gray-400 mb-4">Response: {m.response}</div>
+                    <ul className="space-y-2 mb-5">
+                      {m.features.map((f, i) => (
+                        <li key={i} className="text-gray-300 flex">
+                          <span className="mr-2 text-blue-400">•</span>
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Stripe Buy Button if available; otherwise fallback to Link */}
+                    {buyId ? (
+                      <div className="mt-2">
+                        <stripe-buy-button
+                          buy-button-id={buyId}
+                          publishable-key={STRIPE_PUBLISHABLE_KEY}
+                        ></stripe-buy-button>
+                      </div>
+                    ) : (
+                      <Link
+                        to={m.ctaTo}
+                        className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+                      >
+                        Choose {m.name}
+                        <span className="ml-1">→</span>
+                      </Link>
+                    )}
                   </div>
-                  <div className="text-3xl font-bold text-gray-100">{m.price}</div>
-                  <div className="text-sm text-gray-400 mb-4">Response: {m.response}</div>
-                  <ul className="space-y-2 mb-5">
-                    {m.features.map((f, i) => (
-                      <li key={i} className="text-gray-300 flex">
-                        <span className="mr-2 text-blue-400">•</span>
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to={m.ctaTo}
-                    className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-                  >
-                    Choose {m.name}
-                    <span className="ml-1">→</span>
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </motion.div>
           <p className="text-sm text-gray-400 mt-3">
             Extra hours billed at your plan’s effective rate or rolled into a mini-sprint.
@@ -452,7 +493,7 @@ const AIConversationalToolsPage = () => {
           </div>
         </section>
 
-        {/* SLAs */}
+        {/* SLAs & Terms */}
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">SLAs & Terms</h2>
@@ -507,4 +548,5 @@ const AIConversationalToolsPage = () => {
 };
 
 export default AIConversationalToolsPage;
+
 
