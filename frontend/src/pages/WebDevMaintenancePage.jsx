@@ -44,7 +44,7 @@ const content = {
  packages: [
   {
     tier: "Starter Site",
-    price: "Deposit: $210–$450 (30%) · Full: $700–$1,500",
+    price: "$700–$1,500",
     timeline: "1–2 weeks",
     badge: "Popular for launches",
     items: [
@@ -59,7 +59,7 @@ const content = {
   },
   {
     tier: "Growth Site",
-    price: "Deposit: $500–$1,250 (25%) · Full: $2,000–$5,000",
+    price: "$2,000–$5,000",
     timeline: "3–6 weeks",
     badge: "Most popular",
     items: [
@@ -75,7 +75,7 @@ const content = {
   },
   {
     tier: "Pro / Web App",
-    price: "Deposit: $1,200–$2,400+ (20%) · Full: $6,000–$12,000+",
+    price: "$6,000–$12,000+",
     timeline: "6–12+ weeks",
     items: [
       "Auth, dashboards, RBAC",
