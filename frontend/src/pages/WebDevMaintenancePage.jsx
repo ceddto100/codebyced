@@ -52,10 +52,10 @@ const content = {
       "Contact form, basic SEO",
       "Deploy + staging",
       "Light animations",
-      "⚡ Start with a deposit — remaining balance due at launch"
     ],
     cta: { label: "Start Starter", to: "https://buy.stripe.com/fZu14oemwfFJbvS23Bawo07" },
     gradient: "from-blue-600 to-indigo-600",
+    depositNote: "Deposit required to start: $90 (applied to total).",
   },
   {
     tier: "Growth Site",
@@ -67,11 +67,11 @@ const content = {
       "Email/CRM integrations",
       "Analytics & performance",
       "Design system tokens",
-      "⚡ Pay the deposit to kick off — balance at milestones/launch"
     ],
     cta: { label: "Start Growth", to: "https://buy.stripe.com/dRm9AUa6g3X1fM88rZawo08" },
     gradient: "from-indigo-600 to-fuchsia-600",
     emphasized: true,
+    depositNote: "Deposit required to start: $90 (applied to total).",
   },
   {
     tier: "Pro / Web App",
@@ -82,10 +82,10 @@ const content = {
       "Custom APIs & webhooks",
       "Advanced integrations",
       "Scalable architecture",
-      "⚡ Deposit gets started — balance tied to project phases"
     ],
     cta: { label: "Start Pro", to: "https://buy.stripe.com/4gM7sM5Q00KPfM8dMjawo09" },
       gradient: "from-emerald-600 to-teal-600",
+    depositNote: "Deposit required to start: $90 (applied to total).",
     },
   ],
 
@@ -205,7 +205,7 @@ const Pill = ({ children }) => (
   </span>
 );
 
-const PriceCard = ({ tier, price, timeline, items, badge, cta, gradient, emphasized }) => (
+const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized, depositNote }) => (
   <motion.div
     variants={variants.fadeInUp}
     className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 ${
@@ -218,8 +218,10 @@ const PriceCard = ({ tier, price, timeline, items, badge, cta, gradient, emphasi
         <h3 className="text-xl font-semibold text-gray-100">{tier}</h3>
         {badge ? <Pill>{badge}</Pill> : null}
       </div>
+
       <div className="text-3xl font-bold text-gray-100">{price}</div>
       {timeline && <div className="text-sm text-gray-400 mb-4">Timeline: {timeline}</div>}
+
       <ul className="space-y-2 mb-5">
         {items.map((it, i) => (
           <li key={i} className="text-gray-300 flex">
@@ -228,13 +230,20 @@ const PriceCard = ({ tier, price, timeline, items, badge, cta, gradient, emphasi
           </li>
         ))}
       </ul>
+
       <Link
-        to={cta.to}
+        to={ctaTo}
         className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
       >
-        {cta.label}
+        Choose {tier}
         <span className="ml-1">→</span>
       </Link>
+
+      {depositNote ? (
+        <div className="mt-4 p-3 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-200 text-sm font-medium">
+          {depositNote}
+        </div>
+      ) : null}
     </div>
   </motion.div>
 );
