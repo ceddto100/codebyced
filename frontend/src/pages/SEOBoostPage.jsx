@@ -84,7 +84,7 @@ const content = {
       ctaTo: "https://buy.stripe.com/5kQbJ2bakctx6by6jRawo0p",
       gradient: "from-emerald-600 to-teal-600",
       // Optional: keeps your earlier deposit note placement style
-      depositNote: "Deposit required to start: $90 (applied to total).",
+      depositNote: "Deposit required to start: $209 (applied to total).",
     }
   ],
 
