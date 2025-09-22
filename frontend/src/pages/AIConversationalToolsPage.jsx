@@ -64,7 +64,7 @@ packages: [
     ],
     ctaTo: "https://buy.stripe.com/28E6oIguE8dh43qfUrawo0d",
     gradient: "from-blue-600 to-indigo-600",
-    depositNote: "Deposit required to start: $300 (applied to total).",
+    depositNote: "Deposit required to start: $90 (applied to total).",
   },
   {
     tier: "Growth Assistant",
@@ -80,7 +80,7 @@ packages: [
     ctaTo: "https://buy.stripe.com/bJeeVe0vGalp57uaA7awo0e",
     gradient: "from-indigo-600 to-fuchsia-600",
     emphasized: true,
-    depositNote: "Deposit required to start: $900 (applied to total).",
+    depositNote: "Deposit required to start: $225 (applied to total).",
   },
   {
     tier: "Pro Conversational Platform",
@@ -94,7 +94,7 @@ packages: [
     ],
     ctaTo: "https://buy.stripe.com/fZudRabakalparO0Zxawo0f",
     gradient: "from-emerald-600 to-teal-600",
-    depositNote: "Deposit required to start: $2,300 (applied to total).",
+    depositNote: "Deposit required to start: $460 (applied to total).",
   },
 ],
 
