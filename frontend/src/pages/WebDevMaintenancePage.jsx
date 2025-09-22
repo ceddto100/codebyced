@@ -55,7 +55,7 @@ const content = {
     ],
     ctaTo: "https://buy.stripe.com/fZu14oemwfFJbvS23Bawo07",
     gradient: "from-blue-600 to-indigo-600",
-    depositNote: "Deposit required to start: $90 (applied to total).",
+    depositNote: "Deposit required to start: $219 (applied to total).",
   },
   {
     tier: "Growth Site",
@@ -71,7 +71,7 @@ const content = {
     ctaTo: "https://buy.stripe.com/dRm9AUa6g3X1fM88rZawo08",
     gradient: "from-indigo-600 to-fuchsia-600",
     emphasized: true,
-    depositNote: "Deposit required to start: $90 (applied to total).",
+    depositNote: "Deposit required to start: $500 (applied to total).",
   },
   {
     tier: "Pro / Web App",
@@ -85,7 +85,7 @@ const content = {
     ],
     ctaTo: "https://buy.stripe.com/4gM7sM5Q00KPfM8dMjawo09",
       gradient: "from-emerald-600 to-teal-600",
-    depositNote: "Deposit required to start: $90 (applied to total).",
+    depositNote: "Deposit required to start: $1200 (applied to total).",
     },
   ],
 
