@@ -13,6 +13,18 @@ import CalButton from "../components/CalButton";
  */
 const CONTEXT = "automation";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
+
+// Map maintenance plan → Stripe Buy Button ID (from your message, in order)
+const BUY_BUTTONS = {
+  Essential: "buy_btn_1S9z1DL0N7h4wfoOZnlpVRq3",
+  Growth: "buy_btn_1S9z3BL0N7h4wfoOWsq54pmz",
+  Pro: "buy_btn_1S9z5TL0N7h4wfoOFB7ge1Ay",
+};
+
+// Your live publishable key
+const STRIPE_PUBLISHABLE_KEY =
+  "pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8";
+
 const content = {
   hero: {
     title: "Workflow & Automation",
@@ -50,8 +62,9 @@ const content = {
         "Basic error handling + retries",
         "Loom walkthrough",
       ],
-      ctaTo: "/services/automation&plan=starter",
+      ctaTo: "https://buy.stripe.com/eVq6oI6U4alp2ZmfUrawo0j",
       gradient: "from-blue-600 to-indigo-600",
+      depositNote: "Deposit required to start: $90 (applied to total).",
     },
     {
       tier: "Growth Automation",
@@ -64,9 +77,10 @@ const content = {
         "Basic data model + analytics touchpoints",
         "Two-week hypercare included",
       ],
-      ctaTo: "/services/automation&plan=growth",
+      ctaTo: "https://buy.stripe.com/6oU00kemwctx57u6jRawo0k",
       gradient: "from-indigo-600 to-fuchsia-600",
       emphasized: true,
+      depositNote: "Deposit required to start: $200 (applied to total).",
     },
     {
       tier: "Pro / Automation System",
@@ -78,8 +92,9 @@ const content = {
         "Test suite + observability",
         "Team training + handoff",
       ],
-      ctaTo: "/services/automation&plan=pro",
+      ctaTo: "https://buy.stripe.com/5kQbJ22DO2SX6bybEbawo0l",
       gradient: "from-emerald-600 to-teal-600",
+      depositNote: "Deposit required to start: $380 (applied to total).",
     },
   ],
 
@@ -201,7 +216,7 @@ const Pill = ({ children }) => (
   </span>
 );
 
-const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized }) => (
+const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized, depositNote }) => (
   <motion.div
     variants={variants.fadeInUp}
     className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 ${
@@ -214,8 +229,10 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
         <h3 className="text-xl font-semibold text-gray-100">{tier}</h3>
         {badge ? <Pill>{badge}</Pill> : null}
       </div>
+
       <div className="text-3xl font-bold text-gray-100">{price}</div>
       {timeline && <div className="text-sm text-gray-400 mb-4">Timeline: {timeline}</div>}
+
       <ul className="space-y-2 mb-5">
         {items.map((it, i) => (
           <li key={i} className="text-gray-300 flex">
@@ -224,6 +241,7 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
           </li>
         ))}
       </ul>
+
       <Link
         to={ctaTo}
         className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
@@ -231,9 +249,16 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
         Choose {tier}
         <span className="ml-1">→</span>
       </Link>
+
+      {depositNote ? (
+        <div className="mt-4 p-3 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-200 text-sm font-medium">
+          {depositNote}
+        </div>
+      ) : null}
     </div>
   </motion.div>
 );
+
 
 const WorkflowAutomationPage = () => {
   const schema = useMemo(
@@ -265,6 +290,8 @@ const WorkflowAutomationPage = () => {
         <meta name="description" content={content.seo.description} />
         <link rel="canonical" href={content.seo.url} />
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
+        {/* Load Stripe Buy Button script once in <head> */}
+        <script async src="https://js.stripe.com/v3/buy-button.js" />
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-10 relative">
@@ -378,38 +405,52 @@ const WorkflowAutomationPage = () => {
             <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full"></div>
           </div>
           <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-3 gap-6">
-            {content.maintenance.map((m) => (
-              <motion.div
-                key={m.name}
-                variants={variants.fadeInUp}
-                className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl transition ${m.emphasized ? "ring-1 ring-indigo-500/40" : ""}`}
-              >
-                <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${m.gradient} opacity-20 rounded-full blur-3xl`} />
-                <div className="relative z-10">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-xl font-semibold text-gray-100">{m.name}</h3>
-                    {m.badge ? <Pill>{m.badge}</Pill> : null}
+            {content.maintenance.map((m) => {
+              const buyId = BUY_BUTTONS[m.name];
+              return (
+                <motion.div
+                  key={m.name}
+                  variants={variants.fadeInUp}
+                  className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl transition ${m.emphasized ? "ring-1 ring-indigo-500/40" : ""}`}
+                >
+                  <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${m.gradient} opacity-20 rounded-full blur-3xl`} />
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="text-xl font-semibold text-gray-100">{m.name}</h3>
+                      {m.badge ? <Pill>{m.badge}</Pill> : null}
+                    </div>
+                    <div className="text-3xl font-bold text-gray-100">{m.price}</div>
+                    <div className="text-sm text-gray-400 mb-4">Response: {m.response}</div>
+                    <ul className="space-y-2 mb-5">
+                      {m.features.map((f, i) => (
+                        <li key={i} className="text-gray-300 flex">
+                          <span className="mr-2 text-blue-400">•</span>
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Use Stripe Buy Button if available; otherwise fallback to Link */}
+                    {buyId ? (
+                      <div className="mt-2">
+                        <stripe-buy-button
+                          buy-button-id={buyId}
+                          publishable-key={STRIPE_PUBLISHABLE_KEY}
+                        ></stripe-buy-button>
+                      </div>
+                    ) : (
+                      <Link
+                        to={m.ctaTo}
+                        className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+                      >
+                        Choose {m.name}
+                        <span className="ml-1">→</span>
+                      </Link>
+                    )}
                   </div>
-                  <div className="text-3xl font-bold text-gray-100">{m.price}</div>
-                  <div className="text-sm text-gray-400 mb-4">Response: {m.response}</div>
-                  <ul className="space-y-2 mb-5">
-                    {m.features.map((f, i) => (
-                      <li key={i} className="text-gray-300 flex">
-                        <span className="mr-2 text-blue-400">•</span>
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to={m.ctaTo}
-                    className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-                  >
-                    Choose {m.name}
-                    <span className="ml-1">→</span>
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </motion.div>
           <p className="text-sm text-gray-400 mt-3">
             Extra hours billed at your plan’s effective rate or rolled into a mini-sprint.
@@ -459,7 +500,7 @@ const WorkflowAutomationPage = () => {
           </div>
         </section>
 
-        {/* SLAs */}
+        {/* SLAs & Terms */}
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">SLAs & Terms</h2>
@@ -514,3 +555,4 @@ const WorkflowAutomationPage = () => {
 };
 
 export default WorkflowAutomationPage;
+
