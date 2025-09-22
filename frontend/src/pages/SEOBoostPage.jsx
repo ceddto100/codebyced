@@ -1,3 +1,4 @@
+// frontend/src/pages/SEOBoostPage.jsx
 import React, { useMemo } from "react";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
@@ -12,6 +13,18 @@ import CalButton from "../components/CalButton";
  */
 const CONTEXT = "seo";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
+
+// Map monthly plan → Stripe Buy Button ID (from your message, in order)
+const BUY_BUTTONS = {
+  Essential: "buy_btn_1S9zwYL0N7h4wfoOODYOE9PR",
+  Growth: "buy_btn_1S9zzpL0N7h4wfoOmiz7ViFJ",
+  Pro: "buy_btn_1SA05gL0N7h4wfoOAHmZzphM",
+};
+
+// Live publishable key
+const STRIPE_PUBLISHABLE_KEY =
+  "pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8";
+
 const content = {
   hero: {
     title: "SEO Boost",
@@ -40,7 +53,7 @@ const content = {
         "Console setup guidance",
         "Prioritized mini action list"
       ],
-      ctaTo: "/contact?service=seo&plan=quick",
+      ctaTo: "https://buy.stripe.com/6oU8wQ2DOctx43qcIfawo0r",
       gradient: "from-blue-600 to-indigo-600"
     },
     {
@@ -54,7 +67,7 @@ const content = {
         "Sitemap/robots/canonicals",
         "P0–P2 backlog + 20–30m walkthrough"
       ],
-      ctaTo: "/contact?service=seo&plan=audit",
+      ctaTo: "https://buy.stripe.com/28E4gAfqA2SXczWfUrawo0q",
       gradient: "from-indigo-600 to-fuchsia-600",
       emphasized: true
     },
@@ -67,8 +80,9 @@ const content = {
         "Sitemap/robots tune & resubmit",
         "On-page updates for 10 key pages"
       ],
-      ctaTo: "/contact?service=seo&plan=starter",
+      ctaTo: "https://buy.stripe.com/5kQbJ2bakctx6by6jRawo0p",
       gradient: "from-emerald-600 to-teal-600"
+      depositNote: "Deposit required to start: $90 (applied to total).",
     }
   ],
 
@@ -186,12 +200,13 @@ const Pill = ({ children }) => (
   </span>
 );
 
-const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized, highlight }) => (
+// UPDATED: supports buyButtonId to render Stripe button instead of Link
+const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized, depositNote }) => (
   <motion.div
     variants={variants.fadeInUp}
     className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 ${
       emphasized ? "ring-1 ring-indigo-500/40" : ""
-    } ${highlight ? "outline outline-2 outline-indigo-400/60" : ""}`}
+    }`}
   >
     <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`} />
     <div className="relative z-10">
@@ -199,8 +214,10 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
         <h3 className="text-xl font-semibold text-gray-100">{tier}</h3>
         {badge ? <Pill>{badge}</Pill> : null}
       </div>
+
       <div className="text-3xl font-bold text-gray-100">{price}</div>
       {timeline && <div className="text-sm text-gray-400 mb-4">Timeline: {timeline}</div>}
+
       <ul className="space-y-2 mb-5">
         {items.map((it, i) => (
           <li key={i} className="text-gray-300 flex">
@@ -209,6 +226,7 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
           </li>
         ))}
       </ul>
+
       <Link
         to={ctaTo}
         className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
@@ -216,6 +234,12 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
         Choose {tier}
         <span className="ml-1">→</span>
       </Link>
+
+      {depositNote ? (
+        <div className="mt-4 p-3 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-200 text-sm font-medium">
+          {depositNote}
+        </div>
+      ) : null}
     </div>
   </motion.div>
 );
@@ -284,6 +308,8 @@ const SEOBoostPage = () => {
         <meta name="description" content={content.seo.description} />
         <link rel="canonical" href={content.seo.url} />
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
+        {/* Load Stripe Buy Button script once in <head> */}
+        <script async src="https://js.stripe.com/v3/buy-button.js" />
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-10 relative">
@@ -305,18 +331,15 @@ const SEOBoostPage = () => {
               {content.hero.title}
             </h1>
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
-             <div className="flex flex-wrap gap-3 mb-6">
+            <div className="flex flex-wrap gap-3 mb-6">
               {content.hero.ctas.map((c) =>
                 c.useCal ? (
                   <CalButton
                     key={c.label}
                     handle={CAL_HANDLE}
-                    event="secret"            // ← replace with your Cal event slug if not "secret"
+                    event="secret"
                     label={c.label}
-                    className={
-                      // style it however you want; this matches your primary button style
-                      "bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-                    }
+                    className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
                   />
                 ) : (
                   <Link
@@ -389,6 +412,7 @@ const SEOBoostPage = () => {
                 emphasized={m.emphasized}
                 badge={m.badge}
                 highlight={highlight(m.name)}
+                buyButtonId={BUY_BUTTONS[m.name]}   // ← Stripe button here (fallbacks to Link if undefined)
               />
             ))}
           </motion.div>
@@ -482,3 +506,5 @@ const SEOBoostPage = () => {
 };
 
 export default SEOBoostPage;
+
+
