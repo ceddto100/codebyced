@@ -37,7 +37,6 @@ const content = {
       "CRM Integrations (HubSpot, Salesforce, custom DBs)",
     ],
     ctas: [
-      { label: "Automate My Workflow", to: "/services/automation&plan=growth" },
       { label: "Book a 15-min Discovery", variant: "secondary", useCal: true },
     ],
   },
@@ -534,12 +533,7 @@ const WorkflowAutomationPage = () => {
         {/* CTA */}
         <section className="mb-6 text-center">
           <div className="inline-flex items-center gap-3">
-            <Link
-              to="/services/automation&plan=growth"
-              className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-            >
-              Automate My Workflow
-            </Link>
+            
             <CalButton
               handle={CAL_HANDLE}
               event="secret"
