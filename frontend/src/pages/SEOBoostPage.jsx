@@ -81,7 +81,7 @@ const content = {
         "On-page updates for 10 key pages"
       ],
       ctaTo: "https://buy.stripe.com/5kQbJ2bakctx6by6jRawo0p",
-      gradient: "from-emerald-600 to-teal-600"
+      gradient: "from-emerald-600 to-teal-600",
       depositNote: "Deposit required to start: $90 (applied to total).",
     }
   ],
