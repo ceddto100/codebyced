@@ -540,12 +540,7 @@ const AppSoftwareDevPage = () => {
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
               metadata={{ page: "app-development", section: "bottom-cta" }}
             />
-            <Link
-              to="/services/apps"
-              className="px-5 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
-            >
-              Talk through scope
-            </Link>
+            
           </div>
         </section>
       </div>
