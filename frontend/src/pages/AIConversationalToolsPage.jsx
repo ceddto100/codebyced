@@ -7,7 +7,7 @@ import PageLayout from "../components/PageLayout";
 import CalButton from "../components/CalButton";
 
 /**
- * AI & Conversational Toolss — dStatic Service Page
+ * AI & Conversational Toolss — dStatics Service Page
  * Budget-friendly pricing. CTAs usek /services/ai&plan=<tier>.
  */
 const CONTEXT = "aiconv";
