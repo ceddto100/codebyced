@@ -39,7 +39,6 @@ const content = {
     ],
     ctas: [
       { label: "Get an Audit", useCal: true },
-      { label: "Ask About Bundles", to: "/contact?service=seo", variant: "secondary" }
     ]
   },
 
@@ -517,12 +516,7 @@ const SEOBoostPage = () => {
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
               metadata={{ page: "seo-boost", section: "bottom-cta" }}
             />
-            <Link
-              to="/contact?service=seo"
-              className="px-5 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 hover:bg-gray-700 transition"
-            >
-              Ask about bundles
-            </Link>
+            
           </div>
         </section>
       </div>
