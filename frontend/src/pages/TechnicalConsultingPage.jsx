@@ -8,21 +8,23 @@ import CalButton from "../components/CalButton";
 
 /**
  * Technical Consulting — Static Service Page
- * Retainers use embedded Stripe Buy Buttons (starter/growth/pro).
+ * All non-subscription CTAs link out (ctaHref or ctaTo).
+ * Month-to-month subscriptions keep embedded Stripe Buy Buttons.
  */
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
 
-// Map retainer plan → Stripe Buy Button ID you provided
+// Map retainer plan → Stripe Buy Button ID you provided (unchanged)
 const BUY_BUTTONS = {
-  Essential: "buy_btn_1SA1amL0N7h4wfoOwOS5ms4p", // starter
-  Growth: "buy_btn_1SA1cBL0N7h4wfoO6HavkWo2",    // growth
-  Pro: "buy_btn_1SA1e3L0N7h4wfoOjSXF6vCj",       // pro
+  Essential: "buy_btn_1SA1amL0N7h4wfoOwOS5ms4p",
+  Growth: "buy_btn_1SA1cBL0N7h4wfoO6HavkWo2",
+  Pro: "buy_btn_1SA1e3L0N7h4wfoOjSXF6vCj",
 };
 
-// Your live publishable key
+// Your live publishable key (used only by Buy Button)
 const STRIPE_PUBLISHABLE_KEY =
   "pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8";
 
+// ---------- CONTENT (added ctaHref consistently for one-time) ----------
 const content = {
   hero: {
     title: "Technical Consulting",
@@ -40,19 +42,19 @@ const content = {
     ],
   },
 
-  // ONE-TIME
+  // ONE-TIME (each has external CTA)
   reviews: [
     {
       tier: "Code Review Lite",
       price: "$79 flat",
       timeline: "≤1 PR / ≤500 LOC",
-      badge: "",
       items: [
         "Written notes with clear, actionable findings",
         "Best-practice checklist tailored to your stack",
         "Focus: design, tests, readability, maintainability",
       ],
-      ctaTo: "https://buy.stripe.com/5kQ8wQbakctx57u5fNawo0v",
+      // CHANGED: use external checkout
+      ctaHref: "https://buy.stripe.com/5kQ8wQbakctx57u5fNawo0v",
       gradient: "from-blue-600 to-indigo-600",
     },
     {
@@ -65,13 +67,14 @@ const content = {
         "Recorded walkthrough + action plan",
         "Follow-up Q&A async",
       ],
-      ctaTo: "https://buy.stripe.com/aFaaEY6U46598jG6jRawo0w",
+      // CHANGED: use external checkout
+      ctaHref: "https://buy.stripe.com/aFaaEY6U46598jG6jRawo0w",
       gradient: "from-indigo-600 to-fuchsia-600",
       emphasized: true,
     },
   ],
 
-  // ONE-TIME
+  // ONE-TIME (each has external CTA)
   architecture: [
     {
       tier: "Architecture Blueprint",
@@ -82,7 +85,8 @@ const content = {
         "Scaling/caching plan & risks",
         "Backlog of next steps",
       ],
-      ctaTo: "https://buy.stripe.com/9B614o5Q0bptbvS7nVawo0x",
+      // CHANGED: use external checkout
+      ctaHref: "https://buy.stripe.com/9B614o5Q0bptbvS7nVawo0x",
       gradient: "from-emerald-600 to-teal-600",
     },
     {
@@ -94,30 +98,31 @@ const content = {
         "Observability plan (logs/metrics)",
         "Rollout strategy",
       ],
-      ctaTo: "https://buy.stripe.com/4gMcN65Q02SXdE04bJawo0y",
+      // CHANGED: use external checkout
+      ctaHref: "https://buy.stripe.com/4gMcN65Q02SXdE04bJawo0y",
       gradient: "from-teal-600 to-cyan-600",
       emphasized: true,
     },
   ],
 
-  // ONE-TIME (card chips)
+  // ONE-TIME (chip cards). If you later get Stripe links, drop them into ctaHref.
   devops: [
-    { name: "Git & PR Workflow", price: "$120", desc: "Branch model, PR templates, protection rules", pkg: "gitPr" },
-    { name: "Dockerize App", price: "$180", desc: "Dev & prod images, compose file", pkg: "dockerize" },
-    { name: "CI/CD Pipeline", price: "$250", desc: "Tests, build, deploy (GH Actions/GitLab/etc.)", pkg: "cicd" },
-    { name: "Observability Starter", price: "$150", desc: "Basic logs/alerts + runbook", pkg: "obs" },
-    { name: "DevOps Starter Bundle", price: "$500", desc: "Git/PR + Docker + CI/CD + Observability", pkg: "devopsBundle", highlight: true },
+    { name: "Git & PR Workflow", price: "$120", desc: "Branch model, PR templates, protection rules", pkg: "gitPr", ctaTo: "https://buy.stripe.com/aFa3cwdisdxB8jG4bJawo0z" },
+    { name: "Dockerize App", price: "$180", desc: "Dev & prod images, compose file", pkg: "dockerize", ctaTo: "https://buy.stripe.com/4gM28sbak3X11Vi23Bawo0A" },
+    { name: "CI/CD Pipeline", price: "$250", desc: "Tests, build, deploy (GH Actions/GitLab/etc.)", pkg: "cicd", ctaTo: "https://buy.stripe.com/8x2eVe0vGdxB8jG23Bawo0B" },
+    { name: "Observability Starter", price: "$150", desc: "Basic logs/alerts + runbook", pkg: "obs", ctaTo: "https://buy.stripe.com/5kQbJ2ceo9hl7fC37Fawo0C" },
+    { name: "DevOps Starter Bundle", price: "$500", desc: "Git/PR + Docker + CI/CD + Observability", pkg: "devopsBundle", ctaTo: "https://buy.stripe.com/fZu5kE4LWeBF57uaA7awo0D", highlight: true },
   ],
 
-  // ONE-TIME (card chips)
+  // ONE-TIME (chip cards)
   cloud: [
-    { name: "Google Cloud Run", price: "$200", desc: "Containerize, service, domain/SSL, rollout", pkg: "cloudrun", gradient: "from-sky-600 to-blue-600" },
-    { name: "Render", price: "$180", desc: "PaaS deploy, autoscaling config (per plan)", pkg: "render", gradient: "from-indigo-600 to-violet-600" },
-    { name: "AWS Fargate (ECS)", price: "$350", desc: "Task/service, IAM, rollout", pkg: "fargate", gradient: "from-amber-600 to-orange-600" },
-    { name: "Cloudflare Workers", price: "$180", desc: "Edge function, routing, KV if needed", pkg: "workers", gradient: "from-rose-600 to-pink-600" },
+    { name: "Google Cloud Run", price: "$200", desc: "Containerize, service, domain/SSL, rollout", pkg: "cloudrun", gradient: "from-sky-600 to-blue-600", ctaTo: "https://buy.stripe.com/8x2fZidis2SX6by6jRawo0H" },
+    { name: "Render", price: "$180", desc: "PaaS deploy, autoscaling config (per plan)", pkg: "render", gradient: "from-indigo-600 to-violet-600", ctaTo: "https://buy.stripe.com/bJecN6a6g9hl57u23Bawo0I" },
+    { name: "AWS Fargate (ECS)", price: "$350", desc: "Task/service, IAM, rollout", pkg: "fargate", gradient: "from-amber-600 to-orange-600", ctaTo: "https://buy.stripe.com/14A5kEdisalparOeQnawo0J" },
+    { name: "Cloudflare Workers", price: "$180", desc: "Edge function, routing, KV if needed", pkg: "workers", gradient: "from-rose-600 to-pink-600", ctaTo: "https://buy.stripe.com/5kQ00k4LW79dbvS7nVawo0K" },
   ],
 
-  // Retainers (now Stripe-embedded)
+  // Retainers (month-to-month) — keep Stripe Buy Buttons
   retainers: [
     {
       name: "Essential",
@@ -205,8 +210,35 @@ const Pill = ({ children }) => (
   </span>
 );
 
-// Generic card for one-time packages (uses Link CTA)
-const PriceCard = ({ tier, price, timeline, items, badge, cta, gradient, emphasized }) => (
+// ---------- CARDS (now support ctaHref OR ctaTo) ----------
+const CTAButton = ({ ctaHref, ctaTo, label }) => {
+  if (ctaHref) {
+    return (
+      <a
+        href={ctaHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+      >
+        {label ?? "Choose"} <span className="ml-1">→</span>
+      </a>
+    );
+  }
+  if (ctaTo) {
+    return (
+      <Link
+        to={ctaTo}
+        className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+      >
+        {label ?? "Choose"} <span className="ml-1">→</span>
+      </Link>
+    );
+  }
+  return null;
+};
+
+// Generic card for one-time packages
+const PriceCard = ({ tier, price, timeline, items, badge, gradient, emphasized, ctaHref, ctaTo }) => (
   <motion.div
     variants={variants.fadeInUp}
     className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 ${
@@ -229,21 +261,14 @@ const PriceCard = ({ tier, price, timeline, items, badge, cta, gradient, emphasi
           </li>
         ))}
       </ul>
-      {cta?.to && (
-        <Link
-          to={cta.to}
-          className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-        >
-          {cta.label ?? "Choose"}
-          <span className="ml-1">→</span>
-        </Link>
-      )}
+      {/* CHANGED: unified CTA */}
+      <CTAButton ctaHref={ctaHref} ctaTo={ctaTo} label={`Choose ${tier}`} />
     </div>
   </motion.div>
 );
 
 // Small chip-style card for à la carte items
-const ChipCard = ({ name, price, desc, gradient, to, highlight }) => (
+const ChipCard = ({ name, price, desc, gradient, ctaHref, ctaTo, highlight }) => (
   <div
     className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 ${
       highlight ? "ring-1 ring-indigo-500/40" : ""
@@ -258,18 +283,15 @@ const ChipCard = ({ name, price, desc, gradient, to, highlight }) => (
         <div className="text-gray-300">{price}</div>
       </div>
       {desc && <p className="text-gray-400 mt-1">{desc}</p>}
-      <Link
-        to={to}
-        className="inline-flex items-center mt-4 px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition text-sm"
-      >
-        Choose {name}
-        <span className="ml-1">→</span>
-      </Link>
+      {/* CHANGED: unified CTA */}
+      <div className="mt-4">
+        <CTAButton ctaHref={ctaHref} ctaTo={ctaTo} label={`Choose ${name}`} />
+      </div>
     </div>
   </div>
 );
 
-// Retainer card with embedded Stripe Buy Button
+// Retainer card with embedded Stripe Buy Button (unchanged behavior)
 const RetainerCard = ({ name, price, response, features, gradient, emphasized, badge, buyButtonId }) => (
   <motion.div
     variants={variants.fadeInUp}
@@ -294,7 +316,7 @@ const RetainerCard = ({ name, price, response, features, gradient, emphasized, b
         ))}
       </ul>
 
-      {/* Stripe Buy Button */}
+      {/* KEEP: Embedded Stripe Buy Button for month-to-month */}
       {buyButtonId ? (
         <div className="mt-1">
           <stripe-buy-button
@@ -412,7 +434,9 @@ const TechnicalConsultingPage = () => {
               <PriceCard
                 key={p.tier}
                 {...p}
-                cta={{ label: `Choose ${p.tier}`, to: `/contact?service=consulting&plan=${p.pkg}` }}
+                // CHANGED: pass through external CTA
+                ctaHref={p.ctaHref}
+                ctaTo={p.ctaTo}
               />
             ))}
           </motion.div>
@@ -429,7 +453,9 @@ const TechnicalConsultingPage = () => {
               <PriceCard
                 key={p.tier}
                 {...p}
-                cta={{ label: `Choose ${p.tier}`, to: `/contact?service=consulting&plan=${p.pkg}` }}
+                // CHANGED: pass through external CTA
+                ctaHref={p.ctaHref}
+                ctaTo={p.ctaTo}
               />
             ))}
           </motion.div>
@@ -449,8 +475,10 @@ const TechnicalConsultingPage = () => {
                 price={d.price}
                 desc={d.desc}
                 gradient={d.gradient}
+                // CHANGED: CTA link (external if provided, else internal)
+                ctaHref={d.ctaHref}
+                ctaTo={d.ctaTo}
                 highlight={d.highlight}
-                to={`/contact?service=consulting&plan=${d.pkg}`}
               />
             ))}
           </div>
@@ -460,7 +488,7 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Cloud Deployment (One-time Setup)</h2>
-          <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full" />
+            <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {content.cloud.map((c) => (
@@ -470,13 +498,15 @@ const TechnicalConsultingPage = () => {
                 price={c.price}
                 desc={c.desc}
                 gradient={c.gradient}
-                to={`/contact?service=consulting&plan=${c.pkg}`}
+                // CHANGED: CTA link (external if provided, else internal)
+                ctaHref={c.ctaHref}
+                ctaTo={c.ctaTo}
               />
             ))}
           </div>
         </section>
 
-        {/* Retainers with Stripe Buy Buttons */}
+        {/* Retainers with Stripe Buy Buttons (unchanged) */}
         <section className="mb-4">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Retainers (Month-to-Month)</h2>
