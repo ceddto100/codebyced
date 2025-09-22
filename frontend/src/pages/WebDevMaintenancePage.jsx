@@ -11,6 +11,18 @@ import CalButton from "../components/CalButton";
  * Matches your glass/gradient style and uses data arrays for easy edits.
  */
 const CONTEXT = "maintenance";
+
+// Map maintenance plan → Stripe Buy Button ID (from your message)
+const BUY_BUTTONS = {
+  Essential: "buy_btn_1S9xdpL0N7h4wfoOjbDfG2bs",
+  Growth: "buy_btn_1S9xg7L0N7h4wfoOFHx5cDLb",
+  Pro: "buy_btn_1S9xj3L0N7h4wfoOa75qeENe",
+};
+
+// Your live publishable key (as provided)
+const STRIPE_PUBLISHABLE_KEY =
+  "pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8";
+
 const content = {
   hero: {
     title: "Web Development & Maintenance",
@@ -29,47 +41,50 @@ const content = {
   },
 
   // Pricing (editable)
-  packages: [
-    {
-      tier: "Starter Site",
-      price: "$700–$1,500",
-      timeline: "1–2 weeks",
-      badge: "Popular for launches",
-      items: [
-        "1–5 pages, responsive",
-        "Contact form, basic SEO",
-        "Deploy + staging",
-        "Light animations",
-      ],
-      cta: { label: "Start Starter", to: "/contact?service=web-dev&plan=starter" },
-      gradient: "from-blue-600 to-indigo-600",
-    },
-    {
-      tier: "Growth Site",
-      price: "$2,000–$5,000",
-      timeline: "3–6 weeks",
-      badge: "Most popular",
-      items: [
-        "6–15 pages + CMS/blog",
-        "Email/CRM integrations",
-        "Analytics & performance",
-        "Design system tokens",
-      ],
-      cta: { label: "Start Growth", to: "/contact?service=web-dev&plan=growth" },
-      gradient: "from-indigo-600 to-fuchsia-600",
-      emphasized: true,
-    },
-    {
-      tier: "Pro / Web App",
-      price: "$6,000–$12,000+",
-      timeline: "6–12+ weeks",
-      items: [
-        "Auth, dashboards, RBAC",
-        "Custom APIs & webhooks",
-        "Advanced integrations",
-        "Scalable architecture",
-      ],
-      cta: { label: "Start Pro", to: "/contact?service=web-dev&plan=pro" },
+ packages: [
+  {
+    tier: "Starter Site",
+    price: "Deposit: $210–$450 (30%) · Full: $700–$1,500",
+    timeline: "1–2 weeks",
+    badge: "Popular for launches",
+    items: [
+      "1–5 pages, responsive",
+      "Contact form, basic SEO",
+      "Deploy + staging",
+      "Light animations",
+      "⚡ Start with a deposit — remaining balance due at launch"
+    ],
+    cta: { label: "Start Starter", to: "https://buy.stripe.com/fZu14oemwfFJbvS23Bawo07" },
+    gradient: "from-blue-600 to-indigo-600",
+  },
+  {
+    tier: "Growth Site",
+    price: "Deposit: $500–$1,250 (25%) · Full: $2,000–$5,000",
+    timeline: "3–6 weeks",
+    badge: "Most popular",
+    items: [
+      "6–15 pages + CMS/blog",
+      "Email/CRM integrations",
+      "Analytics & performance",
+      "Design system tokens",
+      "⚡ Pay the deposit to kick off — balance at milestones/launch"
+    ],
+    cta: { label: "Start Growth", to: "https://buy.stripe.com/dRm9AUa6g3X1fM88rZawo08" },
+    gradient: "from-indigo-600 to-fuchsia-600",
+    emphasized: true,
+  },
+  {
+    tier: "Pro / Web App",
+    price: "Deposit: $1,200–$2,400+ (20%) · Full: $6,000–$12,000+",
+    timeline: "6–12+ weeks",
+    items: [
+      "Auth, dashboards, RBAC",
+      "Custom APIs & webhooks",
+      "Advanced integrations",
+      "Scalable architecture",
+      "⚡ Deposit gets started — balance tied to project phases"
+    ],
+    cta: { label: "Start Pro", to: "https://buy.stripe.com/4gM7sM5Q00KPfM8dMjawo09" },
       gradient: "from-emerald-600 to-teal-600",
     },
   ],
@@ -254,6 +269,9 @@ const WebDevMaintenancePage = () => {
         <meta name="description" content={content.seo.description} />
         <link rel="canonical" href={content.seo.url} />
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
+
+        {/* Load Stripe Buy Button script once */}
+        <script async src="https://js.stripe.com/v3/buy-button.js" />
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-10 relative">
@@ -276,27 +294,27 @@ const WebDevMaintenancePage = () => {
             </h1>
             <p className="text-gray-300 mb-6">{content.hero.subtitle}</p>
             <div className="flex flex-wrap gap-3 mb-6">
-                {content.hero.ctas.map((c) =>
-                  c.label === "Get a Quote" ? (
-                    <CalButton
-                      key={c.label}
-                      handle="cedrick-carter-ndeqh2"
-                      event="secret"
-                      label={c.label}
-                      className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
-                      metadata={{ page: "web-dev-maintenance", section: "hero" }}
-                    />
-                  ) : (
-                    <Link
-                      key={c.label}
-                      to={c.to}
-                      className="bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
-                    >
-                      {c.label}
-                    </Link>
-                  )
-                )}
-              </div>
+              {content.hero.ctas.map((c) =>
+                c.label === "Get a Quote" ? (
+                  <CalButton
+                    key={c.label}
+                    handle="cedrick-carter-ndeqh2"
+                    event="secret"
+                    label={c.label}
+                    className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+                    metadata={{ page: "web-dev-maintenance", section: "hero" }}
+                  />
+                ) : (
+                  <Link
+                    key={c.label}
+                    to={c.to}
+                    className="bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
+                  >
+                    {c.label}
+                  </Link>
+                )
+              )}
+            </div>
 
             <ul className="grid md:grid-cols-2 gap-2">
               {content.hero.bullets.map((b, i) => (
@@ -361,38 +379,54 @@ const WebDevMaintenancePage = () => {
             <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full"></div>
           </div>
           <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-3 gap-6">
-            {content.maintenance.map((m) => (
-              <motion.div
-                key={m.name}
-                variants={variants.fadeInUp}
-                className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl transition ${m.emphasized ? "ring-1 ring-indigo-500/40" : ""}`}
-              >
-                <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${m.gradient} opacity-20 rounded-full blur-3xl`} />
-                <div className="relative z-10">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-xl font-semibold text-gray-100">{m.name}</h3>
-                    {m.badge ? <Pill>{m.badge}</Pill> : null}
+            {content.maintenance.map((m) => {
+              const buyId = BUY_BUTTONS[m.name];
+              return (
+                <motion.div
+                  key={m.name}
+                  variants={variants.fadeInUp}
+                  className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl transition ${
+                    m.emphasized ? "ring-1 ring-indigo-500/40" : ""
+                  }`}
+                >
+                  <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${m.gradient} opacity-20 rounded-full blur-3xl`} />
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="text-xl font-semibold text-gray-100">{m.name}</h3>
+                      {m.badge ? <Pill>{m.badge}</Pill> : null}
+                    </div>
+                    <div className="text-3xl font-bold text-gray-100">{m.price}</div>
+                    <div className="text-sm text-gray-400 mb-4">Response: {m.response}</div>
+                    <ul className="space-y-2 mb-5">
+                      {m.features.map((f, i) => (
+                        <li key={i} className="text-gray-300 flex">
+                          <span className="mr-2 text-blue-400">•</span>
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* If we have a Stripe Buy Button for this plan, render it; otherwise show the fallback Link */}
+                    {buyId ? (
+                      <div className="mt-2">
+                        <stripe-buy-button
+                          buy-button-id={buyId}
+                          publishable-key={STRIPE_PUBLISHABLE_KEY}
+                        ></stripe-buy-button>
+                      </div>
+                    ) : (
+                      <Link
+                        to={m.cta}
+                        className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+                      >
+                        Choose {m.name}
+                        <span className="ml-1">→</span>
+                      </Link>
+                    )}
                   </div>
-                  <div className="text-3xl font-bold text-gray-100">{m.price}</div>
-                  <div className="text-sm text-gray-400 mb-4">Response: {m.response}</div>
-                  <ul className="space-y-2 mb-5">
-                    {m.features.map((f, i) => (
-                      <li key={i} className="text-gray-300 flex">
-                        <span className="mr-2 text-blue-400">•</span>
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to={m.cta}
-                    className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-                  >
-                    Choose {m.name}
-                    <span className="ml-1">→</span>
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </motion.div>
           <p className="text-sm text-gray-400 mt-3">
             Overages billed at $60–$90/hr or rolled into a mini-sprint.
@@ -462,12 +496,12 @@ const WebDevMaintenancePage = () => {
         <section className="mb-6 text-center">
           <div className="inline-flex items-center gap-3">
             <CalButton
-                handle="cedrick-carter-ndeqh2"
-                event="secret"
-                label="Get a Quote"
-                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
-                metadata={{ page: "web-dev-maintenance", section: "bottom-cta" }}
-              />
+              handle="cedrick-carter-ndeqh2"
+              event="secret"
+              label="Get a Quote"
+              className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
+              metadata={{ page: "web-dev-maintenance", section: "bottom-cta" }}
+            />
           </div>
         </section>
       </div>
@@ -476,5 +510,4 @@ const WebDevMaintenancePage = () => {
 };
 
 export default WebDevMaintenancePage;
-
 
