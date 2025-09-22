@@ -17,10 +17,6 @@ const toolsRoutes = require('./routes/toolsRoutes');
 const honorsRoutes = require('./routes/honorsRoutes');
 const servicesRoutes = require('./routes/servicesRoutes');
 
-// Stripe
-const stripeWebhook = require('./routes/stripeWebhook'); // exports either [express.raw(...), handler] OR a single handler
-const stripeRoutes = require('./routes/stripeRoutes');   // create sessions, subscriptions, portal, etc.
-
 const app = express();
 
 /* ---------- CORS (ALLOWED_ORIGINS) ---------- */
@@ -41,7 +37,7 @@ const envOrigins = (process.env.ALLOWED_ORIGINS || '')
 const allowList = [...new Set([...defaultOrigins, ...envOrigins])];
 
 const isAllowedOrigin = (origin) => {
-  // Allow non-browser requests (e.g., curl, Stripe)
+  // Allow non-browser requests
   if (!origin) return true;
   try {
     const { hostname, protocol } = new URL(origin);
@@ -50,7 +46,7 @@ const isAllowedOrigin = (origin) => {
     // Exact allowlist
     if (allowList.includes(origin)) return true;
 
-    // Wildcard: *.elevenlabs.io
+    // Wildcard: *.elevenlabs.io (keep if you still need it)
     if (/^([a-z0-9-]+\.)*elevenlabs\.io$/i.test(hostname)) return true;
 
     return false;
@@ -72,21 +68,7 @@ app.use(cors({
 // Preflight helper
 app.options('*', cors());
 
-/* ---------- STRIPE WEBHOOK (must be BEFORE express.json) ---------- */
-function mountStripeWebhook(path, mod) {
-  if (Array.isArray(mod)) {
-    app.post(path, ...mod);
-  } else if (mod && typeof mod === 'function') {
-    app.post(path, mod);
-  } else if (mod && mod.raw && mod.handler) {
-    app.post(path, mod.raw, mod.handler);
-  } else {
-    throw new Error('Unsupported stripeWebhook export shape');
-  }
-}
-mountStripeWebhook('/api/stripe/webhook', stripeWebhook);
-
-/* ---------- Normal body parsing for the rest ---------- */
+/* ---------- Normal body parsing ---------- */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -96,7 +78,7 @@ mongoose.connect(mongoUri)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-/* ---------- Routes ---------- */
+/* ---------- Routes (no Stripe) ---------- */
 app.use('/api/blog', blogRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/ideas', ideasRoutes);
@@ -106,12 +88,9 @@ app.use('/api/honors', honorsRoutes);
 app.use('/api/services', servicesRoutes);
 app.use('/api', searchRoutes);
 
-// Stripe app routes
-app.use('/api/stripe', stripeRoutes);
-
 /* ---------- Health ---------- */
 app.get('/api/health', (_req, res) => {
-  res.json({ success: true, message: 'API is running', version: '1.0.0' });
+  res.json({ success: true, message: 'API is running (no Stripe server routes)', version: '1.0.0' });
 });
 
 /* ---------- 404 for API ---------- */
@@ -133,4 +112,3 @@ if (require.main === module) {
 }
 
 module.exports = app;
-
