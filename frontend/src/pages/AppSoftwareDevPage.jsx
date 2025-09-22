@@ -33,48 +33,48 @@ const content = {
   packages: [
   {
     tier: "Starter MVP",
-    price: "Deposit: (30%) ·      Full: $750–$1,800",
+    price: "$750–$1,800",
     timeline: "1–2 weeks",
     badge: "Great for validation",
     items: [
       "3–6 screens, responsive UI",
       "Email/password auth (basic)",
       "CRUD + 1 integration (e.g., email or payments sandbox)",
-      "Staging & production deploy + Loom walkthrough",
-      "⚡ Only a deposit required to kick off — balance due at delivery"
+      "Staging & production deploy + Loom walkthrough"
     ],
     ctaTo: "https://buy.stripe.com/fZufZi4LWeBFbvScIfawo06",
-    gradient: "from-blue-600 to-indigo-600"
+    gradient: "from-blue-600 to-indigo-600",
+    depositNote: "Deposit required to start: $225 (applied to total).",
   },
   {
     tier: "Growth App",
-    price: "Deposit: (25%) ·      Full: $2,000–$4,250",
+    price: "$2,000–$4,250",
     timeline: "3–6 weeks",
     badge: "Most popular",
     items: [
       "6–12 screens with design tokens",
       "RBAC (roles/permissions)",
       "2–3 integrations (Stripe, Zapier, SendGrid, Notion, etc.)",
-      "Dashboard + reports + basic E2E tests",
-      "⚡ Pay a deposit now — finish payment at milestones/delivery"
+      "Dashboard + reports + basic E2E tests"
     ],
     ctaTo: "https://buy.stripe.com/eVqaEY4LW0KPdE0eQnawo05",
     gradient: "from-indigo-600 to-fuchsia-600",
-    emphasized: true
+    emphasized: true,
+    depositNote: "Deposit required to start: $500 (applied to total).",
   },
   {
     tier: "Pro Product",
-    price: "Deposit: (20%) ·      Full: $4,800–$10,000+",
+    price: "$4,800–$10,000+",
     timeline: "6–12+ weeks",
     items: [
       "React Native/Expo prototype → TestFlight/Play Internal",
       "Custom API (Node/Express), queues & webhooks",
       "File storage, CI/CD, observability",
-      "Admin panel with role-based access",
-      "⚡ Start with a deposit — remaining balance tied to project phases"
+      "Admin panel with role-based access"
     ],
     ctaTo: "https://buy.stripe.com/aFaeVefqA1OTeI45fNawo04",
-    gradient: "from-emerald-600 to-teal-600"
+    gradient: "from-emerald-600 to-teal-600",
+    depositNote: "Deposit required to start: $960 (applied to total).",
   }
 ],
 
@@ -191,12 +191,12 @@ const Pill = ({ children }) => (
   </span>
 );
 
-const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized, highlight }) => (
+const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, emphasized, depositNote }) => (
   <motion.div
     variants={variants.fadeInUp}
     className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 ${
       emphasized ? "ring-1 ring-indigo-500/40" : ""
-    } ${highlight ? "outline outline-2 outline-indigo-400/60" : ""}`}
+    }`}
   >
     <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`} />
     <div className="relative z-10">
@@ -204,8 +204,10 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
         <h3 className="text-xl font-semibold text-gray-100">{tier}</h3>
         {badge ? <Pill>{badge}</Pill> : null}
       </div>
+
       <div className="text-3xl font-bold text-gray-100">{price}</div>
       {timeline && <div className="text-sm text-gray-400 mb-4">Timeline: {timeline}</div>}
+
       <ul className="space-y-2 mb-5">
         {items.map((it, i) => (
           <li key={i} className="text-gray-300 flex">
@@ -214,6 +216,7 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
           </li>
         ))}
       </ul>
+
       <Link
         to={ctaTo}
         className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
@@ -221,10 +224,15 @@ const PriceCard = ({ tier, price, timeline, items, badge, ctaTo, gradient, empha
         Choose {tier}
         <span className="ml-1">→</span>
       </Link>
+
+      {depositNote ? (
+        <div className="mt-4 p-3 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-200 text-sm font-medium">
+          {depositNote}
+        </div>
+      ) : null}
     </div>
   </motion.div>
 );
-
 const AppSoftwareDevPage = () => {
   // Optional: highlight a card if the route includes &plan=...
   const { plan } = useParams(); // works for route /services/apps&plan=:plan
