@@ -1,7 +1,7 @@
 // /frontend/scripts/generate-sitemap-from-app.mjs
 // Reads /frontend/src/App.jsx, extracts <Route path="..."> entries,
 // filters redirects (<Navigate ...>), expands optional blog slugs,
-// and writes /frontend/public/sitemap.xml
+// andd writes /frontend/public/sitemap.xml
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { resolve, dirname } from "path";
