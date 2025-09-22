@@ -7,10 +7,21 @@ import { Link } from "react-router-dom";
 import CalButton from "../components/CalButton";
 
 /**
- * Technical Consulting — Static Service Page (no Stripe)
- * Uses contact links and Cal.com, mirroring WebDevMaintenancePage structure.
+ * Technical Consulting — Static Service Page
+ * Retainers use embedded Stripe Buy Buttons (starter/growth/pro).
  */
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
+
+// Map retainer plan → Stripe Buy Button ID you provided
+const BUY_BUTTONS = {
+  Essential: "buy_btn_1SA1amL0N7h4wfoOwOS5ms4p", // starter
+  Growth: "buy_btn_1SA1cBL0N7h4wfoO6HavkWo2",    // growth
+  Pro: "buy_btn_1SA1e3L0N7h4wfoOjSXF6vCj",       // pro
+};
+
+// Your live publishable key
+const STRIPE_PUBLISHABLE_KEY =
+  "pk_live_51S8EMLL0N7h4wfoOGx5JZIgDmgzeR49PKYbtDKfN7eCbAf94R9wSWmYS4drYMLaBVUnAYJRvqHJFp68HgGqEcXu700mfwIlTg8";
 
 const content = {
   hero: {
@@ -41,7 +52,7 @@ const content = {
         "Best-practice checklist tailored to your stack",
         "Focus: design, tests, readability, maintainability",
       ],
-      pkg: "reviewLite",
+      ctaTo: "https://buy.stripe.com/5kQ8wQbakctx57u5fNawo0v",
       gradient: "from-blue-600 to-indigo-600",
     },
     {
@@ -54,7 +65,7 @@ const content = {
         "Recorded walkthrough + action plan",
         "Follow-up Q&A async",
       ],
-      pkg: "reviewDeep",
+      ctaTo: "https://buy.stripe.com/aFaaEY6U46598jG6jRawo0w",
       gradient: "from-indigo-600 to-fuchsia-600",
       emphasized: true,
     },
@@ -71,7 +82,7 @@ const content = {
         "Scaling/caching plan & risks",
         "Backlog of next steps",
       ],
-      pkg: "blueprint",
+      ctaTo: "https://buy.stripe.com/9B614o5Q0bptbvS7nVawo0x",
       gradient: "from-emerald-600 to-teal-600",
     },
     {
@@ -83,7 +94,7 @@ const content = {
         "Observability plan (logs/metrics)",
         "Rollout strategy",
       ],
-      pkg: "blueprintPlus",
+      ctaTo: "https://buy.stripe.com/4gMcN65Q02SXdE04bJawo0y",
       gradient: "from-teal-600 to-cyan-600",
       emphasized: true,
     },
@@ -106,7 +117,7 @@ const content = {
     { name: "Cloudflare Workers", price: "$180", desc: "Edge function, routing, KV if needed", pkg: "workers", gradient: "from-rose-600 to-pink-600" },
   ],
 
-  // Retainers (contact flow instead of subscribe)
+  // Retainers (now Stripe-embedded)
   retainers: [
     {
       name: "Essential",
@@ -181,7 +192,7 @@ const content = {
   },
 };
 
-// ---- Motion variants (same feel as WebDevMaintenancePage)
+// ---- Motion variants
 const variants = {
   fadeInUp: { hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45 } } },
   reveal: { hidden: { opacity: 0, scale: 0.98 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } } },
@@ -194,7 +205,7 @@ const Pill = ({ children }) => (
   </span>
 );
 
-// Reuse the same PriceCard pattern (CTA uses <Link> not Stripe)
+// Generic card for one-time packages (uses Link CTA)
 const PriceCard = ({ tier, price, timeline, items, badge, cta, gradient, emphasized }) => (
   <motion.div
     variants={variants.fadeInUp}
@@ -258,6 +269,44 @@ const ChipCard = ({ name, price, desc, gradient, to, highlight }) => (
   </div>
 );
 
+// Retainer card with embedded Stripe Buy Button
+const RetainerCard = ({ name, price, response, features, gradient, emphasized, badge, buyButtonId }) => (
+  <motion.div
+    variants={variants.fadeInUp}
+    className={`relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 shadow-md hover:shadow-xl transition ${
+      emphasized ? "ring-1 ring-indigo-500/40" : ""
+    }`}
+  >
+    <div className={`absolute -top-10 -right-10 w-48 h-48 bg-gradient-to-br ${gradient} opacity-20 rounded-full blur-3xl`} />
+    <div className="relative z-10">
+      <div className="flex items-start justify-between mb-2">
+        <h3 className="text-xl font-semibold text-gray-100">{name}</h3>
+        {badge ? <Pill>{badge}</Pill> : null}
+      </div>
+      <div className="text-3xl font-bold text-gray-100">{price}</div>
+      <div className="text-sm text-gray-400 mb-4">Response: {response}</div>
+      <ul className="space-y-2 mb-5">
+        {features.map((f, i) => (
+          <li key={i} className="text-gray-300 flex">
+            <span className="mr-2 text-blue-400">•</span>
+            <span>{f}</span>
+          </li>
+        ))}
+      </ul>
+
+      {/* Stripe Buy Button */}
+      {buyButtonId ? (
+        <div className="mt-1">
+          <stripe-buy-button
+            buy-button-id={buyButtonId}
+            publishable-key={STRIPE_PUBLISHABLE_KEY}
+          ></stripe-buy-button>
+        </div>
+      ) : null}
+    </div>
+  </motion.div>
+);
+
 const TechnicalConsultingPage = () => {
   const schema = useMemo(
     () => ({
@@ -294,6 +343,8 @@ const TechnicalConsultingPage = () => {
         <meta name="description" content={content.seo.description} />
         <link rel="canonical" href={content.seo.url} />
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
+        {/* Load Stripe Buy Button script once in <head> */}
+        <script async src="https://js.stripe.com/v3/buy-button.js" />
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-10 relative">
@@ -409,7 +460,7 @@ const TechnicalConsultingPage = () => {
         <section className="mb-14">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Cloud Deployment (One-time Setup)</h2>
-            <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full" />
+          <div className="absolute bottom-0 left-0 w-28 h-1 bg-fuchsia-500 rounded-full" />
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {content.cloud.map((c) => (
@@ -425,7 +476,7 @@ const TechnicalConsultingPage = () => {
           </div>
         </section>
 
-        {/* Retainers */}
+        {/* Retainers with Stripe Buy Buttons */}
         <section className="mb-4">
           <div className="relative pb-3 mb-6">
             <h2 className="text-2xl font-bold text-gray-100">Retainers (Month-to-Month)</h2>
@@ -433,16 +484,16 @@ const TechnicalConsultingPage = () => {
           </div>
           <motion.div variants={variants.stagger} initial="hidden" animate="visible" className="grid md:grid-cols-3 gap-6">
             {content.retainers.map((m) => (
-              <PriceCard
+              <RetainerCard
                 key={m.name}
-                tier={m.name}
+                name={m.name}
                 price={m.price}
-                timeline={`Response: ${m.response}`}
-                items={m.features}
+                response={m.response}
+                features={m.features}
                 gradient={m.gradient}
                 emphasized={m.emphasized}
                 badge={m.badge}
-                cta={{ label: `Choose ${m.name}`, to: `/contact?service=consulting&plan=${m.pkg}` }}
+                buyButtonId={BUY_BUTTONS[m.name]}
               />
             ))}
           </motion.div>
@@ -536,3 +587,4 @@ const TechnicalConsultingPage = () => {
 };
 
 export default TechnicalConsultingPage;
+
