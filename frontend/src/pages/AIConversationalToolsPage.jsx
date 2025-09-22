@@ -36,7 +36,6 @@ const content = {
       "Knowledge Base Bots (PDF ingestion + QA assistant)",
     ],
     ctas: [
-      { label: "Set up my AI assistant", to: "/services/ai&plan=growth" },
       { label: "Book a 15-min discovery", useCal: true, variant: "secondary" },
     ],
   },
