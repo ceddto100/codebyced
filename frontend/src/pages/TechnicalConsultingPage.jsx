@@ -32,7 +32,7 @@ const content = {
       "Tighten code quality, architecture, CI/CD, and cloud delivery. I apply pragmatic practices (clean code reviews, DORA metrics, DevOps) so you ship faster and safer.",
     ctas: [
       { label: "Book a Consult", cal: true },
-      { label: "Get a Quote", to: "/contact?service=consulting" },
+      
     ],
     bullets: [
       "Code Reviews & Best Practices",
@@ -603,12 +603,7 @@ const TechnicalConsultingPage = () => {
               className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
               metadata={{ page: "technical-consulting", section: "bottom-cta" }}
             />
-            <Link
-              to="/contact?service=consulting"
-              className="px-5 py-2.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-100 border border-gray-700 transition"
-            >
-              Get a Quote
-            </Link>
+         
           </div>
         </section>
       </div>
