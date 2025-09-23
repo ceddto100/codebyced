@@ -459,7 +459,7 @@ const HomePage = () => {
               {/* Welcome Text */}
               <div className="md:text-left text-center">
                 <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-100">
-                  Automate Your Business. Amplify Your Growth.
+                  Automate. Design. Integrate.
                 </h1>
                 <p className="text-xl text-gray-300">
                   Custom websites, AI voice agents, and automated workflows-built to fit your exact business needs.
