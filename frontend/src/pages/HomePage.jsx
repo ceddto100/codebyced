@@ -459,10 +459,10 @@ const HomePage = () => {
               {/* Welcome Text */}
               <div className="md:text-left text-center">
                 <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-100">
-                  Welcome to My Digital Space
+                  Automate Your Business. Amplify Your Growth.
                 </h1>
                 <p className="text-xl text-gray-300">
-                  Explore my projects, ideas, and journey through the world of technology and development.
+                  Custom websites, AI voice agents, and automated workflows-built to fit your exact business needs.
                 </p>
               </div>
             </div>
