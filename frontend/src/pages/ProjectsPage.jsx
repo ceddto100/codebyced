@@ -274,51 +274,45 @@ const ProjectsPage = () => {
 
         {/* ===== My App Hub (Embedded under the Projects/API frame) ===== */}
         <section className="mt-16">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-3xl font-bold text-gray-100">My App Hub</h2>
-            <span className="text-sm text-gray-400">Interactive embeds & live tools</span>
-          </div>
+  <div className="flex items-center justify-between mb-4">
+    <h2 className="text-3xl font-bold text-gray-100">My App Hub</h2>
+    <span className="text-sm text-gray-400">Interactive embeds & live tools</span>
+  </div>
 
-          <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 rounded-xl overflow-hidden shadow-lg">
-            {/* Header / Controls (optional expansion point for more embeds later) */}
-            <div className="px-4 sm:px-6 py-4 border-b border-gray-800 flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="text-lg font-semibold text-gray-100">Claude Artifact</span>
-                <span className="text-sm text-gray-400">Embedded app inside your portfolio</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <a
-                  href={CLAUDE_ARTIFACT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-cyan-400 hover:text-cyan-300 text-sm px-3 py-1.5 rounded-lg bg-gray-800/60 hover:bg-gray-800/90 transition-all"
-                  title="Open in new tab"
-                >
-                  Open ↗
-                </a>
-              </div>
-            </div>
+  <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 rounded-xl overflow-hidden shadow-lg">
+    {/* Header */}
+    <div className="px-4 sm:px-6 py-4 border-b border-gray-800 flex items-center justify-between">
+      <div className="flex flex-col">
+        <span className="text-lg font-semibold text-gray-100">QR Code Generator</span>
+        <span className="text-sm text-gray-400">
+          Create a QR code that links to a URL or saves contact info directly.
+        </span>
+      </div>
+      <div className="flex items-center gap-2">
+        <a
+          href={CLAUDE_ARTIFACT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-cyan-400 hover:text-cyan-300 text-sm px-3 py-1.5 rounded-lg bg-gray-800/60 hover:bg-gray-800/90 transition-all"
+        >
+          Open ↗
+        </a>
+      </div>
+    </div>
 
-            {/* Responsive iframe wrapper */}
-            <div className="relative">
-              {/* 16:9 responsive container; adjusts height on larger screens */}
-              <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
-                <iframe
-                  src={CLAUDE_ARTIFACT_URL}
-                  title="Claude Artifact"
-                  className="absolute inset-0 w-full h-full"
-                  frameBorder="0"
-                  allow="clipboard-write; fullscreen"
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
+    {/* Cover Photo Fallback */}
+    <div className="relative">
+      <img
+        src="/images/qr-code.png" // replace with your uploaded image path
+        alt="QR Code Generator Cover"
+        className="w-full h-auto object-cover"
+      />
+    </div>
             </div>
 
             {/* Footer / Notes */}
             <div className="px-4 sm:px-6 py-3 border-t border-gray-800 text-gray-400 text-xs">
-              If the embed doesn’t load, use “Open ↗” to view it directly.
+              Click “Open ↗” to genarate personal qr code.
             </div>
           </div>
         </section>
