@@ -285,7 +285,7 @@ const ProjectsPage = () => {
         <section className="mt-16">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-3xl font-bold text-gray-100">My App Hub</h2>
-            <span className="text-sm text-gray-400">Interactive embeds & live tools</span>
+            <span className="text-sm text-gray-400">Live tools & gadgets</span>
           </div>
 
           {/* Kelly’s Criterion Calculator (iframe) */}
@@ -295,7 +295,7 @@ const ProjectsPage = () => {
               <div className="flex flex-col">
                 <span className="text-lg font-semibold text-gray-100">Kelly’s Criterion Calculator</span>
                 <span className="text-sm text-gray-400">
-                  Embed of your live Vercel app. Fully interactive.
+                   AI probability estimator & bankroll management with Kelly's Criterion
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -325,7 +325,7 @@ const ProjectsPage = () => {
 
             {/* Footer / Notes */}
             <div className="px-4 sm:px-6 py-3 border-t border-gray-800 text-gray-400 text-xs">
-              If the embed fails to load, your host might block framing. In that case, open the app ↗.
+               To view full screen tap open↗.
             </div>
           </div>
 
