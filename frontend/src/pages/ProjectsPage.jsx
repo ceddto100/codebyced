@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
 
 const CLAUDE_ARTIFACT_URL = "https://claude.site/public/artifacts/6358a80a-75eb-4ee0-ae85-5ebc986fe2a3/embed";
+const KELLY_APP_URL = "https://kelly-s-criterion-calculator.vercel.app/";
 
 const ProjectsPage = () => {
   const [projects, setProjects] = useState([]);
@@ -107,14 +108,22 @@ const ProjectsPage = () => {
         }
       }))
     },
-    // Expose the embedded app as a child section
-    "hasPart": [{
-      "@type": "WebApplication",
-      "name": "My App Hub — Claude Artifact",
-      "url": CLAUDE_ARTIFACT_URL,
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "Web"
-    }]
+    "hasPart": [
+      {
+        "@type": "WebApplication",
+        "name": "Kelly’s Criterion Calculator",
+        "url": KELLY_APP_URL,
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web"
+      },
+      {
+        "@type": "WebApplication",
+        "name": "My App Hub — Claude Artifact",
+        "url": CLAUDE_ARTIFACT_URL,
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web"
+      }
+    ]
   };
 
   return (
@@ -272,50 +281,93 @@ const ProjectsPage = () => {
           )}
         </motion.div>
 
-        {/* ===== My App Hub (Embedded under the Projects/API frame) ===== */}
-    <section className="mt-16">
-  <div className="flex items-center justify-between mb-4">
-    <h2 className="text-3xl font-bold text-gray-100">My App Hub</h2>
-    <span className="text-sm text-gray-400">Interactive embeds & live tools</span>
-  </div>
+        {/* ===== My App Hub (Kelly calculator above QR embed) ===== */}
+        <section className="mt-16">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-3xl font-bold text-gray-100">My App Hub</h2>
+            <span className="text-sm text-gray-400">Interactive embeds & live tools</span>
+          </div>
 
-  <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 rounded-xl overflow-hidden shadow-lg">
-    {/* Header */}
-    <div className="px-4 sm:px-6 py-4 border-b border-gray-800 flex items-center justify-between">
-      <div className="flex flex-col">
-        <span className="text-lg font-semibold text-gray-100">QR Code Generator</span>
-        <span className="text-sm text-gray-400">
-          Create a QR code that links to a URL or saves contact info directly.
-        </span>
-      </div>
-      <div className="flex items-center gap-2">
-        <a
-          href={CLAUDE_ARTIFACT_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-cyan-400 hover:text-cyan-300 text-sm px-3 py-1.5 rounded-lg bg-gray-800/60 hover:bg-gray-800/90 transition-all"
-        >
-          Open ↗
-        </a>
-      </div>
-    </div>
+          {/* Kelly’s Criterion Calculator (iframe) */}
+          <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 rounded-xl overflow-hidden shadow-lg mb-8">
+            {/* Header */}
+            <div className="px-4 sm:px-6 py-4 border-b border-gray-800 flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-lg font-semibold text-gray-100">Kelly’s Criterion Calculator</span>
+                <span className="text-sm text-gray-400">
+                  Embed of your live Vercel app. Fully interactive.
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href={KELLY_APP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:text-cyan-300 text-sm px-3 py-1.5 rounded-lg bg-gray-800/60 hover:bg-gray-800/90 transition-all"
+                >
+                  Open ↗
+                </a>
+              </div>
+            </div>
 
-    {/* Cover Photo Fallback */}
-    <div className="relative">
-      <img
-        src="/images/qr-code.png" // replace with your uploaded image path
-        alt="QR Code Generator Cover"
-        className="w-full h-auto object-cover"
-      />
-    </div>
+            {/* Responsive iframe (16:9) */}
+            <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
+              <iframe
+                src={KELLY_APP_URL}
+                title="Kelly’s Criterion Calculator"
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                className="absolute inset-0 w-full h-full"
+                style={{ border: 0, overflow: 'hidden' }}
+                allow="clipboard-read; clipboard-write"
+              />
+            </div>
 
-    {/* Footer / Notes */}
-    <div className="px-4 sm:px-6 py-3 border-t border-gray-800 text-gray-400 text-xs">
-      Click “Open ↗” to generate your personal QR code.
-    </div>
-  </div>
-</section>
+            {/* Footer / Notes */}
+            <div className="px-4 sm:px-6 py-3 border-t border-gray-800 text-gray-400 text-xs">
+              If the embed fails to load, your host might block framing. In that case, open the app ↗.
+            </div>
+          </div>
 
+          {/* QR Code Generator (existing Claude Artifact card) */}
+          <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 rounded-xl overflow-hidden shadow-lg">
+            {/* Header */}
+            <div className="px-4 sm:px-6 py-4 border-b border-gray-800 flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-lg font-semibold text-gray-100">QR Code Generator</span>
+                <span className="text-sm text-gray-400">
+                  Create a QR code that links to a URL or saves contact info directly.
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href={CLAUDE_ARTIFACT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:text-cyan-300 text-sm px-3 py-1.5 rounded-lg bg-gray-800/60 hover:bg-gray-800/90 transition-all"
+                >
+                  Open ↗
+                </a>
+              </div>
+            </div>
+
+            {/* Cover Photo Fallback */}
+            <div className="relative">
+              <img
+                src="/images/qr-code.png" // replace with your uploaded image path
+                alt="QR Code Generator Cover"
+                className="w-full h-auto object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+
+            {/* Footer / Notes */}
+            <div className="px-4 sm:px-6 py-3 border-t border-gray-800 text-gray-400 text-xs">
+              Click “Open ↗” to generate your personal QR code.
+            </div>
+          </div>
+        </section>
         {/* ===== /My App Hub ===== */}
       </div>
     </PageLayout>
