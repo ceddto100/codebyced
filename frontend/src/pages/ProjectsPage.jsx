@@ -273,7 +273,7 @@ const ProjectsPage = () => {
         </motion.div>
 
         {/* ===== My App Hub (Embedded under the Projects/API frame) ===== */}
-        <section className="mt-16">
+    <section className="mt-16">
   <div className="flex items-center justify-between mb-4">
     <h2 className="text-3xl font-bold text-gray-100">My App Hub</h2>
     <span className="text-sm text-gray-400">Interactive embeds & live tools</span>
@@ -303,19 +303,19 @@ const ProjectsPage = () => {
     {/* Cover Photo Fallback */}
     <div className="relative">
       <img
-        src="/images/qr-code.png" // replace with yourt uploaded image path
+        src="/images/qr-code.png" // replace with your uploaded image path
         alt="QR Code Generator Cover"
         className="w-full h-auto object-cover"
       />
     </div>
-            </div>
 
-            {/* Footer / Notes */}
-            <div className="px-4 sm:px-6 py-3 border-t border-gray-800 text-gray-400 text-xs">
-              Click “Open ↗” to genarate personal qr code.
-            </div>
-          </div>
-        </section>
+    {/* Footer / Notes */}
+    <div className="px-4 sm:px-6 py-3 border-t border-gray-800 text-gray-400 text-xs">
+      Click “Open ↗” to generate your personal QR code.
+    </div>
+  </div>
+</section>
+
         {/* ===== /My App Hub ===== */}
       </div>
     </PageLayout>
