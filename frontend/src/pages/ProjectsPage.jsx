@@ -303,7 +303,7 @@ const ProjectsPage = () => {
     {/* Cover Photo Fallback */}
     <div className="relative">
       <img
-        src="/images/qr-code.png" // replace with your uploaded image path
+        src="/images/qr-code.png" // replace with yourt uploaded image path
         alt="QR Code Generator Cover"
         className="w-full h-auto object-cover"
       />
