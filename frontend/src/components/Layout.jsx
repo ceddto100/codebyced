@@ -1,13 +1,18 @@
 // components/Layout.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ElevenLabsConvai from './ElevenLabsConvai';
 
 const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const isActive = (path) => {
+    return location.pathname === path;
   };
 
   const navLinks = [
@@ -23,21 +28,28 @@ const Layout = ({ children }) => {
   return (
     <div className="min-h-screen">
       {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-800/95 backdrop-blur-sm text-white shadow-lg">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800/50 text-white shadow-lg">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center h-16">
-            <div className="flex-shrink-0 font-bold text-xl">
+            <Link to="/" className="flex-shrink-0 font-bold text-xl hover:text-blue-400 transition-colors">
               CodeByCed
-            </div>
-            
+            </Link>
+
             {/* Desktop Navigation */}
             <div className="hidden md:block">
-              <div className="ml-10 flex items-center space-x-4">
+              <div className="ml-10 flex items-center space-x-2">
                 {navLinks.map((link) => (
                   <Link
                     key={link.to}
                     to={link.to}
-                    className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700"
+                    className={`
+                      px-4 py-2 rounded-lg text-sm font-medium
+                      transition-all duration-300
+                      ${isActive(link.to)
+                        ? 'bg-brand-primary text-white shadow-lg shadow-blue-500/30'
+                        : 'text-gray-300 hover:text-white hover:bg-gray-800/60'
+                      }
+                    `}
                   >
                     {link.label}
                   </Link>
@@ -91,13 +103,24 @@ const Layout = ({ children }) => {
         </div>
 
         {/* Mobile Navigation Menu */}
-        <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden absolute w-full bg-gray-800/95 backdrop-blur-sm`}>
+        <div className={`
+          ${isMenuOpen ? 'block animate-slide-in' : 'hidden'}
+          md:hidden absolute w-full
+          bg-gray-900/95 backdrop-blur-md border-b border-gray-800/50
+        `}>
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
+                className={`
+                  block px-4 py-3 rounded-lg text-base font-medium
+                  transition-all duration-300
+                  ${isActive(link.to)
+                    ? 'bg-brand-primary text-white shadow-lg shadow-blue-500/30'
+                    : 'text-gray-300 hover:text-white hover:bg-gray-800/60'
+                  }
+                `}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.label}

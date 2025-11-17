@@ -2,13 +2,15 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import { getProjects } from '../services/projectsService';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
+import { CardSkeletonGrid } from '../components/Skeleton';
 
 const CLAUDE_ARTIFACT_URL = "https://claude.site/public/artifacts/6358a80a-75eb-4ee0-ae85-5ebc986fe2a3/embed";
 const KELLY_APP_URL = "https://kelly-s-criterion-calculator.vercel.app/";
 
 const ProjectsPage = () => {
+  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -166,18 +168,18 @@ const ProjectsPage = () => {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-gray-100">Projects</h1>
-          <p className="text-xl text-gray-300">Exploring innovation through code and creativity.</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-100">Projects</h1>
+          <p className="text-xl text-gray-100 text-improved">Exploring innovation through code and creativity.</p>
         </div>
 
         {/* Filter Buttons */}
         <div className="flex flex-wrap gap-2 mb-8 justify-center">
           <button
             onClick={() => setFilter('all')}
-            className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+            className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-300 ${
               filter === 'all'
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
-                : 'bg-gray-900/80 text-gray-300 hover:bg-gray-800/80'
+                ? 'bg-brand-primary text-white shadow-lg shadow-blue-500/30'
+                : 'bg-gray-900/80 text-gray-100 hover:bg-gray-800/80 border border-gray-700'
             }`}
           >
             All Projects
@@ -186,10 +188,10 @@ const ProjectsPage = () => {
             <button
               key={category}
               onClick={() => setFilter(category)}
-              className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+              className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-300 ${
                 filter === category
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20'
-                  : 'bg-gray-900/80 text-gray-300 hover:bg-gray-800/80'
+                  ? 'bg-brand-primary text-white shadow-lg shadow-blue-500/30'
+                  : 'bg-gray-900/80 text-gray-100 hover:bg-gray-800/80 border border-gray-700'
               }`}
             >
               {category}
@@ -198,30 +200,35 @@ const ProjectsPage = () => {
         </div>
 
         {/* Projects Grid */}
-        <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {isLoading ? (
-            <div className="col-span-full flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" />
-            </div>
-          ) : error ? (
-            <div className="col-span-full backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-lg">
-              {error}
-            </div>
-          ) : filteredProjects.length === 0 ? (
-            <div className="col-span-full backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg">
-              No projects found in this category.
-            </div>
-          ) : (
-            filteredProjects.map(project => (
+        {isLoading ? (
+          <CardSkeletonGrid count={6} type="project" />
+        ) : error ? (
+          <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-xl">
+            {error}
+          </div>
+        ) : filteredProjects.length === 0 ? (
+          <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-xl">
+            No projects found in this category.
+          </div>
+        ) : (
+          <motion.div
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {filteredProjects.map(project => (
               <motion.div
                 key={project._id}
                 variants={cardVariants}
-                className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 transform hover:-translate-y-1"
+                onClick={() => {
+                  if (project.demoLink) {
+                    window.open(project.demoLink, '_blank');
+                  } else if (project.githubLink) {
+                    window.open(project.githubLink, '_blank');
+                  }
+                }}
+                className="clickable-card backdrop-blur-sm bg-gray-900/80 rounded-xl shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 group"
               >
                 {project.image && (
                   <div className="h-48 overflow-hidden">
@@ -235,8 +242,8 @@ const ProjectsPage = () => {
                   </div>
                 )}
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2 text-gray-100">{project.title}</h3>
-                  <p className="text-gray-300 mb-4">{project.description}</p>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-100 group-hover:text-blue-400 transition-colors">{project.title}</h3>
+                  <p className="text-gray-100 mb-4 text-improved">{project.description}</p>
 
                   {/* Technologies */}
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -250,36 +257,26 @@ const ProjectsPage = () => {
                     ))}
                   </div>
 
-                  {/* Links */}
+                  {/* Links - visual only, click handled by card */}
                   <div className="flex gap-4 mt-4">
                     {project.demoLink && (
-                      <a
-                        href={project.demoLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-cyan-400 hover:text-cyan-300 font-medium inline-flex items-center group bg-gray-800/50 px-3 py-1.5 rounded-lg hover:bg-gray-800/80 transition-all duration-300"
-                      >
+                      <span className="text-blue-400 font-medium inline-flex items-center">
                         Live Demo
                         <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                      </a>
+                      </span>
                     )}
                     {project.githubLink && (
-                      <a
-                        href={project.githubLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-cyan-400 hover:text-cyan-300 font-medium inline-flex items-center group bg-gray-800/50 px-3 py-1.5 rounded-lg hover:bg-gray-800/80 transition-all duration-300"
-                      >
+                      <span className="text-blue-400 font-medium inline-flex items-center">
                         GitHub
                         <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                      </a>
+                      </span>
                     )}
                   </div>
                 </div>
               </motion.div>
-            ))
-          )}
-        </motion.div>
+            ))}
+          </motion.div>
+        )}
 
         {/* ===== My App Hub (Kelly calculator above QR embed) ===== */}
         <section className="mt-16">

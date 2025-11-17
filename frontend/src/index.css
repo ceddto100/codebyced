@@ -2,6 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  /* Better focus visibility for accessibility */
+  *:focus-visible {
+    outline: 2px solid theme('colors.blue.500');
+    outline-offset: 2px;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Better text rendering */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  /* Clickable card utility */
+  .clickable-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .clickable-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .clickable-card:active {
+    transform: translateY(-2px);
+  }
+
+  /* Text improvements */
+  .text-improved {
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(17, 24, 39, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Performance optimization for animations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+}
+
 @keyframes float {
   0% {
     transform: translateY(0px);
@@ -31,8 +88,35 @@
 
 .animate-float {
   animation: float 8s ease-in-out infinite;
+  will-change: transform;
 }
 
 .animate-pulse {
   animation: pulse 15s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Reduced motion support for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-float,
+  .animate-pulse {
+    animation: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .backdrop-blur-sm {
+    backdrop-filter: none;
+    background: rgb(17, 24, 39);
+  }
 }

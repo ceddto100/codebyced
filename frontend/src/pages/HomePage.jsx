@@ -1,6 +1,6 @@
 // ...imports unchanged...
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { getBlogPosts } from '../services/blogService';
 import { getIdeas } from '../services/ideasService';
@@ -9,9 +9,12 @@ import { getTools } from '../services/toolsService';
 import ShareButton from '../components/ShareButton';
 import PageLayout from '../components/PageLayout';
 import CalButton from '../components/CalButton';
+import Button from '../components/Button';
+import { TwoColumnSkeletonGrid, ListItemSkeleton, CardSkeleton } from '../components/Skeleton';
 
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [blogPosts, setBlogPosts] = useState([]);
   const [ideas, setIdeas] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -476,24 +479,21 @@ const HomePage = () => {
   <div className="absolute -bottom-16 -left-16 w-72 h-72 bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 rounded-full blur-2xl" />
 
   {/* Header */}
-  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 relative z-10">
+  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 relative z-10 gap-4">
     <div className="relative pb-3">
-      <h2 className="text-2xl font-bold text-gray-100 mb-1">Services</h2>
-      <div className="absolute bottom-0 left-0 w-24 h-1 bg-blue-500 rounded-full"></div>
+      <h2 className="text-3xl font-bold text-gray-100 mb-1">Services</h2>
+      <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-primary rounded-full"></div>
     </div>
-    <div className="flex gap-3">
+    <div className="flex gap-3 flex-wrap">
       <CalButton
         handle="cedrick-carter-ndeqh2"
         event="secret"
         label="Get a Quote"
-        className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+        className="bg-brand-primary hover:bg-blue-700 hover:shadow-blue-500/40 text-white px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 font-medium"
       />
-      <Link
-        to="/projects"
-        className="bg-gray-800 hover:bg-gray-700 text-gray-100 px-5 py-2.5 rounded-lg border border-gray-700 transition-all duration-300"
-      >
+      <Button to="/projects" variant="ghost">
         See Past Work
-      </Link>
+      </Button>
     </div>
   </div> {/* ✅ close the header wrapper */}
 
@@ -502,7 +502,8 @@ const HomePage = () => {
     {servicesData.map((svc, idx) => (
       <div
         key={idx}
-        className="relative overflow-hidden rounded-lg border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 group"
+        onClick={() => navigate(svc.ctaLink)}
+        className="clickable-card relative overflow-hidden rounded-xl border border-gray-800 backdrop-blur-md bg-gray-900/70 p-6 hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 group"
       >
         {/* decorative blob should not block clicks */}
         <div className={`absolute -top-8 -right-8 w-40 h-40 bg-gradient-to-br ${svc.color} opacity-20 rounded-full blur-2xl transition-all duration-300 group-hover:opacity-30 pointer-events-none z-0`} />
@@ -510,20 +511,17 @@ const HomePage = () => {
           <h3 className="text-xl font-semibold text-gray-100 mb-3">{svc.title}</h3>
           <ul className="space-y-2 mb-4">
             {svc.items.map((item, i) => (
-              <li key={i} className="text-gray-300 flex">
+              <li key={i} className="text-gray-100 flex text-improved">
                 <span className="mr-2 text-blue-400">•</span>
                 <span>{item}</span>
               </li>
             ))}
           </ul>
           {/* navigate to the service page */}
-          <Link
-            to={svc.ctaLink}
-            className="inline-flex items-center rounded-lg px-4 py-2 bg-blue-700 text-white hover:bg-blue-600 transition group"
-          >
+          <div className="inline-flex items-center rounded-xl px-5 py-2.5 bg-brand-primary text-white hover:bg-blue-700 transition-all duration-300 font-medium shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40">
             {svc.ctaText}
             <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-          </Link>
+          </div>
         </div>
       </div>
     ))}
@@ -538,35 +536,34 @@ const HomePage = () => {
         {/* ================= End Services Section ================= */}
 
         {/* Blog Section */}
-        <section className="mb-20">
-          <div className="flex justify-between items-center mb-8">
+        <section className="mb-section">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div className="relative pb-3">
-              <h2 className="text-2xl font-bold text-gray-100">Latest from the Blog</h2>
-              <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
+              <h2 className="text-3xl font-bold text-gray-100">Latest from the Blog</h2>
+              <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-primary rounded-full"></div>
             </div>
-            <Link 
-              to="/blog" 
-              className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
+            <Button to="/blog" variant="primary">
               View All Blog Posts
-            </Link>
+            </Button>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             {isLoading ? (
-              <div className="col-span-2 flex justify-center items-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-              </div>
+              <TwoColumnSkeletonGrid count={2} />
             ) : error ? (
-              <div className="col-span-2 backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-lg">
+              <div className="col-span-2 backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-xl">
                 {error}
               </div>
             ) : blogPosts.length === 0 ? (
-              <div className="col-span-2 backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg">
+              <div className="col-span-2 backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-xl">
                 No blog posts found. Check back soon for new content!
               </div>
             ) : (
               blogPosts.map(post => (
-                <div key={post._id} className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 transform hover:-translate-y-1 relative">
+                <div
+                  key={post._id}
+                  onClick={() => navigate(`/blog/${post._id}`)}
+                  className="clickable-card backdrop-blur-sm bg-gray-900/80 rounded-xl shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 relative"
+                >
                   {/* Share Button */}
                   <div className="absolute top-2 right-2 z-10">
                     <ShareButton 
@@ -586,15 +583,12 @@ const HomePage = () => {
                   )}
                   <div className="p-6">
                     <p className="text-sm text-gray-400 mb-2">{formatDate(post.date)}</p>
-                    <h3 className="text-xl font-semibold mb-2 text-gray-100 hover:text-blue-400 transition-colors duration-200">{post.title}</h3>
-                    <p className="text-gray-300 mb-4">{post.excerpt}</p>
-                    <Link 
-                      to={`/blog/${post._id}`} 
-                      className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center group"
-                    >
-                      Read more 
+                    <h3 className="text-xl font-semibold mb-2 text-gray-100 group-hover:text-blue-400 transition-colors duration-200">{post.title}</h3>
+                    <p className="text-gray-100 mb-4 text-improved">{post.excerpt}</p>
+                    <span className="text-blue-400 font-medium inline-flex items-center">
+                      Read more
                       <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                    </Link>
+                    </span>
                   </div>
                 </div>
               ))
@@ -603,36 +597,36 @@ const HomePage = () => {
         </section>
 
         {/* Resume Section */}
-        <section className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
+        <section
+          onClick={() => navigate('/resume')}
+          className="clickable-card mb-section backdrop-blur-sm bg-gray-900/80 p-8 rounded-xl shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden"
+        >
           {/* Background Image */}
-          <div className="absolute inset-0 z-0">
-            <img 
-              src="resumecover.png" 
-              alt="Resume Background" 
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <img
+              src="resumecover.png"
+              alt="Resume Background"
               className="w-full h-full object-cover opacity-30"
             />
             {/* Overlay to ensure text readability */}
             <div className="absolute inset-0 bg-gray-900/80"></div>
           </div>
-          
-          <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-xl animate-float" style={{ animationDuration: '15s' }}></div>
-          <div className="absolute bottom-1/4 right-1/3 w-72 h-72 bg-indigo-500/10 rounded-full filter blur-xl animate-pulse" style={{ animationDuration: '20s' }}></div>
-          
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
+
+          <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-xl animate-float pointer-events-none" style={{ animationDuration: '15s' }}></div>
+          <div className="absolute bottom-1/4 right-1/3 w-72 h-72 bg-indigo-500/10 rounded-full filter blur-xl animate-pulse pointer-events-none" style={{ animationDuration: '20s' }}></div>
+
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10 gap-4">
             <div className="relative pb-3">
-              <h2 className="text-2xl font-bold text-gray-100 mb-1">Resume at a Glance</h2>
-              <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
+              <h2 className="text-3xl font-bold text-gray-100 mb-1">Resume at a Glance</h2>
+              <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-primary rounded-full"></div>
             </div>
-            <Link 
-              to="/resume" 
-              className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
+            <Button to="/resume" variant="primary">
               View Full Resume
-            </Link>
+            </Button>
           </div>
           <div className="relative z-10">
             <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">{resumeTeaser.title}</h3>
-            <p className="text-gray-300 mb-2">{resumeTeaser.company} | {resumeTeaser.period}</p>
+            <p className="text-gray-100 mb-2 text-improved">{resumeTeaser.company} | {resumeTeaser.period}</p>
             <div className="flex flex-wrap gap-2 mt-4">
               {resumeTeaser.skills.map((skill, index) => (
                 <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700 transition-all duration-200 hover:bg-indigo-800/70">
@@ -644,55 +638,58 @@ const HomePage = () => {
         </section>
 
         {/* Ideas Section */}
-        <section className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
+        <section className="mb-section backdrop-blur-sm bg-gray-900/80 p-8 rounded-xl shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
           {/* Background Image */}
-          <div className="absolute inset-0 z-0">
-            <img 
-              src="GeoffreyHinton.png" 
-              alt="Geoffrey Hinton Background" 
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <img
+              src="GeoffreyHinton.png"
+              alt="Geoffrey Hinton Background"
               className="w-full h-full object-cover opacity-50"
             />
             {/* Overlay to ensure text readability */}
             <div className="absolute inset-0 bg-gray-900/60"></div>
           </div>
-          
-          <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-xl animate-float" style={{ animationDuration: '15s' }}></div>
-          <div className="absolute bottom-1/4 right-1/3 w-72 h-72 bg-indigo-500/10 rounded-full filter blur-xl animate-pulse" style={{ animationDuration: '20s' }}></div>
-          
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
+
+          <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-xl animate-float pointer-events-none" style={{ animationDuration: '15s' }}></div>
+          <div className="absolute bottom-1/4 right-1/3 w-72 h-72 bg-indigo-500/10 rounded-full filter blur-xl animate-pulse pointer-events-none" style={{ animationDuration: '20s' }}></div>
+
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10 gap-4">
             <div className="relative pb-3">
-              <h2 className="text-2xl font-bold text-gray-100 mb-1">Latest Ideas</h2>
-              <div className="absolute bottom-0 left-0 w-20 h-1 bg-indigo-500 rounded-full"></div>
+              <h2 className="text-3xl font-bold text-gray-100 mb-1">Latest Ideas</h2>
+              <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-secondary rounded-full"></div>
             </div>
-            <Link 
-              to="/ideas" 
-              className="bg-indigo-700 hover:bg-indigo-600 hover:shadow-indigo-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
+            <Button to="/ideas" variant="secondary">
               Explore More Ideas
-            </Link>
+            </Button>
           </div>
           {isLoading ? (
-            <div className="flex justify-center items-center py-12 relative z-10">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+            <div className="space-y-4 relative z-10">
+              {[1, 2, 3].map((i) => (
+                <ListItemSkeleton key={i} />
+              ))}
             </div>
           ) : error ? (
-            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-lg relative z-10">
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-xl relative z-10">
               {error}
             </div>
           ) : ideas.length === 0 ? (
-            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg relative z-10">
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-xl relative z-10">
               No ideas found. Check back soon for new content!
             </div>
           ) : (
             <ul className="space-y-4 relative z-10">
               {ideas.map((idea, index) => (
-                <li key={idea._id} className="flex items-start p-4 hover:bg-gray-800/50 rounded-lg transition-colors duration-200">
-                  <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mr-4 shadow-md">
+                <li
+                  key={idea._id}
+                  onClick={() => navigate('/ideas')}
+                  className="clickable-card flex items-start p-4 hover:bg-gray-800/50 rounded-xl transition-all duration-300"
+                >
+                  <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mr-4 shadow-md flex-shrink-0">
                     {index + 1}
                   </span>
                   <div>
-                    <h3 className="font-semibold text-gray-100 hover:text-blue-400 transition-colors duration-200">{idea.title}</h3>
-                    <p className="text-gray-300 mt-1">{idea.summary}</p>
+                    <h3 className="font-semibold text-gray-100 group-hover:text-blue-400 transition-colors duration-200">{idea.title}</h3>
+                    <p className="text-gray-100 mt-1 text-improved">{idea.summary}</p>
                     {idea.tags && idea.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-2">
                         {idea.tags.map((tag, tagIndex) => (
@@ -713,33 +710,37 @@ const HomePage = () => {
         </section>
 
         {/* Projects Section */}
-        <section className="mb-20">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <section className="mb-section">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div className="relative pb-3">
-              <h2 className="text-2xl font-bold text-gray-100 mb-1">Featured Project</h2>
-              <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
+              <h2 className="text-3xl font-bold text-gray-100 mb-1">Featured Project</h2>
+              <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-primary rounded-full"></div>
             </div>
-            <Link 
-              to="/projects" 
-              className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
+            <Button to="/projects" variant="primary">
               View All Projects
-            </Link>
+            </Button>
           </div>
           {isLoading ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-            </div>
+            <CardSkeleton />
           ) : error ? (
-            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-xl">
               {error}
             </div>
           ) : projects.length === 0 ? (
-            <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4">
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-xl">
               No featured projects available at the moment.
             </div>
           ) : (
-            <div className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-800 transform hover:-translate-y-1">
+            <div
+              onClick={() => {
+                if (projects[0].demoLink) {
+                  window.open(projects[0].demoLink, '_blank');
+                } else if (projects[0].githubLink) {
+                  window.open(projects[0].githubLink, '_blank');
+                }
+              }}
+              className="clickable-card backdrop-blur-sm bg-gray-900/80 rounded-xl shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800"
+            >
               {/* Project Image */}
               <div className="h-56 overflow-hidden relative">
                 {projects[0].image ? (
@@ -761,40 +762,30 @@ const HomePage = () => {
                   </div>
                 )}
               </div>
-              
+
               {/* Project Content */}
               <div className="p-8">
-                <h3 className="text-2xl font-semibold mb-3 bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{projects[0].title}</h3>
-                <p className="text-white mb-4">{projects[0].description}</p>
+                <h3 className="text-2xl font-semibold mb-3 bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">{projects[0].title}</h3>
+                <p className="text-gray-100 mb-4 text-improved">{projects[0].description}</p>
                 <div className="flex flex-wrap gap-2">
                   {projects[0].techStack?.map((tech, index) => (
-                    <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 transition-all duration-200 hover:bg-blue-200">
+                    <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700 transition-all duration-200 hover:bg-indigo-800/70">
                       {tech}
                     </span>
                   ))}
                 </div>
-                <div className="mt-6">
+                <div className="mt-6 flex gap-4">
                   {projects[0].githubLink && (
-                    <a 
-                      href={projects[0].githubLink} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 font-medium mr-6 inline-flex items-center group"
-                    >
-                      GitHub Repository 
+                    <span className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center">
+                      GitHub Repository
                       <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                    </a>
+                    </span>
                   )}
                   {projects[0].demoLink && (
-                    <a 
-                      href={projects[0].demoLink} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center group"
-                    >
-                      Live Demo 
+                    <span className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center">
+                      Live Demo
                       <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                    </a>
+                    </span>
                   )}
                 </div>
               </div>
@@ -803,35 +794,34 @@ const HomePage = () => {
         </section>
 
         {/* AI Tools Section */}
-        <section className="mb-20">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <section className="mb-section">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div className="relative pb-3">
-              <h2 className="text-2xl font-bold text-gray-100 mb-1">AI Tools</h2>
-              <div className="absolute bottom-0 left-0 w-20 h-1 bg-indigo-500 rounded-full"></div>
+              <h2 className="text-3xl font-bold text-gray-100 mb-1">AI Tools</h2>
+              <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-secondary rounded-full"></div>
             </div>
-            <Link 
-              to="/tools" 
-              className="bg-indigo-700 hover:bg-indigo-600 hover:shadow-indigo-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
+            <Button to="/tools" variant="secondary">
               Explore All Tools
-            </Link>
+            </Button>
           </div>
           {isLoading ? (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-            </div>
+            <TwoColumnSkeletonGrid count={2} />
           ) : error ? (
-            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4">
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-xl">
               {error}
             </div>
           ) : tools.length === 0 ? (
-            <div className="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4">
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-xl">
               No tools found. Check back soon for new content!
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-6">
               {tools.map(tool => (
-                <div key={tool._id} className="backdrop-blur-sm bg-gray-900/80 p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-800 transform hover:-translate-y-1 relative overflow-hidden">
+                <div
+                  key={tool._id}
+                  onClick={() => tool.link && window.open(tool.link, '_blank')}
+                  className="clickable-card backdrop-blur-sm bg-gray-900/80 p-6 rounded-xl shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden group"
+                >
                   <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/5 rounded-full"></div>
                   <div className="flex items-center mb-4 relative z-10">
                     {tool.logo ? (
@@ -850,36 +840,31 @@ const HomePage = () => {
                       </div>
                     )}
                     <div>
-                      <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-transparent bg-clip-text">{tool.name}</h3>
+                      <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">{tool.name}</h3>
                       {tool.category && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 border border-indigo-200">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700">
                           {tool.category}
                         </span>
                       )}
                     </div>
                   </div>
-                  <p className="text-white mb-4 relative z-10">{tool.description}</p>
-                  <a 
-                    href={tool.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center group relative z-10"
-                  >
+                  <p className="text-gray-100 mb-4 relative z-10 text-improved">{tool.description}</p>
+                  <span className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center relative z-10">
                     Try it out
-                    <svg 
-                      className="ml-1 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-200" 
-                      fill="none" 
-                      stroke="currentColor" 
+                    <svg
+                      className="ml-1 h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-200"
+                      fill="none"
+                      stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                       />
                     </svg>
-                  </a>
+                  </span>
                 </div>
               ))}
             </div>
@@ -888,27 +873,27 @@ const HomePage = () => {
 
         {/* Honorable Mentions Section */}
         <section className="mb-10">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div className="relative pb-3">
-              <h2 className="text-2xl font-bold text-gray-100 mb-1">Honorable Mentions</h2>
-              <div className="absolute bottom-0 left-0 w-20 h-1 bg-blue-500 rounded-full"></div>
+              <h2 className="text-3xl font-bold text-gray-100 mb-1">Honorable Mentions</h2>
+              <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-primary rounded-full"></div>
             </div>
-            <a 
-              href="/mentions" 
-              className="bg-blue-700 hover:bg-blue-600 hover:shadow-cyan-900/30 text-white px-5 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-            >
+            <Button to="/mentions" variant="primary">
               See All Mentions
-            </a>
+            </Button>
           </div>
-          <div className="backdrop-blur-sm bg-gray-900/80 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-800 relative overflow-hidden">
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full"></div>
-            <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-indigo-500/5 rounded-full"></div>
-            
+          <div
+            onClick={() => navigate('/mentions')}
+            className="clickable-card backdrop-blur-sm bg-gray-900/80 p-8 rounded-xl shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden"
+          >
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/5 rounded-full pointer-events-none"></div>
+            <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-indigo-500/5 rounded-full pointer-events-none"></div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
               {honorableMentions.map((mention, index) => (
-                <div key={index} className="border-l-4 border-blue-500 pl-4 py-3 bg-blue-50/50 rounded-r-lg hover:bg-blue-50 transition-colors duration-200">
-                  <h3 className="font-semibold bg-gradient-to-r from-blue-700 to-indigo-700 text-transparent bg-clip-text">{mention.name}</h3>
-                  <p className="text-gray-600 text-sm">
+                <div key={index} className="border-l-4 border-brand-primary pl-4 py-3 bg-gray-800/50 rounded-r-xl hover:bg-gray-800/70 transition-colors duration-200">
+                  <h3 className="font-semibold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">{mention.name}</h3>
+                  <p className="text-gray-100 text-sm text-improved">
                     {mention.year ? `Year: ${mention.year}` : `Project: ${mention.project}`}
                   </p>
                 </div>
