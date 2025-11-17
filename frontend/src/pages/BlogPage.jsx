@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import PageLayout from '../components/PageLayout';
 import { getBlogPosts } from '../services/blogService';
 import ShareButton from '../components/ShareButton';
+import { CardSkeletonGrid } from '../components/Skeleton';
 
 const BlogPage = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -154,27 +156,29 @@ const BlogPage = () => {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-gray-100">Blog</h1>
-          <p className="text-xl text-gray-300">Exploring ideas, sharing insights, and documenting my journey.</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-100">Blog</h1>
+          <p className="text-xl text-gray-100 text-improved">Exploring ideas, sharing insights, and documenting my journey.</p>
         </div>
 
         {/* Blog Posts Grid */}
-        <div className="grid md:grid-cols-2 gap-8">
-          {isLoading ? (
-            <div className="col-span-2 flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-            </div>
-          ) : error ? (
-            <div className="col-span-2 backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-lg">
-              {error}
-            </div>
-          ) : posts.length === 0 ? (
-            <div className="col-span-2 backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-lg">
-              No blog posts found. Check back soon for new content!
-            </div>
-          ) : (
-            posts.map(post => (
-              <div key={post._id} className="backdrop-blur-sm bg-gray-900/80 rounded-lg shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 transform hover:-translate-y-1 relative">
+        {isLoading ? (
+          <CardSkeletonGrid count={6} />
+        ) : error ? (
+          <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-xl">
+            {error}
+          </div>
+        ) : posts.length === 0 ? (
+          <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-xl">
+            No blog posts found. Check back soon for new content!
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 gap-8">
+            {posts.map(post => (
+              <div
+                key={post._id}
+                onClick={() => navigate(`/blog/${post._id}`)}
+                className="clickable-card backdrop-blur-sm bg-gray-900/80 rounded-xl shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 relative group"
+              >
                 {/* Share Button */}
                 <div className="absolute top-2 right-2 z-10">
                   <ShareButton 
@@ -194,20 +198,17 @@ const BlogPage = () => {
                 )}
                 <div className="p-6">
                   <p className="text-sm text-gray-400 mb-2">{formatDate(post.date)}</p>
-                  <h2 className="text-xl font-semibold mb-2 text-gray-100 hover:text-blue-400 transition-colors duration-200">{post.title}</h2>
-                  <p className="text-gray-300 mb-4">{post.excerpt}</p>
-                  <Link 
-                    to={`/blog/${post._id}`} 
-                    className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center group"
-                  >
-                    Read more 
+                  <h2 className="text-xl font-semibold mb-2 text-gray-100 group-hover:text-blue-400 transition-colors duration-200">{post.title}</h2>
+                  <p className="text-gray-100 mb-4 text-improved">{post.excerpt}</p>
+                  <span className="text-blue-400 font-medium inline-flex items-center">
+                    Read more
                     <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                  </Link>
+                  </span>
                 </div>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </PageLayout>
   );
