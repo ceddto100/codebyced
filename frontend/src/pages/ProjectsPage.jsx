@@ -7,7 +7,7 @@ import PageLayout from '../components/PageLayout';
 import { CardSkeletonGrid } from '../components/Skeleton';
 
 const CLAUDE_ARTIFACT_URL = "https://claude.site/public/artifacts/6358a80a-75eb-4ee0-ae85-5ebc986fe2a3/embed";
-const KELLY_APP_URL = "https://kelly-s-criterion-calculator.vercel.app/";
+const KELLY_APP_URL = "https://betgistics.com/";
 
 const ProjectsPage = () => {
   const navigate = useNavigate();
