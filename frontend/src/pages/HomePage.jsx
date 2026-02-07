@@ -472,6 +472,90 @@ const HomePage = () => {
           </div>
         </section>
 
+        {/* Projects Section */}
+        <section className="mb-section">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div className="relative pb-3">
+              <h2 className="text-3xl font-bold text-gray-100 mb-1">Featured Project</h2>
+              <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-primary rounded-full"></div>
+            </div>
+            <Button to="/projects" variant="primary">
+              View All Projects
+            </Button>
+          </div>
+          {isLoading ? (
+            <CardSkeleton />
+          ) : error ? (
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-xl">
+              {error}
+            </div>
+          ) : projects.length === 0 ? (
+            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-xl">
+              No featured projects available at the moment.
+            </div>
+          ) : (
+            <div
+              onClick={() => {
+                if (projects[0].demoLink) {
+                  window.open(projects[0].demoLink, '_blank');
+                } else if (projects[0].githubLink) {
+                  window.open(projects[0].githubLink, '_blank');
+                }
+              }}
+              className="clickable-card backdrop-blur-sm bg-gray-900/80 rounded-xl shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800"
+            >
+              {/* Project Image */}
+              <div className="h-56 overflow-hidden relative">
+                {projects[0].image ? (
+                  <img 
+                    src={projects[0].image} 
+                    alt={projects[0].title} 
+                    className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-r from-blue-100 to-indigo-100 flex items-center justify-center">
+                    <span className="text-gray-400">No image available</span>
+                  </div>
+                )}
+                {projects[0].category && (
+                  <div className="absolute top-4 right-4">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md">
+                      {projects[0].category}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Project Content */}
+              <div className="p-8">
+                <h3 className="text-2xl font-semibold mb-3 bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">{projects[0].title}</h3>
+                <p className="text-gray-100 mb-4 text-improved">{projects[0].description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {projects[0].techStack?.map((tech, index) => (
+                    <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700 transition-all duration-200 hover:bg-indigo-800/70">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-6 flex gap-4">
+                  {projects[0].githubLink && (
+                    <span className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center">
+                      GitHub Repository
+                      <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+                    </span>
+                  )}
+                  {projects[0].demoLink && (
+                    <span className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center">
+                      Live Demo
+                      <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+
         {/* =================== NEW SERVICES SECTION (inserted above Blog) =================== */}
         <section id="services" className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-xl shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
   {/* Subtle gradient blobs */}
@@ -709,90 +793,6 @@ const HomePage = () => {
           )}
         </section>
 
-        {/* Projects Section */}
-        <section className="mb-section">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <div className="relative pb-3">
-              <h2 className="text-3xl font-bold text-gray-100 mb-1">Featured Project</h2>
-              <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-primary rounded-full"></div>
-            </div>
-            <Button to="/projects" variant="primary">
-              View All Projects
-            </Button>
-          </div>
-          {isLoading ? (
-            <CardSkeleton />
-          ) : error ? (
-            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-xl">
-              {error}
-            </div>
-          ) : projects.length === 0 ? (
-            <div className="backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-xl">
-              No featured projects available at the moment.
-            </div>
-          ) : (
-            <div
-              onClick={() => {
-                if (projects[0].demoLink) {
-                  window.open(projects[0].demoLink, '_blank');
-                } else if (projects[0].githubLink) {
-                  window.open(projects[0].githubLink, '_blank');
-                }
-              }}
-              className="clickable-card backdrop-blur-sm bg-gray-900/80 rounded-xl shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800"
-            >
-              {/* Project Image */}
-              <div className="h-56 overflow-hidden relative">
-                {projects[0].image ? (
-                  <img 
-                    src={projects[0].image} 
-                    alt={projects[0].title} 
-                    className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-r from-blue-100 to-indigo-100 flex items-center justify-center">
-                    <span className="text-gray-400">No image available</span>
-                  </div>
-                )}
-                {projects[0].category && (
-                  <div className="absolute top-4 right-4">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md">
-                      {projects[0].category}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Project Content */}
-              <div className="p-8">
-                <h3 className="text-2xl font-semibold mb-3 bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">{projects[0].title}</h3>
-                <p className="text-gray-100 mb-4 text-improved">{projects[0].description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {projects[0].techStack?.map((tech, index) => (
-                    <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900/70 text-indigo-300 border border-indigo-700 transition-all duration-200 hover:bg-indigo-800/70">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-6 flex gap-4">
-                  {projects[0].githubLink && (
-                    <span className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center">
-                      GitHub Repository
-                      <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                    </span>
-                  )}
-                  {projects[0].demoLink && (
-                    <span className="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center">
-                      Live Demo
-                      <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </section>
-
         {/* AI Tools Section */}
         <section className="mb-section">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
@@ -907,5 +907,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
 
