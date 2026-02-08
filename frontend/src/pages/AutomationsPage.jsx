@@ -1,0 +1,107 @@
+import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
+import PageLayout from '../components/PageLayout';
+import { getAutomations } from '../services/automationsService';
+
+const AutomationsPage = () => {
+  const [automations, setAutomations] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAutomations = async () => {
+      const data = await getAutomations();
+      setAutomations(data);
+      setLoading(false);
+    };
+
+    fetchAutomations();
+  }, []);
+
+  return (
+    <PageLayout>
+      <Helmet>
+        <title>Automation Systems | CodeByCed</title>
+        <meta
+          name="description"
+          content="Explore premium Make.com AI automation systems, watch workflow demos, and launch with professional setup support."
+        />
+      </Helmet>
+
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <section className="relative overflow-hidden rounded-3xl border border-cyan-400/20 bg-gray-900/75 backdrop-blur-xl p-8 md:p-12 shadow-2xl shadow-cyan-900/20 mb-12">
+          <div className="absolute -top-24 -right-16 w-80 h-80 bg-cyan-500/20 blur-3xl rounded-full" />
+          <div className="absolute -bottom-24 -left-16 w-80 h-80 bg-indigo-500/20 blur-3xl rounded-full" />
+          <div className="relative z-10">
+            <p className="inline-block text-xs uppercase tracking-[0.2em] text-cyan-200 mb-3">Automation Marketplace</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Done-for-You AI Automation Systems</h1>
+            <p className="text-lg text-gray-200 max-w-3xl">
+              Deploy business-ready workflows powered by Make.com. Watch real demos, inspect the shared workflow logic,
+              and launch quickly with white-glove implementation.
+            </p>
+          </div>
+        </section>
+
+        {loading ? (
+          <div className="text-gray-300">Loading automation systems...</div>
+        ) : (
+          <div className="grid gap-8">
+            {automations.map((automation) => (
+              <article
+                key={automation.id}
+                className="group relative overflow-hidden rounded-2xl border border-gray-700/70 bg-gray-900/70 backdrop-blur-lg p-6 md:p-8 hover:border-cyan-400/50 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-900/20"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/0 to-indigo-500/0 group-hover:from-cyan-500/5 group-hover:to-indigo-500/5 transition-all duration-300" />
+                <div className="relative z-10">
+                  <h2 className="text-2xl md:text-3xl text-white font-semibold mb-3">{automation.name}</h2>
+                  <p className="text-gray-200 mb-6">{automation.description}</p>
+
+                  <div className="rounded-xl border border-gray-700 bg-black/40 p-2 mb-6">
+                    <video
+                      className="w-full h-[240px] md:h-[380px] rounded-lg object-cover"
+                      src={automation.demoVideoUrl}
+                      controls
+                      preload="metadata"
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3">
+                    <a
+                      href={automation.makeSharedLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-5 py-2.5 rounded-xl bg-gray-800 text-gray-100 border border-cyan-400/40 hover:border-cyan-300 hover:text-white transition-all"
+                    >
+                      View Make.com Workflow
+                    </a>
+                    <a
+                      href={automation.stripeCheckoutLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-white font-medium hover:shadow-lg hover:shadow-cyan-500/30 transition-all"
+                    >
+                      Purchase Professional Setup
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-12 text-center">
+          <Link
+            to="/"
+            className="inline-flex items-center text-cyan-300 hover:text-cyan-200 transition-colors"
+          >
+            ← Back to homepage
+          </Link>
+        </div>
+      </div>
+    </PageLayout>
+  );
+};
+
+export default AutomationsPage;

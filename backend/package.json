@@ -9,6 +9,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^3.4.0",
+    "cloudinary": "^2.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
@@ -16,9 +18,9 @@
     "joi": "^17.11.0",
     "mongoose": "^7.5.0",
     "morgan": "^1.10.0",
+    "multer": "^2.0.2",
     "node-summarizer": "^1.0.7",
-    "stripe": "^15.5.0",
-    "@stripe/stripe-js": "^3.4.0"
+    "stripe": "^15.5.0"
   },
   "devDependencies": {
     "jest": "^29.6.4",

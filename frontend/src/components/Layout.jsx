@@ -22,7 +22,8 @@ const Layout = ({ children }) => {
     { to: '/ideas', label: 'Ideas' },
     { to: '/projects', label: 'Projects' },
     { to: '/tools', label: 'Tools' },
-    { to: '/mentions', label: 'Honorable Mentions' }
+    { to: '/mentions', label: 'Honorable Mentions' },
+    { to: '/automations', label: 'Automations' }
   ];
 
   return (
