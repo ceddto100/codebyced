@@ -16,6 +16,7 @@ const projectsRoutes = require('./routes/projectsRoutes');
 const toolsRoutes = require('./routes/toolsRoutes');
 const honorsRoutes = require('./routes/honorsRoutes');
 const servicesRoutes = require('./routes/servicesRoutes');
+const automationsRoutes = require('./routes/automationsRoutes');
 
 const app = express();
 
@@ -86,6 +87,7 @@ app.use('/api/projects', projectsRoutes);
 app.use('/api/tools', toolsRoutes);
 app.use('/api/honors', honorsRoutes);
 app.use('/api/services', servicesRoutes);
+app.use('/api/automations', automationsRoutes);
 app.use('/api', searchRoutes);
 
 /* ---------- Health ---------- */

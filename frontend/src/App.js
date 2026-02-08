@@ -17,6 +17,7 @@ import AIConversationalToolsPage from './pages/AIConversationalToolsPage';
 import AppSoftwareDevPage from './pages/AppSoftwareDevPage';
 import TechnicalConsultingPage from './pages/TechnicalConsultingPage';
 import SEOBoostPage from './pages/SEOBoostPage';
+import AutomationsPage from './pages/AutomationsPage';
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           {/* <Route path="*" element={<NotFoundPage />} /> */}
           <Route path="/services/technical-consulting" element={<TechnicalConsultingPage />} />
             <Route path="/services/seo-boost" element={<SEOBoostPage />} />
+          <Route path="/automations" element={<AutomationsPage />} />
         </Routes>
       </Layout>
     </Router>

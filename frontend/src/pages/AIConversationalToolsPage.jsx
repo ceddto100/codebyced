@@ -10,7 +10,6 @@ import CalButton from "../components/CalButton";
  * AI & Conversational Toolss — dStatics Service Page
  * Budget-friendly pricing. CTAs usek /services/ai&plan=<tier>.
  */
-const CONTEXT = "aiconv";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
 
 // Map maintenance plan → Stripe Buy Button ID (from your message)

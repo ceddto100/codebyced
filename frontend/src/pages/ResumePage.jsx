@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Helmet } from 'react-helmet';
-import { getResumeEntries } from '../services/resumeService';
 
 const ResumePage = () => {
   // Content (kept and expanded)
@@ -84,18 +83,17 @@ const ResumePage = () => {
   ];
 
   // Calculated stats (kept)
-  const stats = useMemo(() => {
-    const achievementsCount = workExperience.reduce(
-      (acc, w) => acc + (w.achievements?.length || 0),
-      0
-    );
-    return [
-      { label: "Experience Roles", value: workExperience.length },
-      { label: "Key Achievements", value: achievementsCount },
-      { label: "Certifications", value: certifications.length },
-      { label: "Skills", value: skills.technical.length + skills.soft.length },
-    ];
-  }, [workExperience, certifications, skills]);
+  const achievementsCount = workExperience.reduce(
+    (acc, w) => acc + (w.achievements?.length || 0),
+    0
+  );
+
+  const stats = [
+    { label: "Experience Roles", value: workExperience.length },
+    { label: "Key Achievements", value: achievementsCount },
+    { label: "Certifications", value: certifications.length },
+    { label: "Skills", value: skills.technical.length + skills.soft.length },
+  ];
 
   // Animations (kept)
   const fadeInUp = {
@@ -237,7 +235,7 @@ const ResumePage = () => {
                       <a
                         href={`${process.env.PUBLIC_URL}/resume.pdf`}
                         target="_blank"
-                        rel="noopener"
+                        rel="noopener noreferrer"
                         download
                         className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow hover:shadow-md transition"
                       >

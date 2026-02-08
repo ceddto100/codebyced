@@ -227,25 +227,6 @@ const HomePage = () => {
     skills: ['Python', 'JavaScript', 'React', 'Node.js', 'AI/ML']
   };
 
-  const ideasHighlight = [
-    'AI-Powered Personal Productivity Assistant',
-    'Blockchain-Based Digital Identity Management',
-    'Sustainable Tech Practices for Development Teams'
-  ];
-
-  const aiTools = [
-    {
-      id: 1,
-      name: 'Code Companion',
-      description: 'AI-powered code review and suggestion tool'
-    },
-    {
-      id: 2,
-      name: 'Content Generator',
-      description: 'Smart content creation assistant for various formats'
-    }
-  ];
-
   const honorableMentions = [
     {
       name: 'Tech Innovator Award',
@@ -256,6 +237,14 @@ const HomePage = () => {
       project: 'React Ecosystem'
     }
   ];
+  const automationFeature = {
+    headline: 'AI Automation Systems Built For Your Business',
+    description:
+      'Launch hands-free, AI-powered workflows built on Make.com. No technical setup required—just plug in your stack and start scaling operations.',
+    cta: 'Explore Automation Systems',
+    href: '/automations',
+  };
+
 
 
   const servicesData = [
@@ -554,6 +543,26 @@ const HomePage = () => {
               </div>
             </div>
           )}
+        </section>
+
+
+        <section className="mb-16 relative overflow-hidden rounded-2xl border border-cyan-400/30 bg-gray-900/75 backdrop-blur-xl p-8 md:p-10 shadow-xl shadow-cyan-900/20 group">
+          <div className="absolute -top-20 -right-20 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl transition-transform duration-500 group-hover:scale-110" />
+          <div className="absolute -bottom-24 -left-12 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl transition-transform duration-500 group-hover:scale-110" />
+          <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div>
+              <p className="text-xs uppercase tracking-[0.22em] text-cyan-200 mb-3">Featured Automation Systems</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{automationFeature.headline}</h2>
+              <p className="text-gray-200 max-w-3xl text-lg">{automationFeature.description}</p>
+            </div>
+            <Link
+              to={automationFeature.href}
+              className="inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 hover:-translate-y-0.5"
+            >
+              {automationFeature.cta}
+              <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </Link>
+          </div>
         </section>
 
         {/* =================== NEW SERVICES SECTION (inserted above Blog) =================== */}

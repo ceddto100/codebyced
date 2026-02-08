@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import { getProjects } from '../services/projectsService';
-import { Link, useNavigate } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
 import { CardSkeletonGrid } from '../components/Skeleton';
 
@@ -10,7 +9,6 @@ const CLAUDE_ARTIFACT_URL = "https://claude.site/public/artifacts/6358a80a-75eb-
 const KELLY_APP_URL = "https://betgistics.com/";
 
 const ProjectsPage = () => {
-  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);

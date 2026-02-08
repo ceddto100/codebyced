@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import { getMentions } from '../services/mentionsService';
 import PageLayout from '../components/PageLayout';
@@ -71,26 +70,6 @@ const HonorableMentionsPage = () => {
     : honors.filter(honor => honor.year === activeYear);
 
   // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
 
   // Structured data for honorable mentions page
   const mentionsStructuredData = {
