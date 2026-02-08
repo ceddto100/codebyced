@@ -227,25 +227,6 @@ const HomePage = () => {
     skills: ['Python', 'JavaScript', 'React', 'Node.js', 'AI/ML']
   };
 
-  const ideasHighlight = [
-    'AI-Powered Personal Productivity Assistant',
-    'Blockchain-Based Digital Identity Management',
-    'Sustainable Tech Practices for Development Teams'
-  ];
-
-  const aiTools = [
-    {
-      id: 1,
-      name: 'Code Companion',
-      description: 'AI-powered code review and suggestion tool'
-    },
-    {
-      id: 2,
-      name: 'Content Generator',
-      description: 'Smart content creation assistant for various formats'
-    }
-  ];
-
   const honorableMentions = [
     {
       name: 'Tech Innovator Award',

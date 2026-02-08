@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import PageLayout from '../components/PageLayout';
 import { getApiUrl } from '../utils/api';
@@ -10,7 +9,7 @@ const ToolsPage = () => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
   const [categories, setCategories] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery] = useState('');
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
@@ -83,29 +82,6 @@ const ToolsPage = () => {
   });
 
   // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { 
-      opacity: 0,
-      y: 20
-    },
-    visible: { 
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.4
-      }
-    }
-  };
 
   return (
     <PageLayout>

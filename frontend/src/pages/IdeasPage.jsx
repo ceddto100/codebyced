@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
 import { getIdeas } from '../services/ideasService';
 import PageLayout from '../components/PageLayout';
@@ -74,32 +73,8 @@ const IdeasPage = () => {
     : ideas;
 
   // Card animations
-  const cardVariants = {
-    offscreen: {
-      y: 50,
-      opacity: 0
-    },
-    onscreen: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        bounce: 0.4,
-        duration: 0.8
-      }
-    }
-  };
 
   // Container animations with staggered children
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
 
   // Structured data for ideas page
   const ideasStructuredData = {

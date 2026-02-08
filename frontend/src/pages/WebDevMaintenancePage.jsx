@@ -10,7 +10,6 @@ import CalButton from "../components/CalButton";
  * Web Development & Maintenance — Static Service Page
  * Matches your glass/gradient style and uses data arrays for easy edits.
  */
-const CONTEXT = "maintenance";
 
 // Map maintenance plan → Stripe Buy Button ID (from your message)
 const BUY_BUTTONS = {

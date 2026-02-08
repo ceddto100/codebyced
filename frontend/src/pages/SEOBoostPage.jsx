@@ -11,7 +11,6 @@ import CalButton from "../components/CalButton";
  * CTAs use /contact?service=seo&plan=<quick|audit|onpage|schema|starter|essential|growth|pro>
  * Highlights a card when URL has ?plan=<value>
  */
-const CONTEXT = "seo";
 const CAL_HANDLE = "cedrick-carter-ndeqh2";
 
 // Map monthly plan → Stripe Buy Button ID (as provided)
