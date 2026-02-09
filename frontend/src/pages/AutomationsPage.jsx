@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
 import { getAutomations } from '../services/automationsService';
 
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgekypd';
+
 const AutomationsPage = () => {
   const [automations, setAutomations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -90,6 +92,71 @@ const AutomationsPage = () => {
             ))}
           </div>
         )}
+
+        <section className="mt-12 rounded-3xl border border-cyan-400/20 bg-gray-900/75 backdrop-blur-xl p-8 md:p-10 shadow-xl shadow-cyan-900/20">
+          <div className="max-w-3xl">
+            <p className="inline-block text-xs uppercase tracking-[0.2em] text-cyan-200 mb-3">Custom Workflow Requests</p>
+            <h2 className="text-3xl md:text-4xl text-white font-semibold mb-4">Need a custom automation workflow?</h2>
+            <p className="text-gray-200 mb-8">
+              Share your workflow goals, ask questions, or request a custom implementation. I&apos;ll follow up with
+              recommendations and next steps.
+            </p>
+          </div>
+
+          <form
+            action={FORMSPREE_ENDPOINT}
+            method="POST"
+            className="grid gap-5 md:grid-cols-2"
+            aria-label="Custom workflow request form"
+          >
+            <input type="hidden" name="_subject" value="New automation workflow request" />
+
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-2">Full name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                className="w-full rounded-xl border border-gray-700 bg-black/40 px-4 py-3 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                placeholder="Your name"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-2">Email address</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                className="w-full rounded-xl border border-gray-700 bg-black/40 px-4 py-3 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                placeholder="you@company.com"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label htmlFor="workflow" className="block text-sm font-medium text-gray-200 mb-2">Workflow request or question</label>
+              <textarea
+                id="workflow"
+                name="workflow"
+                rows="6"
+                required
+                className="w-full rounded-xl border border-gray-700 bg-black/40 px-4 py-3 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                placeholder="Tell me what you want to automate, your current tools, and any timeline or budget details."
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <button
+                type="submit"
+                className="inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-white font-medium hover:shadow-lg hover:shadow-cyan-500/30 transition-all"
+              >
+                Send request
+              </button>
+            </div>
+          </form>
+        </section>
 
         <div className="mt-12 text-center">
           <Link
