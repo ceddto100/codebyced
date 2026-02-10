@@ -6,13 +6,16 @@ const { cloudinary, hasCloudinaryConfig } = require('../config/cloudinary');
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
+const uploadAudio = upload.single('audio');
+const uploadVideo = upload.single('video');
 
 const serializeAutomation = (record) => ({
   id: record.automationId,
   name: record.name,
   description: record.description,
   makeSharedLink: record.makeSharedLink,
-  demoVideoUrl: record.demoVideoUrl,
+  demoAudioUrl: record.demoAudioUrl || record.demoVideoUrl,
+  demoVideoUrl: record.demoVideoUrl || record.demoAudioUrl,
   stripeCheckoutLink: record.stripeCheckoutLink,
 });
 
@@ -29,7 +32,8 @@ router.get('/', async (_req, res) => {
           name: item.name,
           description: item.description,
           makeSharedLink: item.makeSharedLink,
-          demoVideoUrl: item.demoVideoUrl,
+          demoAudioUrl: item.demoAudioUrl || item.demoVideoUrl,
+          demoVideoUrl: item.demoVideoUrl || item.demoAudioUrl,
           stripeCheckoutLink: item.stripeCheckoutLink,
         })),
       });
@@ -52,7 +56,8 @@ router.post('/', async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       makeSharedLink: req.body.makeSharedLink,
-      demoVideoUrl: req.body.demoVideoUrl,
+      demoAudioUrl: req.body.demoAudioUrl || req.body.demoVideoUrl,
+      demoVideoUrl: req.body.demoVideoUrl || req.body.demoAudioUrl,
       stripeCheckoutLink: req.body.stripeCheckoutLink,
     });
 
@@ -62,10 +67,23 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.post('/:id/upload-demo', upload.single('video'), async (req, res) => {
+router.post('/:id/upload-demo', async (req, res) => {
+  const handleUpload = (handler) => new Promise((resolve, reject) => {
+    handler(req, res, (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+
   try {
+    await handleUpload(uploadAudio);
+
     if (!req.file) {
-      return res.status(400).json({ success: false, error: 'Video file is required in `video` field.' });
+      await handleUpload(uploadVideo);
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'Audio file is required in `audio` field.' });
     }
 
     if (!hasCloudinaryConfig) {
@@ -85,7 +103,7 @@ router.post('/:id/upload-demo', upload.single('video'), async (req, res) => {
         {
           folder: process.env.CLOUDINARY_UPLOAD_FOLDER || 'codebyced/automations',
           resource_type: 'video',
-          public_id: `${req.params.id}-demo-${Date.now()}`,
+          public_id: `${req.params.id}-audio-${Date.now()}`,
           overwrite: true,
         },
         (err, result) => {
@@ -97,12 +115,13 @@ router.post('/:id/upload-demo', upload.single('video'), async (req, res) => {
       stream.end(req.file.buffer);
     });
 
+    existing.demoAudioUrl = uploadResult.secure_url;
     existing.demoVideoUrl = uploadResult.secure_url;
     await existing.save();
 
     return res.status(200).json({
       success: true,
-      message: 'Demo video uploaded and linked to automation.',
+      message: 'Audio uploaded and linked to automation.',
       data: serializeAutomation(existing),
       cloudinary: {
         publicId: uploadResult.public_id,
