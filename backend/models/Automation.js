@@ -24,6 +24,11 @@ const automationSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    demoAudioUrl: {
+      type: String,
+      default: '',
+      trim: true,
+    },
     demoVideoUrl: {
       type: String,
       default: '',
