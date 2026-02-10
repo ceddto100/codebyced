@@ -226,17 +226,12 @@ const AutomationsPage = () => {
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-10">
-        <section className="relative overflow-hidden rounded-3xl border border-cyan-400/20 bg-gray-900/75 backdrop-blur-xl p-8 md:p-12 shadow-2xl shadow-cyan-900/20 mb-12">
-          <div className="absolute -top-24 -right-16 w-80 h-80 bg-cyan-500/20 blur-3xl rounded-full" />
-          <div className="absolute -bottom-24 -left-16 w-80 h-80 bg-indigo-500/20 blur-3xl rounded-full" />
-          <div className="relative z-10">
-            <p className="inline-block text-xs uppercase tracking-[0.2em] text-cyan-200 mb-3">Automation Marketplace</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Done-for-You AI Automation Systems</h1>
-            <p className="text-lg text-gray-200 max-w-3xl">
-              Deploy business-ready workflows powered by Make.com. Watch real demos, inspect the shared workflow logic,
-              and launch quickly with white-glove implementation.
-            </p>
-          </div>
+        <section className="mb-12">
+          <img
+            src="/automation_cover.png"
+            alt="Done-for-You AI Automation Systems"
+            className="w-full rounded-3xl"
+          />
         </section>
 
         {loading ? (
