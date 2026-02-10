@@ -6,20 +6,6 @@ import { getAutomations } from '../services/automationsService';
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgekypd';
 
-const STAR_NODES = [
-  { id: 1, left: '12%', top: '20%', size: 'h-2 w-2', speed: '2.4s' },
-  { id: 2, left: '18%', top: '68%', size: 'h-1.5 w-1.5', speed: '3.1s' },
-  { id: 3, left: '26%', top: '34%', size: 'h-2.5 w-2.5', speed: '2.8s' },
-  { id: 4, left: '34%', top: '78%', size: 'h-1.5 w-1.5', speed: '3.3s' },
-  { id: 5, left: '42%', top: '16%', size: 'h-2 w-2', speed: '2.6s' },
-  { id: 6, left: '52%', top: '82%', size: 'h-1.5 w-1.5', speed: '3.4s' },
-  { id: 7, left: '60%', top: '24%', size: 'h-2.5 w-2.5', speed: '2.5s' },
-  { id: 8, left: '69%', top: '73%', size: 'h-1.5 w-1.5', speed: '3.2s' },
-  { id: 9, left: '76%', top: '40%', size: 'h-2 w-2', speed: '2.9s' },
-  { id: 10, left: '84%', top: '62%', size: 'h-2.5 w-2.5', speed: '2.7s' },
-  { id: 11, left: '90%', top: '30%', size: 'h-1.5 w-1.5', speed: '3s' }
-];
-
 const AutomationOrb = ({ title, audioSrc }) => {
   const audioRef = React.useRef(null);
   const audioContextRef = React.useRef(null);
@@ -30,8 +16,10 @@ const AutomationOrb = ({ title, audioSrc }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioLevel, setAudioLevel] = useState(0);
   const [audioError, setAudioError] = useState('');
+  const [timePulse, setTimePulse] = useState(0);
 
   const cloudinaryAudio = typeof audioSrc === 'string' && audioSrc.includes('res.cloudinary.com') ? audioSrc : '';
+  const isAudioFile = typeof cloudinaryAudio === 'string' && /\.(mp3|wav|m4a|ogg)(\?|$)/i.test(cloudinaryAudio);
 
   const stopMetering = React.useCallback(() => {
     if (animationFrameRef.current) {
@@ -50,9 +38,9 @@ const AutomationOrb = ({ title, audioSrc }) => {
     const bins = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(bins);
     const average = bins.reduce((total, value) => total + value, 0) / bins.length;
-    const nextLevel = Math.min(1, average / 160);
+    const nextLevel = Math.min(1, average / 155);
 
-    setAudioLevel((prev) => prev * 0.62 + nextLevel * 0.38);
+    setAudioLevel((prev) => prev * 0.65 + nextLevel * 0.35);
     animationFrameRef.current = requestAnimationFrame(sampleAudioLevel);
   }, []);
 
@@ -86,7 +74,7 @@ const AutomationOrb = ({ title, audioSrc }) => {
 
   const handleTogglePlay = async () => {
     if (!audioRef.current || !cloudinaryAudio) {
-      setAudioError('Upload a Cloudinary audio source for this automation to activate voice playback.');
+      setAudioError('Add a real Cloudinary audio URL to activate voice playback.');
       return;
     }
 
@@ -95,9 +83,14 @@ const AutomationOrb = ({ title, audioSrc }) => {
     if (audioRef.current.paused) {
       try {
         await setupAudioAnalyser();
+      } catch (_error) {
+        // Continue playback even if analyzer setup fails (for example due to CORS restrictions).
+      }
+
+      try {
         await audioRef.current.play();
         setIsPlaying(true);
-      } catch (error) {
+      } catch (_error) {
         setAudioError('Audio playback was blocked. Click the orb again to try.');
       }
       return;
@@ -107,6 +100,14 @@ const AutomationOrb = ({ title, audioSrc }) => {
     setIsPlaying(false);
     stopMetering();
   };
+
+  React.useEffect(() => {
+    const interval = window.setInterval(() => {
+      setTimePulse((prev) => prev + 0.08);
+    }, 40);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   React.useEffect(() => () => {
     stopMetering();
@@ -127,54 +128,48 @@ const AutomationOrb = ({ title, audioSrc }) => {
     }
   }, [stopMetering]);
 
-  const hue = Math.round(198 + audioLevel * 120);
-  const secondHue = (hue + 58) % 360;
-  const orbScale = 1 + audioLevel * 0.1;
-  const haloStrength = 0.35 + audioLevel * 0.45;
+  const pulseWave = isPlaying ? (Math.sin(timePulse * 2.8) + 1) * 0.5 : 0;
+  const orbScale = 1 + audioLevel * 0.16 + pulseWave * 0.08;
+  const glowStrength = 0.28 + audioLevel * 0.52 + pulseWave * 0.2;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-cyan-400/35 bg-[#03051a] p-6 mb-6">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(56,189,248,0.24),transparent_43%),radial-gradient(circle_at_75%_72%,rgba(129,140,248,0.35),transparent_55%)]" />
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-indigo-500/10 to-transparent" />
-
-      <div className="relative mx-auto h-[280px] md:h-[340px] max-w-[540px] flex items-center justify-center">
-        <div className="absolute w-[320px] h-[320px] md:w-[390px] md:h-[390px] rounded-full border border-cyan-300/20 animate-ping [animation-duration:4.4s]" />
-        <div className="absolute w-[280px] h-[280px] md:w-[340px] md:h-[340px] rounded-full border border-indigo-300/25 animate-pulse [animation-duration:2.6s]" />
-        <div className="absolute w-[230px] h-[230px] md:w-[286px] md:h-[286px] rounded-full border border-cyan-200/40" style={{ boxShadow: `0 0 80px hsla(${hue}, 95%, 65%, ${haloStrength})` }} />
-
-        {STAR_NODES.map((star, index) => (
-          <span
-            key={star.id}
-            className={`absolute rounded-full bg-cyan-100/95 ${star.size} animate-bounce`}
-            style={{
-              left: star.left,
-              top: star.top,
-              animationDuration: star.speed,
-              filter: `drop-shadow(0 0 ${12 + audioLevel * 20}px hsla(${secondHue}, 92%, 70%, 0.95))`,
-              transform: `translateY(${Math.sin((index + 1) * 0.9) * (6 + audioLevel * 18)}px) scale(${1 + audioLevel * 0.55})`
-            }}
-          />
-        ))}
+    <div className="relative mb-8 py-4">
+      <div className="mx-auto relative h-[320px] w-full max-w-[520px] flex items-center justify-center">
+        <div
+          className="absolute h-[290px] w-[290px] rounded-full border border-cyan-300/25"
+          style={{
+            transform: `scale(${1 + pulseWave * 0.14})`,
+            boxShadow: `0 0 ${44 + audioLevel * 60}px rgba(56,189,248,${0.22 + audioLevel * 0.4})`
+          }}
+        />
+        <div
+          className="absolute h-[220px] w-[220px] rounded-full border border-indigo-200/35"
+          style={{
+            transform: `scale(${1 + pulseWave * 0.22})`,
+            opacity: 0.36 + audioLevel * 0.35
+          }}
+        />
 
         <button
           type="button"
           aria-label={isPlaying ? `Pause ${title} voice` : `Play ${title} voice`}
           aria-pressed={isPlaying}
           onClick={handleTogglePlay}
-          className="relative z-20 rounded-full w-[170px] h-[170px] md:w-[190px] md:h-[190px] flex items-center justify-center border border-white/40 shadow-[inset_0_0_55px_rgba(255,255,255,0.16)] transition-transform duration-150 active:scale-95"
+          className="relative z-20 rounded-full w-[176px] h-[176px] md:w-[198px] md:h-[198px] flex items-center justify-center border border-cyan-100/45 transition-transform duration-150 active:scale-95"
           style={{
             transform: `scale(${orbScale})`,
-            background: `radial-gradient(circle at 30% 22%, hsla(${hue}, 94%, 82%, 0.93), hsla(${secondHue}, 88%, 61%, 0.88) 56%, hsla(${hue}, 90%, 44%, 0.86) 100%)`
+            background: 'radial-gradient(circle at 30% 24%, rgba(224,242,254,0.96), rgba(56,189,248,0.9) 48%, rgba(59,130,246,0.86) 74%, rgba(30,64,175,0.92) 100%)',
+            boxShadow: `0 0 ${36 + audioLevel * 66}px rgba(59,130,246,${glowStrength}), inset 0 0 65px rgba(255,255,255,0.2)`
           }}
         >
-          <span className="text-white text-5xl md:text-6xl font-semibold tracking-wide drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]">
+          <span className="text-white text-5xl md:text-6xl font-semibold tracking-wide drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]">
             {isPlaying ? 'II' : '▶'}
           </span>
         </button>
 
         <audio
           ref={audioRef}
-          src={cloudinaryAudio}
+          crossOrigin="anonymous"
           preload="metadata"
           onPlay={() => setIsPlaying(true)}
           onPause={() => {
@@ -185,16 +180,19 @@ const AutomationOrb = ({ title, audioSrc }) => {
             setIsPlaying(false);
             stopMetering();
           }}
-        />
+        >
+          <source src={cloudinaryAudio} type="audio/mpeg" />
+        </audio>
       </div>
 
-      <div className="relative z-10 text-center">
+      <div className="text-center">
         <p className="text-cyan-100 uppercase tracking-[0.24em] text-xs md:text-sm font-medium">
           {title} • {isPlaying ? 'Voice Live' : 'Voice Paused'}
         </p>
         <p className="mt-2 text-[11px] md:text-xs text-cyan-100/75">
-          Click the orb to play/pause Cloudinary voice audio with reactive color waves and dancing stars.
+          Tap the orb to play the real voice audio.
         </p>
+        {!isAudioFile && cloudinaryAudio ? <p className="mt-2 text-xs text-amber-200">This URL does not look like an audio file.</p> : null}
         {audioError ? <p className="mt-2 text-xs text-rose-300">{audioError}</p> : null}
       </div>
     </div>
@@ -221,7 +219,7 @@ const AutomationsPage = () => {
         <title>Automation Systems | CodeByCed</title>
         <meta
           name="description"
-          content="Explore premium Make.com AI automation systems, watch workflow demos, and launch with professional setup support."
+          content="Explore premium Make.com AI automation systems, stream real workflow audio, inspect logic, and launch with professional setup support."
         />
       </Helmet>
 
@@ -233,7 +231,7 @@ const AutomationsPage = () => {
             <p className="inline-block text-xs uppercase tracking-[0.2em] text-cyan-200 mb-3">Automation Marketplace</p>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Done-for-You AI Automation Systems</h1>
             <p className="text-lg text-gray-200 max-w-3xl">
-              Deploy business-ready workflows powered by Make.com. Watch real demos, inspect the shared workflow logic,
+              Deploy business-ready workflows powered by Make.com. Listen to real audio, inspect the shared workflow logic,
               and launch quickly with white-glove implementation.
             </p>
           </div>
@@ -253,7 +251,7 @@ const AutomationsPage = () => {
                   <h2 className="text-2xl md:text-3xl text-white font-semibold mb-3">{automation.name}</h2>
                   <p className="text-gray-200 mb-6">{automation.description}</p>
 
-                  <AutomationOrb title={automation.name} audioSrc={automation.demoVideoUrl} />
+                  <AutomationOrb title={automation.name} audioSrc={automation.demoAudioUrl || automation.demoVideoUrl} />
 
                   <div className="flex flex-wrap gap-3">
                     <a
