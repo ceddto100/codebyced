@@ -17,7 +17,15 @@ const STAR_NODES = [
   { id: 8, left: '69%', top: '73%', size: 'text-sm', speed: 3.2, drift: 1.7 },
   { id: 9, left: '76%', top: '40%', size: 'text-lg', speed: 2.9, drift: 1.4 },
   { id: 10, left: '84%', top: '62%', size: 'text-2xl', speed: 2.7, drift: 1.2 },
-  { id: 11, left: '90%', top: '30%', size: 'text-base', speed: 3, drift: 1.6 }
+  { id: 11, left: '90%', top: '30%', size: 'text-base', speed: 3, drift: 1.6 },
+  ...Array.from({ length: 50 }, (_, index) => ({
+    id: index + 12,
+    left: `${4 + ((index * 17) % 92)}%`,
+    top: `${6 + ((index * 23) % 86)}%`,
+    size: ['text-xs', 'text-sm', 'text-base', 'text-lg'][index % 4],
+    speed: 2 + ((index * 0.19) % 1.9),
+    drift: 1 + ((index * 0.13) % 1.2)
+  }))
 ];
 
 const AutomationOrb = ({ title, audioSrc }) => {
