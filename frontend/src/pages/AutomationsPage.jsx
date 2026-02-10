@@ -7,17 +7,25 @@ import { getAutomations } from '../services/automationsService';
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xjgekypd';
 
 const STAR_NODES = [
-  { id: 1, left: '12%', top: '20%', size: 'h-2 w-2', speed: '2.4s' },
-  { id: 2, left: '18%', top: '68%', size: 'h-1.5 w-1.5', speed: '3.1s' },
-  { id: 3, left: '26%', top: '34%', size: 'h-2.5 w-2.5', speed: '2.8s' },
-  { id: 4, left: '34%', top: '78%', size: 'h-1.5 w-1.5', speed: '3.3s' },
-  { id: 5, left: '42%', top: '16%', size: 'h-2 w-2', speed: '2.6s' },
-  { id: 6, left: '52%', top: '82%', size: 'h-1.5 w-1.5', speed: '3.4s' },
-  { id: 7, left: '60%', top: '24%', size: 'h-2.5 w-2.5', speed: '2.5s' },
-  { id: 8, left: '69%', top: '73%', size: 'h-1.5 w-1.5', speed: '3.2s' },
-  { id: 9, left: '76%', top: '40%', size: 'h-2 w-2', speed: '2.9s' },
-  { id: 10, left: '84%', top: '62%', size: 'h-2.5 w-2.5', speed: '2.7s' },
-  { id: 11, left: '90%', top: '30%', size: 'h-1.5 w-1.5', speed: '3s' }
+  { id: 1, left: '12%', top: '20%', size: 'text-xl', speed: 2.4, drift: 1.1 },
+  { id: 2, left: '18%', top: '68%', size: 'text-sm', speed: 3.1, drift: 1.5 },
+  { id: 3, left: '26%', top: '34%', size: 'text-2xl', speed: 2.8, drift: 1.2 },
+  { id: 4, left: '34%', top: '78%', size: 'text-base', speed: 3.3, drift: 1.8 },
+  { id: 5, left: '42%', top: '16%', size: 'text-lg', speed: 2.6, drift: 1.3 },
+  { id: 6, left: '52%', top: '82%', size: 'text-sm', speed: 3.4, drift: 2 },
+  { id: 7, left: '60%', top: '24%', size: 'text-2xl', speed: 2.5, drift: 1.2 },
+  { id: 8, left: '69%', top: '73%', size: 'text-sm', speed: 3.2, drift: 1.7 },
+  { id: 9, left: '76%', top: '40%', size: 'text-lg', speed: 2.9, drift: 1.4 },
+  { id: 10, left: '84%', top: '62%', size: 'text-2xl', speed: 2.7, drift: 1.2 },
+  { id: 11, left: '90%', top: '30%', size: 'text-base', speed: 3, drift: 1.6 },
+  ...Array.from({ length: 50 }, (_, index) => ({
+    id: index + 12,
+    left: `${4 + ((index * 17) % 92)}%`,
+    top: `${6 + ((index * 23) % 86)}%`,
+    size: ['text-xs', 'text-sm', 'text-base', 'text-lg'][index % 4],
+    speed: 2 + ((index * 0.19) % 1.9),
+    drift: 1 + ((index * 0.13) % 1.2)
+  }))
 ];
 
 const AutomationOrb = ({ title, audioSrc }) => {
@@ -30,8 +38,10 @@ const AutomationOrb = ({ title, audioSrc }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioLevel, setAudioLevel] = useState(0);
   const [audioError, setAudioError] = useState('');
+  const [timePulse, setTimePulse] = useState(0);
 
   const cloudinaryAudio = typeof audioSrc === 'string' && audioSrc.includes('res.cloudinary.com') ? audioSrc : '';
+  const isAudioFile = typeof cloudinaryAudio === 'string' && /\.(mp3|wav|m4a|ogg)(\?|$)/i.test(cloudinaryAudio);
 
   const stopMetering = React.useCallback(() => {
     if (animationFrameRef.current) {
@@ -108,6 +118,15 @@ const AutomationOrb = ({ title, audioSrc }) => {
     stopMetering();
   };
 
+
+  React.useEffect(() => {
+    const interval = window.setInterval(() => {
+      setTimePulse((prev) => prev + 0.09);
+    }, 40);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
   React.useEffect(() => () => {
     stopMetering();
 
@@ -129,8 +148,9 @@ const AutomationOrb = ({ title, audioSrc }) => {
 
   const hue = Math.round(198 + audioLevel * 120);
   const secondHue = (hue + 58) % 360;
-  const orbScale = 1 + audioLevel * 0.1;
-  const haloStrength = 0.35 + audioLevel * 0.45;
+  const pulseWave = isPlaying ? (Math.sin(timePulse * 2.6) + 1) * 0.5 : 0;
+  const orbScale = 1 + audioLevel * 0.18 + pulseWave * 0.06;
+  const haloStrength = 0.35 + audioLevel * 0.45 + pulseWave * 0.2;
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-cyan-400/35 bg-[#03051a] p-6 mb-6">
@@ -139,22 +159,31 @@ const AutomationOrb = ({ title, audioSrc }) => {
 
       <div className="relative mx-auto h-[280px] md:h-[340px] max-w-[540px] flex items-center justify-center">
         <div className="absolute w-[320px] h-[320px] md:w-[390px] md:h-[390px] rounded-full border border-cyan-300/20 animate-ping [animation-duration:4.4s]" />
-        <div className="absolute w-[280px] h-[280px] md:w-[340px] md:h-[340px] rounded-full border border-indigo-300/25 animate-pulse [animation-duration:2.6s]" />
+        <div className="absolute w-[280px] h-[280px] md:w-[340px] md:h-[340px] rounded-full border border-sky-300/25 animate-pulse [animation-duration:2.2s]" />
         <div className="absolute w-[230px] h-[230px] md:w-[286px] md:h-[286px] rounded-full border border-cyan-200/40" style={{ boxShadow: `0 0 80px hsla(${hue}, 95%, 65%, ${haloStrength})` }} />
 
-        {STAR_NODES.map((star, index) => (
-          <span
-            key={star.id}
-            className={`absolute rounded-full bg-cyan-100/95 ${star.size} animate-bounce`}
-            style={{
-              left: star.left,
-              top: star.top,
-              animationDuration: star.speed,
-              filter: `drop-shadow(0 0 ${12 + audioLevel * 20}px hsla(${secondHue}, 92%, 70%, 0.95))`,
-              transform: `translateY(${Math.sin((index + 1) * 0.9) * (6 + audioLevel * 18)}px) scale(${1 + audioLevel * 0.55})`
-            }}
-          />
-        ))}
+        {STAR_NODES.map((star, index) => {
+          const danceX = Math.cos(timePulse * star.drift + index) * (6 + audioLevel * 18);
+          const danceY = Math.sin(timePulse * (star.drift + 0.45) + index) * (8 + audioLevel * 20);
+          const starScale = 0.88 + audioLevel * 0.5 + (isPlaying ? (Math.sin(timePulse * 2 + index) + 1) * 0.14 : 0);
+
+          return (
+            <span
+              key={star.id}
+              className={`absolute ${star.size} text-cyan-100/95 select-none`}
+              style={{
+                left: star.left,
+                top: star.top,
+                filter: `drop-shadow(0 0 ${14 + audioLevel * 24}px hsla(${secondHue}, 95%, 72%, 0.95))`,
+                transform: `translate(${danceX}px, ${danceY}px) scale(${starScale}) rotate(${danceX * 2.1}deg)`,
+                opacity: 0.7 + audioLevel * 0.28,
+                transition: 'transform 70ms linear'
+              }}
+            >
+              ✦
+            </span>
+          );
+        })}
 
         <button
           type="button"
@@ -164,7 +193,8 @@ const AutomationOrb = ({ title, audioSrc }) => {
           className="relative z-20 rounded-full w-[170px] h-[170px] md:w-[190px] md:h-[190px] flex items-center justify-center border border-white/40 shadow-[inset_0_0_55px_rgba(255,255,255,0.16)] transition-transform duration-150 active:scale-95"
           style={{
             transform: `scale(${orbScale})`,
-            background: `radial-gradient(circle at 30% 22%, hsla(${hue}, 94%, 82%, 0.93), hsla(${secondHue}, 88%, 61%, 0.88) 56%, hsla(${hue}, 90%, 44%, 0.86) 100%)`
+            background: `radial-gradient(circle at 30% 22%, hsla(${hue}, 94%, 82%, 0.93), hsla(${secondHue}, 88%, 61%, 0.88) 56%, hsla(${hue}, 90%, 44%, 0.86) 100%)`,
+            boxShadow: `0 0 ${34 + audioLevel * 56}px hsla(${secondHue}, 95%, 64%, ${0.35 + audioLevel * 0.42}), inset 0 0 55px rgba(255,255,255,0.16)`
           }}
         >
           <span className="text-white text-5xl md:text-6xl font-semibold tracking-wide drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]">
@@ -174,7 +204,6 @@ const AutomationOrb = ({ title, audioSrc }) => {
 
         <audio
           ref={audioRef}
-          src={cloudinaryAudio}
           preload="metadata"
           onPlay={() => setIsPlaying(true)}
           onPause={() => {
@@ -185,7 +214,9 @@ const AutomationOrb = ({ title, audioSrc }) => {
             setIsPlaying(false);
             stopMetering();
           }}
-        />
+        >
+          <source src={cloudinaryAudio} type="audio/mpeg" />
+        </audio>
       </div>
 
       <div className="relative z-10 text-center">
@@ -193,8 +224,9 @@ const AutomationOrb = ({ title, audioSrc }) => {
           {title} • {isPlaying ? 'Voice Live' : 'Voice Paused'}
         </p>
         <p className="mt-2 text-[11px] md:text-xs text-cyan-100/75">
-          Click the orb to play/pause Cloudinary voice audio with reactive color waves and dancing stars.
+          Click the orb to play/pause Cloudinary voice audio with a pulsating orb and faster dancing stars.
         </p>
+        {!isAudioFile && cloudinaryAudio ? <p className="mt-2 text-xs text-amber-200">This media link is not an audio file.</p> : null}
         {audioError ? <p className="mt-2 text-xs text-rose-300">{audioError}</p> : null}
       </div>
     </div>
@@ -253,7 +285,7 @@ const AutomationsPage = () => {
                   <h2 className="text-2xl md:text-3xl text-white font-semibold mb-3">{automation.name}</h2>
                   <p className="text-gray-200 mb-6">{automation.description}</p>
 
-                  <AutomationOrb title={automation.name} audioSrc={automation.demoVideoUrl} />
+                  <AutomationOrb title={automation.name} audioSrc={automation.demoAudioUrl || automation.demoVideoUrl} />
 
                   <div className="flex flex-wrap gap-3">
                     <a
