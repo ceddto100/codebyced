@@ -83,6 +83,11 @@ const AutomationOrb = ({ title, audioSrc }) => {
     if (audioRef.current.paused) {
       try {
         await setupAudioAnalyser();
+      } catch (_error) {
+        // Continue playback even if analyzer setup fails (for example due to CORS restrictions).
+      }
+
+      try {
         await audioRef.current.play();
         setIsPlaying(true);
       } catch (_error) {
@@ -164,6 +169,7 @@ const AutomationOrb = ({ title, audioSrc }) => {
 
         <audio
           ref={audioRef}
+          crossOrigin="anonymous"
           preload="metadata"
           onPlay={() => setIsPlaying(true)}
           onPause={() => {
