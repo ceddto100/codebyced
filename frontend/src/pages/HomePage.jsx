@@ -391,73 +391,38 @@ const HomePage = () => {
           ></div>
         </div>
         
-        {/* Hero Section with Video Background and Profile Picture */}
-        <section className="mb-20 relative animate-fade-in-down rounded-xl overflow-hidden shadow-md">
-          {/* Video Background */}
-          <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
-            <video 
-              className="absolute min-w-full min-h-full object-cover object-center opacity-60"
-              style={{ 
-                objectPosition: "center 50%",
-                transform: "translateY(-25%)"
-              }}
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-            >
-              <source src="background.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            {/* Overlay to ensure text readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-indigo-900/80 backdrop-blur-sm"></div>
-          </div>
-          
-          {/* Content */}
-          <div className="relative z-10 p-8">
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-              {/* Profile Picture */}
-              <div className="relative animate-float" style={{ animationDelay: '0.5s' }}>
-                <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-transform duration-400">
-                  <img
-                    src="profilepic.png"
-                    alt="Profile"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="absolute -bottom-2 -right-2 bg-blue-500 rounded-full p-2 shadow-md">
-                  <svg 
-                    className="w-4 h-4 text-white" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                  >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" 
-                    />
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" 
-                    />
-                  </svg>
-                </div>
-              </div>
-              
-              {/* Welcome Text */}
-              <div className="md:text-left text-center">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-100">
-                  Automate. Design. Integrate.
-                </h1>
-                <p className="text-xl text-gray-300">
-                  Custom websites, AI voice agents, and automated workflows-built to fit your exact business needs.
-                </p>
-              </div>
+        {/* Hero Section */}
+        <section className="mb-20 relative overflow-hidden rounded-3xl border border-cyan-400/25 bg-[#070b1f] shadow-2xl shadow-cyan-900/30">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_45%),radial-gradient(circle_at_78%_25%,rgba(129,140,248,0.22),transparent_40%),linear-gradient(120deg,#121c4b_0%,#03263a_65%,#05384a_100%)]" />
+          <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle,rgba(191,219,254,0.35)_1px,transparent_1px)] [background-size:22px_22px]" />
+
+          <div className="relative z-10 px-6 py-10 md:px-12 md:py-14 lg:px-16 lg:py-16 text-center">
+            <p className="text-xs sm:text-sm uppercase tracking-[0.3em] text-cyan-200 mb-4">Automation Marketplace</p>
+            <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-5">
+              Done-for-You
+              <span className="block text-cyan-300">AI Automation Systems</span>
+            </h1>
+            <p className="text-base md:text-2xl text-slate-200 max-w-4xl mx-auto mb-10">
+              Deploy business-ready workflows powered by Make.com. Watch real demos, inspect the shared workflow logic,
+              and launch quickly with white-glove implementation.
+            </p>
+
+            <div className="relative max-w-4xl mx-auto mb-10">
+              <div className="absolute -inset-3 rounded-3xl bg-cyan-400/20 blur-2xl" />
+              <img
+                src="/images/make.png"
+                alt="AI automation workflow connecting apps"
+                className="relative w-full rounded-2xl border border-cyan-300/30 shadow-2xl shadow-cyan-900/40"
+              />
             </div>
+
+            <Link
+              to="/automations"
+              className="inline-flex items-center px-8 py-3 rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-white font-semibold text-lg hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 hover:-translate-y-0.5"
+            >
+              Automate Now
+              <span className="ml-2">→</span>
+            </Link>
           </div>
         </section>
 
@@ -916,4 +881,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
