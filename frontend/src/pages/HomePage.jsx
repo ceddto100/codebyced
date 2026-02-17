@@ -461,6 +461,88 @@ const HomePage = () => {
           </div>
         </section>
 
+        <section className="mb-16 relative overflow-hidden rounded-2xl border border-cyan-400/30 bg-gray-900/75 backdrop-blur-xl p-8 md:p-10 shadow-xl shadow-cyan-900/20 group">
+          <div className="absolute -top-20 -right-20 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl transition-transform duration-500 group-hover:scale-110" />
+          <div className="absolute -bottom-24 -left-12 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl transition-transform duration-500 group-hover:scale-110" />
+          <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div>
+              <p className="text-xs uppercase tracking-[0.22em] text-cyan-200 mb-3">Featured Automation Systems</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{automationFeature.headline}</h2>
+              <p className="text-gray-200 max-w-3xl text-lg">{automationFeature.description}</p>
+            </div>
+            <Link
+              to={automationFeature.href}
+              className="inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 hover:-translate-y-0.5"
+            >
+              {automationFeature.cta}
+              <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </Link>
+          </div>
+        </section>
+
+
+        {/* Blog Section */}
+        <section className="mb-section">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div className="relative pb-3">
+              <h2 className="text-3xl font-bold text-gray-100">Latest from the Blog</h2>
+              <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-primary rounded-full"></div>
+            </div>
+            <Button to="/blog" variant="primary">
+              View All Blog Posts
+            </Button>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {isLoading ? (
+              <TwoColumnSkeletonGrid count={2} />
+            ) : error ? (
+              <div className="col-span-2 backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-xl">
+                {error}
+              </div>
+            ) : blogPosts.length === 0 ? (
+              <div className="col-span-2 backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-xl">
+                No blog posts found. Check back soon for new content!
+              </div>
+            ) : (
+              blogPosts.map(post => (
+                <div
+                  key={post._id}
+                  onClick={() => navigate(`/blog/${post._id}`)}
+                  className="clickable-card backdrop-blur-sm bg-gray-900/80 rounded-xl shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 relative"
+                >
+                  {/* Share Button */}
+                  <div className="absolute top-2 right-2 z-10">
+                    <ShareButton 
+                      url={`${window.location.origin}/blog/${post._id}`}
+                      title={post.title}
+                      description={post.excerpt}
+                    />
+                  </div>
+                  {post.coverImage && (
+                    <div className="h-48 overflow-hidden">
+                      <img 
+                        src={post.coverImage} 
+                        alt={post.title}
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <p className="text-sm text-gray-400 mb-2">{formatDate(post.date)}</p>
+                    <h3 className="text-xl font-semibold mb-2 text-gray-100 group-hover:text-blue-400 transition-colors duration-200">{post.title}</h3>
+                    <p className="text-gray-100 mb-4 text-improved">{post.excerpt}</p>
+                    <span className="text-blue-400 font-medium inline-flex items-center">
+                      Read more
+                      <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
+                    </span>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
+
+
         {/* Projects Section */}
         <section className="mb-section">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
@@ -546,26 +628,8 @@ const HomePage = () => {
         </section>
 
 
-        <section className="mb-16 relative overflow-hidden rounded-2xl border border-cyan-400/30 bg-gray-900/75 backdrop-blur-xl p-8 md:p-10 shadow-xl shadow-cyan-900/20 group">
-          <div className="absolute -top-20 -right-20 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl transition-transform duration-500 group-hover:scale-110" />
-          <div className="absolute -bottom-24 -left-12 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl transition-transform duration-500 group-hover:scale-110" />
-          <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-            <div>
-              <p className="text-xs uppercase tracking-[0.22em] text-cyan-200 mb-3">Featured Automation Systems</p>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{automationFeature.headline}</h2>
-              <p className="text-gray-200 max-w-3xl text-lg">{automationFeature.description}</p>
-            </div>
-            <Link
-              to={automationFeature.href}
-              className="inline-flex items-center px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/30 transition-all duration-300 hover:-translate-y-0.5"
-            >
-              {automationFeature.cta}
-              <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </Link>
-          </div>
-        </section>
 
-        {/* =================== NEW SERVICES SECTION (inserted above Blog) =================== */}
+        {/* Services Section */}
         <section id="services" className="mb-20 backdrop-blur-sm bg-gray-900/80 p-8 rounded-xl shadow-lg hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 border border-gray-800 relative overflow-hidden">
   {/* Subtle gradient blobs */}
   <div className="absolute -top-16 -right-16 w-72 h-72 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-full blur-2xl" />
@@ -626,68 +690,7 @@ const HomePage = () => {
   </div>
 </section>
 
-        {/* ================= End Services Section ================= */}
-
-        {/* Blog Section */}
-        <section className="mb-section">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <div className="relative pb-3">
-              <h2 className="text-3xl font-bold text-gray-100">Latest from the Blog</h2>
-              <div className="absolute bottom-0 left-0 w-24 h-1 bg-brand-primary rounded-full"></div>
-            </div>
-            <Button to="/blog" variant="primary">
-              View All Blog Posts
-            </Button>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {isLoading ? (
-              <TwoColumnSkeletonGrid count={2} />
-            ) : error ? (
-              <div className="col-span-2 backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-red-400 p-4 rounded-xl">
-                {error}
-              </div>
-            ) : blogPosts.length === 0 ? (
-              <div className="col-span-2 backdrop-blur-sm bg-gray-900/80 border border-gray-800 text-yellow-400 p-4 rounded-xl">
-                No blog posts found. Check back soon for new content!
-              </div>
-            ) : (
-              blogPosts.map(post => (
-                <div
-                  key={post._id}
-                  onClick={() => navigate(`/blog/${post._id}`)}
-                  className="clickable-card backdrop-blur-sm bg-gray-900/80 rounded-xl shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 relative"
-                >
-                  {/* Share Button */}
-                  <div className="absolute top-2 right-2 z-10">
-                    <ShareButton 
-                      url={`${window.location.origin}/blog/${post._id}`}
-                      title={post.title}
-                      description={post.excerpt}
-                    />
-                  </div>
-                  {post.coverImage && (
-                    <div className="h-48 overflow-hidden">
-                      <img 
-                        src={post.coverImage} 
-                        alt={post.title}
-                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <p className="text-sm text-gray-400 mb-2">{formatDate(post.date)}</p>
-                    <h3 className="text-xl font-semibold mb-2 text-gray-100 group-hover:text-blue-400 transition-colors duration-200">{post.title}</h3>
-                    <p className="text-gray-100 mb-4 text-improved">{post.excerpt}</p>
-                    <span className="text-blue-400 font-medium inline-flex items-center">
-                      Read more
-                      <span className="ml-1 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-                    </span>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </section>
+        {/* End Services Section */}
 
         {/* Resume Section */}
         <section
