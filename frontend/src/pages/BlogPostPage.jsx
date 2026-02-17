@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getBlogPost } from '../services/blogService';
-import ReactMarkdown from 'react-markdown';
 import { Helmet } from 'react-helmet';
 import PageLayout from '../components/PageLayout';
 import ShareButton from '../components/ShareButton';
+import PostContent from '../components/PostContent';
 
 const BlogPostPage = () => {
   const { id } = useParams();
@@ -39,6 +39,22 @@ const BlogPostPage = () => {
         
         // Extract the post data and ensure all fields are the correct type
         const postData = response.data;
+
+        const normalizeCoverImage = (coverImage) => {
+          if (!coverImage || typeof coverImage !== 'string') {
+            return '';
+          }
+
+          const trimmedCoverImage = coverImage.trim();
+
+          if (/^https?:\/\//i.test(trimmedCoverImage) || trimmedCoverImage.startsWith('//')) {
+            return trimmedCoverImage;
+          }
+
+          return trimmedCoverImage.startsWith('/')
+            ? trimmedCoverImage
+            : `/${trimmedCoverImage}`;
+        };
         
         // Debug logs
         console.log('Post data before sanitization:', postData);
@@ -52,9 +68,7 @@ const BlogPostPage = () => {
           excerpt: String(postData.excerpt || ''),
           date: postData.date || new Date().toISOString(),
           tags: Array.isArray(postData.tags) ? postData.tags.map(tag => String(tag)) : [],
-          coverImage: postData.coverImage ? 
-            (postData.coverImage.startsWith('/') ? postData.coverImage : `/${postData.coverImage}`) : 
-            '' // Ensure the path starts with a forward slash
+          coverImage: normalizeCoverImage(postData.coverImage)
         };
         
         // Debug logs
@@ -89,36 +103,6 @@ const BlogPostPage = () => {
     } catch (e) {
       console.error('Date formatting error:', e);
       return 'Unknown date';
-    }
-  };
-
-  // Simple content renderer fallback
-  const renderContentFallback = (content) => {
-    if (!content) return null;
-    try {
-      return content.split('\n').map((paragraph, idx) => (
-        paragraph.trim() ? <p key={idx} className="mb-4">{paragraph}</p> : null
-      )).filter(Boolean);
-    } catch (e) {
-      console.error('Content rendering fallback error:', e);
-      return <p>Content display error</p>;
-    }
-  };
-
-  const renderContent = (content) => {
-    if (!content || typeof content !== 'string') {
-      return <p>No content available</p>;
-    }
-
-    try {
-      return (
-        <div className="blog-content">
-          <ReactMarkdown>{content}</ReactMarkdown>
-        </div>
-      );
-    } catch (e) {
-      console.error('ReactMarkdown error:', e);
-      return renderContentFallback(content);
     }
   };
 
@@ -198,7 +182,7 @@ const BlogPostPage = () => {
             )}
 
             <div className="prose prose-lg prose-invert max-w-none">
-              {renderContent(post.content)}
+              <PostContent post={post} />
             </div>
 
             {post.references && post.references.length > 0 && (
