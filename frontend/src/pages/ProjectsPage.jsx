@@ -257,7 +257,7 @@ const ProjectsPage = () => {
                 )}
                 <div className="p-6">
                   <h3 className="text-xl font-semibold mb-2 text-gray-100 group-hover:text-blue-400 transition-colors">{project.title}</h3>
-                  <p className="text-gray-100 mb-4 text-improved">{project.description}</p>
+                  <p className="text-gray-100 mb-4 text-improved line-clamp-3">{project.description}</p>
 
                   {/* Technologies */}
                   <div className="flex flex-wrap gap-2 mb-4">
