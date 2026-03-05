@@ -8,6 +8,19 @@ import { CardSkeletonGrid } from '../components/Skeleton';
 const CLAUDE_ARTIFACT_URL = "https://claude.site/public/artifacts/6358a80a-75eb-4ee0-ae85-5ebc986fe2a3/embed";
 const KELLY_APP_URL = "https://betgistics.com/";
 
+const STATIC_PROJECTS = [
+  {
+    _id: 'static-exotic-rentals',
+    title: 'Exotic Rentals',
+    description: 'A sleek car rental service platform built for discovering and booking premium exotic vehicles. Browse an exclusive fleet of high-end cars with real-time availability, seamless reservation flows, and a modern UI designed to match the luxury experience. Whether you\'re looking for a weekend thrill or a special occasion ride, Exotic Rentals delivers an elevated booking experience from first click to keys in hand.',
+    category: 'Web App',
+    technologies: ['React', 'Vercel', 'JavaScript', 'CSS'],
+    image: '/images/exotic_rentals.png',
+    demoLink: 'https://exoticrentals-eta.vercel.app/',
+    featured: true,
+  },
+];
+
 const ProjectsPage = () => {
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,13 +46,13 @@ const ProjectsPage = () => {
         if (!response?.success) throw new Error(response?.error || 'Failed to fetch projects');
         if (!Array.isArray(response?.data)) throw new Error('Invalid response format from API');
 
-        const sortedProjects = [...response.data].sort(
+        const merged = [...STATIC_PROJECTS, ...response.data].sort(
           (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)
         );
-        setProjects(sortedProjects);
+        setProjects(merged);
 
         const uniqueCategories = Array.from(
-          new Set(sortedProjects.filter(p => p.category).map(p => p.category))
+          new Set(merged.filter(p => p.category).map(p => p.category))
         );
         setCategories(uniqueCategories);
         setError(null);
@@ -223,6 +236,7 @@ const ProjectsPage = () => {
                   const urlOverrides = {
                     betting: 'https://betgistics.com/',
                     'loose threads': 'https://ceddto100.github.io/kloosethreads3/',
+                    'exotic rentals': 'https://exoticrentals-eta.vercel.app/',
                   };
                   const key = Object.keys(urlOverrides).find(k => new RegExp(k, 'i').test(project.title));
                   const url = key ? urlOverrides[key] : (project.demoLink || project.githubLink);
