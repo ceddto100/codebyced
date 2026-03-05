@@ -104,7 +104,7 @@ const ProjectsPage = () => {
           "operatingSystem": "Web",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
           "image": project.image,
-          "url": project.demoLink || project.githubLink
+          "url": /betting|smart.*sport/i.test(project.title) ? 'https://betgistics.com/' : (project.demoLink || project.githubLink)
         }
       }))
     },
@@ -220,11 +220,9 @@ const ProjectsPage = () => {
                 key={project._id}
                 variants={cardVariants}
                 onClick={() => {
-                  if (project.demoLink) {
-                    window.open(project.demoLink, '_blank');
-                  } else if (project.githubLink) {
-                    window.open(project.githubLink, '_blank');
-                  }
+                  const isBettingAssistant = /betting|smart.*sport/i.test(project.title);
+                  const url = isBettingAssistant ? 'https://betgistics.com/' : (project.demoLink || project.githubLink);
+                  if (url) window.open(url, '_blank');
                 }}
                 className="clickable-card backdrop-blur-sm bg-gray-900/80 rounded-xl shadow-md hover:shadow-xl hover:shadow-cyan-900/20 transition-all duration-300 overflow-hidden border border-gray-800 group"
               >
