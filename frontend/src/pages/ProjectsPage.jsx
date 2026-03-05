@@ -12,7 +12,7 @@ const STATIC_PROJECTS = [
   {
     _id: 'static-exotic-rentals',
     title: 'Exotic Rentals',
-    description: 'A sleek car rental service platform built for discovering and booking premium exotic vehicles. Browse an exclusive fleet of high-end cars with real-time availability, seamless reservation flows, and a modern UI designed to match the luxury experience. Whether you\'re looking for a weekend thrill or a special occasion ride, Exotic Rentals delivers an elevated booking experience from first click to keys in hand.',
+    description: 'A premium car rental platform for browsing and booking exotic vehicles with real-time availability and seamless reservations. Designed to deliver a luxury experience from first click to keys in hand.',
     category: 'Web App',
     technologies: ['React', 'Vercel', 'JavaScript', 'CSS'],
     image: '/images/exotic_rentals.png',
@@ -257,7 +257,7 @@ const ProjectsPage = () => {
                 )}
                 <div className="p-6">
                   <h3 className="text-xl font-semibold mb-2 text-gray-100 group-hover:text-blue-400 transition-colors">{project.title}</h3>
-                  <p className="text-gray-100 mb-4 text-improved">{project.description}</p>
+                  <p className="text-gray-100 mb-4 text-improved line-clamp-3">{project.description}</p>
 
                   {/* Technologies */}
                   <div className="flex flex-wrap gap-2 mb-4">
