@@ -9,7 +9,7 @@ const ElevenLabsConvai = () => {
     if (!customElements.get('elevenlabs-convai')) {
       // Create and load the script only if it hasn't been loaded yet
       scriptRef.current = document.createElement('script');
-      scriptRef.current.src = 'https://elevenlabs.io/convai-widget/index.js';
+      scriptRef.current.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
       scriptRef.current.async = true;
       scriptRef.current.type = 'text/javascript';
       
@@ -17,7 +17,7 @@ const ElevenLabsConvai = () => {
       scriptRef.current.onload = () => {
         // Create widget element only after script has loaded
         widgetRef.current = document.createElement('elevenlabs-convai');
-        widgetRef.current.setAttribute('agent-id', 'klyy8evZGhBfu4B4LDuy');
+        widgetRef.current.setAttribute('agent-id', 'agent_6901kk6dhd0gfs7bfrys6tspt25w');
         document.body.appendChild(widgetRef.current);
       };
 
