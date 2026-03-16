@@ -106,10 +106,41 @@ const BlogPostPage = () => {
     }
   };
 
+  const postUrl = `https://codebyced.com/blog/${id}`;
+  const ogImage = post?.coverImage
+    ? post.coverImage.startsWith('http')
+      ? post.coverImage
+      : `https://codebyced.com${post.coverImage}`
+    : 'https://codebyced.com/images/blog-header.jpg';
+
   return (
     <PageLayout>
       <Helmet>
-        {/* ... existing Helmet content ... */}
+        {/* Primary meta */}
+        <title>{post ? `${post.title} | CodeByCed` : 'Blog | CodeByCed'}</title>
+        <meta name="description" content={post?.excerpt || 'Read the latest posts on CodeByCed.'} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="CodeByCed" />
+        <meta property="og:url" content={postUrl} />
+        <meta property="og:title" content={post?.title || 'CodeByCed Blog'} />
+        <meta property="og:description" content={post?.excerpt || 'Read the latest posts on CodeByCed.'} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        {post?.date && <meta property="article:published_time" content={new Date(post.date).toISOString()} />}
+        {post?.tags && post.tags.map((tag) => (
+          <meta key={tag} property="article:tag" content={tag} />
+        ))}
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@codebyced" />
+        <meta name="twitter:url" content={postUrl} />
+        <meta name="twitter:title" content={post?.title || 'CodeByCed Blog'} />
+        <meta name="twitter:description" content={post?.excerpt || 'Read the latest posts on CodeByCed.'} />
+        <meta name="twitter:image" content={ogImage} />
       </Helmet>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -160,10 +191,11 @@ const BlogPostPage = () => {
                     )}
                   </div>
                 </div>
-                <ShareButton 
-                  url={window.location.href}
+                <ShareButton
+                  url={postUrl}
                   title={post.title}
                   description={post.excerpt}
+                  image={ogImage}
                 />
               </div>
             </header>

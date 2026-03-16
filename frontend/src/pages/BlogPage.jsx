@@ -181,10 +181,11 @@ const BlogPage = () => {
               >
                 {/* Share Button */}
                 <div className="absolute top-2 right-2 z-10">
-                  <ShareButton 
-                    url={`${window.location.origin}/blog/${post._id}`}
+                  <ShareButton
+                    url={`https://codebyced.com/blog/${post._id}`}
                     title={post.title}
                     description={post.excerpt}
+                    image={post.coverImage}
                   />
                 </div>
                 {post.coverImage && (
