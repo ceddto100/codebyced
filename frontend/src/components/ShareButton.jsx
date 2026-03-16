@@ -5,7 +5,6 @@ const ShareButton = ({ url, title, description, image }) => {
   const [copied, setCopied] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -18,13 +17,13 @@ const ShareButton = ({ url, title, description, image }) => {
   }, []);
 
   const encodedUrl = encodeURIComponent(url);
-  const encodedTitle = encodeURIComponent(title);
-  const encodedDescription = encodeURIComponent(description || '');
+  const shareText = `${title}${description ? ` — ${description}` : ''}`;
 
   const shareUrls = {
-    twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodeURIComponent(`${title}${description ? ' — ' + description : ''}`)}`,
+    twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodeURIComponent(shareText)}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}&title=${encodedTitle}&summary=${encodedDescription}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    whatsapp: `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${url}`)}`
   };
 
   const handleCopyLink = async () => {
@@ -41,24 +40,22 @@ const ShareButton = ({ url, title, description, image }) => {
   };
 
   const handleInstagram = async () => {
-    // Web Share API is the best way to reach Instagram on mobile
+    const caption = `${title}${description ? `\n\n${description}` : ''}${image ? `\n\nImage: ${image}` : ''}\n\n${url}`;
+
     if (navigator.share) {
       try {
         await navigator.share({
           title,
-          text: description ? `${title}\n\n${description}\n\n${url}` : `${title}\n\n${url}`,
+          text: caption,
           url,
         });
         setIsOpen(false);
       } catch (err) {
-        // User cancelled — not an error
         if (err.name !== 'AbortError') {
           console.error('Web Share failed:', err);
         }
       }
     } else {
-      // Desktop fallback: copy caption + link so user can paste into Instagram
-      const caption = `${title}${description ? `\n\n${description}` : ''}\n\n${url}`;
       try {
         await navigator.clipboard.writeText(caption);
         setCopied(true);
@@ -101,7 +98,6 @@ const ShareButton = ({ url, title, description, image }) => {
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-52 rounded-lg shadow-lg bg-gray-900 border border-gray-800 py-1 z-50">
-          {/* Twitter / X */}
           <button
             onClick={() => openShare('twitter')}
             className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-blue-400 transition-colors duration-200"
@@ -112,7 +108,6 @@ const ShareButton = ({ url, title, description, image }) => {
             Twitter / X
           </button>
 
-          {/* Facebook */}
           <button
             onClick={() => openShare('facebook')}
             className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-blue-400 transition-colors duration-200"
@@ -123,7 +118,6 @@ const ShareButton = ({ url, title, description, image }) => {
             Facebook
           </button>
 
-          {/* LinkedIn */}
           <button
             onClick={() => openShare('linkedin')}
             className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-blue-400 transition-colors duration-200"
@@ -134,7 +128,16 @@ const ShareButton = ({ url, title, description, image }) => {
             LinkedIn
           </button>
 
-          {/* Instagram */}
+          <button
+            onClick={() => openShare('whatsapp')}
+            className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-green-400 transition-colors duration-200"
+          >
+            <svg className="w-5 h-5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.52 3.48A11.9 11.9 0 0012.04 0C5.4 0 .01 5.39.01 12.03c0 2.12.55 4.2 1.6 6.03L0 24l6.12-1.6a12 12 0 005.92 1.51h.01c6.64 0 12.03-5.39 12.03-12.03 0-3.21-1.25-6.23-3.56-8.4zM12.05 21.9a9.9 9.9 0 01-5.05-1.39l-.36-.21-3.63.95.97-3.54-.24-.36a9.9 9.9 0 01-1.54-5.32c0-5.48 4.46-9.94 9.95-9.94 2.65 0 5.14 1.03 7 2.9a9.86 9.86 0 012.91 7.02c0 5.48-4.46 9.94-9.95 9.94zm5.45-7.46c-.3-.15-1.78-.88-2.06-.98-.27-.1-.47-.15-.67.15s-.77.98-.95 1.18c-.17.2-.35.22-.64.08-.3-.15-1.25-.46-2.39-1.46a8.97 8.97 0 01-1.66-2.06c-.18-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.67-1.62-.92-2.23-.24-.57-.48-.5-.67-.5h-.57c-.2 0-.53.07-.8.38-.28.3-1.05 1.03-1.05 2.5 0 1.48 1.08 2.91 1.24 3.11.15.2 2.13 3.25 5.16 4.56.72.31 1.28.5 1.72.64.72.23 1.37.2 1.88.12.58-.09 1.78-.73 2.03-1.43.25-.7.25-1.29.17-1.43-.07-.14-.27-.22-.57-.37z"/>
+            </svg>
+            WhatsApp
+          </button>
+
           <button
             onClick={handleInstagram}
             className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-pink-400 transition-colors duration-200"
@@ -145,10 +148,8 @@ const ShareButton = ({ url, title, description, image }) => {
             {copied ? 'Caption copied!' : 'Instagram'}
           </button>
 
-          {/* Divider */}
           <div className="my-1 border-t border-gray-800" />
 
-          {/* Copy Link */}
           <button
             onClick={handleCopyLink}
             className="w-full flex items-center px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-blue-400 transition-colors duration-200"

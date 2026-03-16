@@ -107,6 +107,7 @@ const BlogPostPage = () => {
   };
 
   const postUrl = `https://codebyced.com/blog/${id}`;
+  const shareUrl = `https://codebyced.com/share/blog/${id}`;
   const ogImage = post?.coverImage
     ? post.coverImage.startsWith('http')
       ? post.coverImage
@@ -192,7 +193,7 @@ const BlogPostPage = () => {
                   </div>
                 </div>
                 <ShareButton
-                  url={postUrl}
+                  url={shareUrl}
                   title={post.title}
                   description={post.excerpt}
                   image={ogImage}
