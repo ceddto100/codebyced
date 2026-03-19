@@ -10,8 +10,9 @@ const NetworkBackground = () => {
 
     let animationId;
     let nodes = [];
-    const NODE_COUNT = 80;
-    const CONNECTION_DIST = 160;
+    const isMobile = window.innerWidth < 768;
+    const NODE_COUNT = isMobile ? 35 : 80;
+    const CONNECTION_DIST = isMobile ? 120 : 160;
     const MOUSE = { x: -1000, y: -1000 };
 
     const resize = () => {
