@@ -19,6 +19,18 @@ import TechnicalConsultingPage from './pages/TechnicalConsultingPage';
 import SEOBoostPage from './pages/SEOBoostPage';
 import AutomationsPage from './pages/AutomationsPage';
 
+// Admin pages
+import AdminLogin from './pages/admin/Login';
+import AdminDashboard from './pages/admin/Dashboard';
+import BlogManager from './pages/admin/BlogManager';
+import ProjectManager from './pages/admin/ProjectManager';
+import ResumeManager from './pages/admin/ResumeManager';
+import ServicesManager from './pages/admin/ServicesManager';
+import IdeasManager from './pages/admin/IdeasManager';
+import ToolsManager from './pages/admin/ToolsManager';
+import HonorsManager from './pages/admin/HonorsManager';
+import AutomationsManager from './pages/admin/AutomationsManager';
+
 function App() {
   return (
     // If deploying under a subpath, set basename on Router (Vite: import.meta.env.BASE_URL, CRA: process.env.PUBLIC_URL)
@@ -54,6 +66,18 @@ function App() {
           <Route path="/services/technical-consulting" element={<TechnicalConsultingPage />} />
             <Route path="/services/seo-boost" element={<SEOBoostPage />} />
           <Route path="/automations" element={<AutomationsPage />} />
+
+          {/* Admin */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/blog" element={<BlogManager />} />
+          <Route path="/admin/projects" element={<ProjectManager />} />
+          <Route path="/admin/resume" element={<ResumeManager />} />
+          <Route path="/admin/services" element={<ServicesManager />} />
+          <Route path="/admin/ideas" element={<IdeasManager />} />
+          <Route path="/admin/tools" element={<ToolsManager />} />
+          <Route path="/admin/honors" element={<HonorsManager />} />
+          <Route path="/admin/automations" element={<AutomationsManager />} />
         </Routes>
       </Layout>
     </Router>
