@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import AnimatedBackground from './AnimatedBackground';
+import NetworkBackground from './NetworkBackground';
 
 const PageLayout = ({ children }) => {
   useEffect(() => {
@@ -18,9 +18,9 @@ const PageLayout = ({ children }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 w-screen overflow-y-auto bg-gradient-to-b from-black via-black to-black">
+    <div className="fixed inset-0 w-screen overflow-y-auto bg-black">
       <div className="relative min-h-screen pt-16">
-        <AnimatedBackground />
+        <NetworkBackground />
         <div className="relative z-10">
           {children}
         </div>

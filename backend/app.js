@@ -7,6 +7,8 @@ dotenv.config();
 
 /* ---------- Routes & middleware ---------- */
 const searchRoutes = require('./routes/searchRoutes');
+const authRoutes = require('./routes/authRoutes');
+const auth = require('./middleware/auth');
 const errorHandler = require('./middleware/errorHandler');
 
 const blogRoutes = require('./routes/blogRoutes');
@@ -80,7 +82,18 @@ mongoose.connect(mongoUri)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-/* ---------- Routes (no Stripe) ---------- */
+/* ---------- Auth routes (public) ---------- */
+app.use('/api/auth', authRoutes);
+
+/* ---------- Protect write operations ---------- */
+const publicWritePaths = ['/api/auth/', '/api/search', '/api/elevenlabs-webhook'];
+app.use('/api', (req, res, next) => {
+  if (req.method === 'GET') return next();
+  if (publicWritePaths.some(p => req.originalUrl.startsWith(p))) return next();
+  auth(req, res, next);
+});
+
+/* ---------- Routes ---------- */
 app.use('/api/blog', blogRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/ideas', ideasRoutes);

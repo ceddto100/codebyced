@@ -67,6 +67,37 @@ router.post('/', async (req, res) => {
   }
 });
 
+// PUT /api/automations/:id
+router.put('/:id', async (req, res) => {
+  try {
+    const existing = await Automation.findOne({ automationId: req.params.id });
+    if (!existing) {
+      return res.status(404).json({ success: false, error: 'Automation not found' });
+    }
+
+    const fields = ['name', 'description', 'makeSharedLink', 'demoAudioUrl', 'demoVideoUrl', 'stripeCheckoutLink'];
+    fields.forEach(f => { if (req.body[f] !== undefined) existing[f] = req.body[f]; });
+    await existing.save();
+
+    return res.status(200).json({ success: true, data: serializeAutomation(existing) });
+  } catch (error) {
+    return res.status(400).json({ success: false, error: error.message });
+  }
+});
+
+// DELETE /api/automations/:id
+router.delete('/:id', async (req, res) => {
+  try {
+    const deleted = await Automation.findOneAndDelete({ automationId: req.params.id });
+    if (!deleted) {
+      return res.status(404).json({ success: false, error: 'Automation not found' });
+    }
+    return res.status(200).json({ success: true, data: {} });
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 router.post('/:id/upload-demo', async (req, res) => {
   const handleUpload = (handler) => new Promise((resolve, reject) => {
     handler(req, res, (err) => {
