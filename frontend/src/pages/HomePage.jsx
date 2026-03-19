@@ -24,15 +24,20 @@ const HomePage = () => {
   const [scrollProgress, setScrollProgress] = useState(0);//
 
   useEffect(() => {
-    // Add scroll progress tracking
+    // Throttled scroll progress tracking
+    let ticking = false;
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.body.offsetHeight - window.innerHeight;
-      const scrollPercent = (scrollTop / docHeight) * 100;
-      setScrollProgress(scrollPercent);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.body.offsetHeight - window.innerHeight;
+        setScrollProgress((scrollTop / docHeight) * 100);
+        ticking = false;
+      });
     };
-    
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     const fetchData = async () => {
       try {
@@ -395,19 +400,20 @@ const HomePage = () => {
         <section className="mb-20 relative animate-fade-in-down rounded-xl overflow-hidden shadow-md">
           {/* Video Background */}
           <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
-            <video 
+            <video
               className="absolute min-w-full min-h-full object-cover object-center opacity-60"
-              style={{ 
+              style={{
                 objectPosition: "center 50%",
                 transform: "translateY(-25%)"
               }}
-              autoPlay 
-              loop 
-              muted 
+              autoPlay
+              loop
+              muted
               playsInline
+              preload="metadata"
+              poster="hero-poster.webp"
             >
               <source src="background.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
             </video>
             {/* Overlay to ensure text readability */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-indigo-900/80 backdrop-blur-sm"></div>
@@ -420,8 +426,10 @@ const HomePage = () => {
               <div className="relative animate-float" style={{ animationDelay: '0.5s' }}>
                 <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-transform duration-400">
                   <img
-                    src="profilepic.png"
+                    src="profilepic.webp"
                     alt="Profile"
+                    width={128}
+                    height={128}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -521,9 +529,10 @@ const HomePage = () => {
                   </div>
                   {post.coverImage && (
                     <div className="h-48 overflow-hidden">
-                      <img 
-                        src={post.coverImage} 
+                      <img
+                        src={post.coverImage}
                         alt={post.title}
+                        loading="lazy"
                         className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
                       />
                     </div>
@@ -579,9 +588,10 @@ const HomePage = () => {
               {/* Project Image */}
               <div className="h-56 overflow-hidden relative">
                 {projects[0].image ? (
-                  <img 
-                    src={projects[0].image} 
-                    alt={projects[0].title} 
+                  <img
+                    src={projects[0].image}
+                    alt={projects[0].title}
+                    loading="lazy"
                     className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
@@ -701,8 +711,9 @@ const HomePage = () => {
           {/* Background Image */}
           <div className="absolute inset-0 z-0 pointer-events-none">
             <img
-              src="resumecover.png"
+              src="resumecover.webp"
               alt="Resume Background"
+              loading="lazy"
               className="w-full h-full object-cover opacity-30"
             />
             {/* Overlay to ensure text readability */}
@@ -739,8 +750,9 @@ const HomePage = () => {
           {/* Background Image */}
           <div className="absolute inset-0 z-0 pointer-events-none">
             <img
-              src="GeoffreyHinton.png"
+              src="GeoffreyHinton.webp"
               alt="Geoffrey Hinton Background"
+              loading="lazy"
               className="w-full h-full object-cover opacity-50"
             />
             {/* Overlay to ensure text readability */}
@@ -842,6 +854,7 @@ const HomePage = () => {
                         <img
                           src={tool.logo}
                           alt={`${tool.name} logo`}
+                          loading="lazy"
                           className="h-full w-full object-contain"
                         />
                       </div>
