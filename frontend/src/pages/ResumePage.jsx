@@ -15,7 +15,7 @@ const ResumePage = () => {
     location: "Willing to relocate - U.S. or remote",
     linkedin: "linkedin.com/in/cedrick-carter-5b41b4315/",
     github: "github.com/ceddto100",
-    avatar: "/images/newpic.png",
+    avatar: "https://res.cloudinary.com/drssz6lnm/image/upload/v1783098848/ChatGPT_Image_Jul_3_2026_01_11_23_PM_oq0ucc.png",
   };
 
   const workExperience = [
@@ -164,11 +164,11 @@ const ResumePage = () => {
         <meta property="og:description" content="Professional resume showcasing expertise in business automation, API integration, AI solutions, and low-code development." />
         <meta property="og:type" content="profile" />
         <meta property="og:url" content="https://codebyced.com/resume" />
-        <meta property="og:image" content="https://codebyced.com/images/newpic.png" />
+        <meta property="og:image" content="https://res.cloudinary.com/drssz6lnm/image/upload/v1783098848/ChatGPT_Image_Jul_3_2026_01_11_23_PM_oq0ucc.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Cedrick Carter - Software Developer & Business Automation Expert" />
         <meta name="twitter:description" content="Professional resume showcasing expertise in business automation, API integration, AI solutions, and low-code development." />
-        <meta name="twitter:image" content="https://codebyced.com/images/newpic.png" />
+        <meta name="twitter:image" content="https://res.cloudinary.com/drssz6lnm/image/upload/v1783098848/ChatGPT_Image_Jul_3_2026_01_11_23_PM_oq0ucc.png" />
         <link rel="canonical" href="https://codebyced.com/resume" />
         <script type="application/ld+json">{JSON.stringify(resumeStructuredData)}</script>
       </Helmet>
