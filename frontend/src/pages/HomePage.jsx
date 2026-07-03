@@ -426,7 +426,7 @@ const HomePage = () => {
               <div className="relative animate-float" style={{ animationDelay: '0.5s' }}>
                 <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg shadow-blue-500/20 transform hover:scale-105 transition-transform duration-400">
                   <img
-                    src="profilepic.webp"
+                    src="https://res.cloudinary.com/drssz6lnm/image/upload/v1783098848/ChatGPT_Image_Jul_3_2026_01_11_23_PM_oq0ucc.png"
                     alt="Profile"
                     width={128}
                     height={128}
