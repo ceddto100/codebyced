@@ -109,7 +109,7 @@ packages: [
         "Incident email notifications",
       ],
       gradient: "from-sky-600 to-blue-600",
-      ctaTo: "/services/ai&plan=essential",
+      ctaTo: "/contact?service=ai&plan=essential",
     },
     {
       name: "Growth",
@@ -124,7 +124,7 @@ packages: [
       ],
       gradient: "from-indigo-600 to-violet-600",
       emphasized: true,
-      ctaTo: "/services/ai&plan=growth-maint",
+      ctaTo: "/contact?service=ai&plan=growth-maint",
     },
     {
       name: "Pro",
@@ -137,7 +137,7 @@ packages: [
         "Runbook updates",
       ],
       gradient: "from-rose-600 to-pink-600",
-      ctaTo: "/services/ai&plan=pro-maint",
+      ctaTo: "/contact?service=ai&plan=pro-maint",
     },
   ],
 

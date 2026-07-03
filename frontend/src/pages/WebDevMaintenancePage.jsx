@@ -5,6 +5,7 @@ import PageLayout from "../components/PageLayout";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import CalButton from "../components/CalButton";
+import Testimonials from "../components/Testimonials";
 
 /**
  * Web Development & Maintenance — Static Service Page
@@ -483,6 +484,9 @@ const WebDevMaintenancePage = () => {
             ))}
           </ul>
         </section>
+
+        {/* Testimonials */}
+        <Testimonials service="web-dev" />
 
         {/* FAQ */}
         <section className="mb-14">

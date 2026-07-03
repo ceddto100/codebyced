@@ -20,6 +20,8 @@ const honorsRoutes = require('./routes/honorsRoutes');
 const servicesRoutes = require('./routes/servicesRoutes');
 const automationsRoutes = require('./routes/automationsRoutes');
 const shareRoutes = require('./routes/shareRoutes');
+const contactRoutes = require('./routes/contactRoutes');
+const testimonialsRoutes = require('./routes/testimonialsRoutes');
 
 const app = express();
 
@@ -89,6 +91,9 @@ app.use('/api/auth', authRoutes);
 const publicWritePaths = ['/api/auth/', '/api/search', '/api/elevenlabs-webhook'];
 app.use('/api', (req, res, next) => {
   if (req.method === 'GET') return next();
+  // Public lead-capture: anyone can submit the contact form, but managing
+  // existing leads (PUT/DELETE /api/contact/:id) still requires admin auth.
+  if (req.method === 'POST' && req.originalUrl === '/api/contact') return next();
   if (publicWritePaths.some(p => req.originalUrl.startsWith(p))) return next();
   auth(req, res, next);
 });
@@ -102,6 +107,8 @@ app.use('/api/tools', toolsRoutes);
 app.use('/api/honors', honorsRoutes);
 app.use('/api/services', servicesRoutes);
 app.use('/api/automations', automationsRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/testimonials', testimonialsRoutes);
 app.use('/share', shareRoutes);
 app.use('/api', searchRoutes);
 

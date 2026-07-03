@@ -1,9 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Layout from './components/Layout';
 
 // Pages
 import HomePage from './pages/HomePage';
+import ContactPage from './pages/ContactPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
 import ResumePage from './pages/ResumePage';
@@ -30,6 +33,7 @@ import IdeasManager from './pages/admin/IdeasManager';
 import ToolsManager from './pages/admin/ToolsManager';
 import HonorsManager from './pages/admin/HonorsManager';
 import AutomationsManager from './pages/admin/AutomationsManager';
+import TestimonialsManager from './pages/admin/TestimonialsManager';
 
 function App() {
   return (
@@ -38,6 +42,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:id" element={<BlogPostPage />} />
           <Route path="/resume" element={<ResumePage />} />
@@ -78,8 +83,10 @@ function App() {
           <Route path="/admin/tools" element={<ToolsManager />} />
           <Route path="/admin/honors" element={<HonorsManager />} />
           <Route path="/admin/automations" element={<AutomationsManager />} />
+          <Route path="/admin/testimonials" element={<TestimonialsManager />} />
         </Routes>
       </Layout>
+      <ToastContainer theme="dark" />
     </Router>
   );
 }

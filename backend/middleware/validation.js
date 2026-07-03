@@ -106,6 +106,48 @@ const validateTool = [
   handleValidationErrors
 ];
 
+// Contact/lead validation rules
+const validateContact = [
+  body('name')
+    .trim()
+    .notEmpty().withMessage('Name is required')
+    .isLength({ min: 2, max: 100 }).withMessage('Name must be between 2 and 100 characters'),
+
+  body('email')
+    .trim()
+    .notEmpty().withMessage('Email is required')
+    .isEmail().withMessage('Please enter a valid email address'),
+
+  body('message')
+    .trim()
+    .notEmpty().withMessage('Message is required')
+    .isLength({ min: 10, max: 5000 }).withMessage('Message must be between 10 and 5000 characters'),
+
+  body('service').optional().trim().isLength({ max: 100 }),
+  body('plan').optional().trim().isLength({ max: 100 }),
+
+  handleValidationErrors
+];
+
+// Testimonial validation rules
+const validateTestimonial = [
+  body('clientName')
+    .trim()
+    .notEmpty().withMessage('Client name is required')
+    .isLength({ max: 100 }).withMessage('Client name cannot exceed 100 characters'),
+
+  body('quote')
+    .trim()
+    .notEmpty().withMessage('Quote is required')
+    .isLength({ max: 1000 }).withMessage('Quote cannot exceed 1000 characters'),
+
+  body('rating')
+    .optional()
+    .isInt({ min: 1, max: 5 }).withMessage('Rating must be between 1 and 5'),
+
+  handleValidationErrors
+];
+
 // Honor validation rules
 const validateHonor = [
   body('title')
@@ -131,6 +173,8 @@ module.exports = {
   validateProject,
   validateTool,
   validateHonor,
+  validateContact,
+  validateTestimonial,
   validateElevenLabsWebhook: (req, res, next) => {
     const { error } = elevenLabsWebhookSchema.validate(req.body);
     if (error) {

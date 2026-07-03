@@ -89,7 +89,7 @@ const content = {
         "Security checks/patches",
         "Issue triage email"
       ],
-      ctaTo: "/services/apps&plan=essential",
+      ctaTo: "/contact?service=apps&plan=essential",
       gradient: "from-sky-600 to-blue-600"
     },
     {
@@ -104,7 +104,7 @@ const content = {
         "Monthly perf/analytics report"
       ],
       // NOTE: "Growth" will render a Stripe Buy Button below.
-      ctaTo: "/services/apps&plan=growth-maint",
+      ctaTo: "/contact?service=apps&plan=growth-maint",
       gradient: "from-indigo-600 to-violet-600",
       emphasized: true
     },
