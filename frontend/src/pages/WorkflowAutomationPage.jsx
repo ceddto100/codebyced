@@ -108,7 +108,7 @@ const content = {
         "Incident email notifications",
       ],
       gradient: "from-sky-600 to-blue-600",
-      ctaTo: "/services/automation&plan=essential",
+      ctaTo: "/contact?service=automation&plan=essential",
     },
     {
       name: "Growth",
@@ -123,7 +123,7 @@ const content = {
       ],
       gradient: "from-indigo-600 to-violet-600",
       emphasized: true,
-      ctaTo: "/services/automation&plan=growth-maint",
+      ctaTo: "/contact?service=automation&plan=growth-maint",
     },
     {
       name: "Pro",
@@ -136,7 +136,7 @@ const content = {
         "Runbook updates",
       ],
       gradient: "from-rose-600 to-pink-600",
-      ctaTo: "/services/automation&plan=pro-maint",
+      ctaTo: "/contact?service=automation&plan=pro-maint",
     },
   ],
 

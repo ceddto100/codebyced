@@ -56,6 +56,7 @@ const Dashboard = () => {
     { to: '/admin/ideas', label: 'Ideas Manager', icon: '💡', desc: 'Track and manage creative ideas' },
     { to: '/admin/tools', label: 'Tools Manager', icon: '🔧', desc: 'Curate your recommended tools' },
     { to: '/admin/honors', label: 'Honors Manager', icon: '🏆', desc: 'Manage awards and recognitions' },
+    { to: '/admin/testimonials', label: 'Testimonials Manager', icon: '💬', desc: 'Manage client testimonials and reviews' },
     { to: '/admin/automations', label: 'Automations Manager', icon: '⚡', desc: 'Manage automation offerings' },
   ];
 

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { getApiUrl } from '../utils/api';
 
-const ContactForm = () => {
+const ContactForm = ({ service = '', plan = '' }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -63,14 +64,14 @@ const ContactForm = () => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch(getApiUrl('/contact'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, service, plan }),
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to send message');
       }
@@ -112,9 +113,14 @@ const ContactForm = () => {
       className="w-full max-w-md mx-auto p-6 bg-gray-800 rounded-lg shadow-lg"
       aria-label="Contact form"
     >
+      {(service || plan) && (
+        <div className="mb-6 px-4 py-3 rounded-md bg-blue-500/10 border border-blue-500/30 text-sm text-blue-200">
+          You're inquiring about{service ? <> <strong>{service}</strong></> : null}{plan ? <> &mdash; <strong>{plan}</strong> plan</> : null}.
+        </div>
+      )}
       <div className="mb-6">
-        <label 
-          htmlFor="name" 
+        <label
+          htmlFor="name"
           className="block text-sm font-medium text-gray-300 mb-2"
         >
           Name

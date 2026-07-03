@@ -10,6 +10,7 @@ import ShareButton from '../components/ShareButton';
 import PageLayout from '../components/PageLayout';
 import CalButton from '../components/CalButton';
 import Button from '../components/Button';
+import Testimonials from '../components/Testimonials';
 import { TwoColumnSkeletonGrid, ListItemSkeleton, CardSkeleton } from '../components/Skeleton';
 
 
@@ -702,6 +703,9 @@ const HomePage = () => {
 </section>
 
         {/* End Services Section */}
+
+        {/* Testimonials Section */}
+        <Testimonials />
 
         {/* Resume Section */}
         <section
